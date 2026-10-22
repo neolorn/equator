@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1,
+  "sourceLocale": "en-US",
+  "defaultLocale": "ar-EG",
+  "locales": ["en-US", "ar", "ar-EG"]
+}

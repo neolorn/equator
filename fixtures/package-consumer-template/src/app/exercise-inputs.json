@@ -1,0 +1,256 @@
+{
+  "formattingContext": {
+    "timeZone": "UTC",
+    "calendar": "gregory",
+    "numberingSystem": "latn",
+    "hourCycle": "h23"
+  },
+  "message": "app-title",
+  "richMessage": "learn-more",
+  "decimal": { "value": "1234.5", "options": { "maximumFractionDigits": 2 } },
+  "money": { "amount": "1234.5", "currency": "EGP", "options": {} },
+  "measurement": {
+    "amount": "3.5",
+    "unit": "kilometer",
+    "options": { "unitDisplay": "long" }
+  },
+  "percent": { "amount": "25", "scale": "percent-unit", "options": {} },
+  "percentagePoints": {
+    "amount": "2.5",
+    "options": { "minimumFractionDigits": 1 }
+  },
+  "instant": {
+    "epochMilliseconds": 1773480600000,
+    "options": { "dateStyle": "medium", "timeStyle": "short" }
+  },
+  "plainDate": {
+    "year": 2026,
+    "month": 3,
+    "day": 14,
+    "options": { "dateStyle": "long" }
+  },
+  "plainTime": {
+    "hour": 9,
+    "minute": 30,
+    "second": 0,
+    "options": { "timeStyle": "short" }
+  },
+  "plainDateTime": {
+    "date": { "year": 2026, "month": 3, "day": 14 },
+    "time": { "hour": 9, "minute": 30, "second": 0 },
+    "options": { "dateStyle": "medium", "timeStyle": "short" }
+  },
+  "zonedDateTime": {
+    "epochMilliseconds": 1773480600000,
+    "timeZone": "Africa/Cairo",
+    "options": { "dateStyle": "medium", "timeStyle": "long" }
+  },
+  "duration": {
+    "fields": { "hours": 2, "minutes": 30 },
+    "options": { "style": "long" }
+  },
+  "numberRange": { "start": "3", "end": "5", "options": {} },
+  "instantRange": {
+    "startEpochMilliseconds": 1773480600000,
+    "endEpochMilliseconds": 1773739800000,
+    "options": { "dateStyle": "medium" }
+  },
+  "list": {
+    "values": ["Equator", "Angular", "Intl"],
+    "options": { "type": "conjunction" }
+  },
+  "relativeTime": {
+    "value": "-1",
+    "unit": "day",
+    "options": { "numeric": "auto" }
+  },
+  "clock": { "epochMilliseconds": 1773480600000 },
+  "relativeTimePolicy": { "smallestUnit": "minute", "largestUnit": "day" },
+  "installedRelativeTime": {
+    "targetEpochMilliseconds": 1773480555000,
+    "options": { "numeric": "auto" }
+  },
+  "resolvedRelativeTime": {
+    "referenceEpochMilliseconds": 1773480600000,
+    "targetEpochMilliseconds": 1773221400000,
+    "policy": { "largestUnit": "week" },
+    "options": {}
+  },
+  "displayName": { "value": "ar", "options": { "type": "language" } },
+  "plural": { "value": "2", "options": {} },
+  "collation": {
+    "values": ["pêche", "Péché", "peach", "péché"],
+    "options": {}
+  },
+  "segmentation": {
+    "text": "Equator خط الاستواء",
+    "options": { "granularity": "word" }
+  },
+  "personName": {
+    "en-US": {
+      "language": "en",
+      "fields": {
+        "title": "Dr.",
+        "given": "Mary",
+        "given2": "Sue",
+        "surname": "Hamish"
+      }
+    },
+    "ar-EG": {
+      "language": "ar",
+      "fields": { "given": "محمد", "surname": "المصري" }
+    }
+  },
+  "extensions": {
+    "operand": "equator",
+    "member": "ready",
+    "refusedMember": "READY",
+    "formatted": "item-42",
+    "parsed": "sku-item-42"
+  },
+  "controls": {
+    "decimal": {
+      "profile": { "kind": "decimal", "maximumFractionDigits": 2 },
+      "value": { "kind": "decimal", "value": "1234.5" }
+    },
+    "money": {
+      "profile": {
+        "kind": "money",
+        "currency": "EGP",
+        "requireCurrency": true
+      },
+      "value": {
+        "kind": "money",
+        "amount": { "kind": "decimal", "value": "1234.5" },
+        "currency": "EGP"
+      }
+    },
+    "measurement": {
+      "profile": {
+        "kind": "measurement",
+        "unit": "kilometer",
+        "requireUnit": true
+      },
+      "value": {
+        "kind": "measurement",
+        "amount": { "kind": "decimal", "value": "3.5" },
+        "unit": "kilometer"
+      }
+    },
+    "percent": {
+      "profile": {
+        "kind": "percent",
+        "scale": "percent-unit",
+        "requirePercentSign": true
+      },
+      "value": {
+        "kind": "percent",
+        "amount": { "kind": "decimal", "value": "25" },
+        "scale": "percent-unit"
+      }
+    },
+    "percentage-points": {
+      "profile": { "kind": "percentage-points" },
+      "value": {
+        "kind": "percentage-points",
+        "amount": { "kind": "decimal", "value": "2.5" }
+      }
+    },
+    "plain-date": {
+      "profile": {
+        "kind": "plain-date",
+        "order": "day-month-year",
+        "separator": "/"
+      },
+      "value": {
+        "kind": "plain-date",
+        "year": 2026,
+        "month": 3,
+        "day": 14,
+        "calendar": "iso8601"
+      }
+    },
+    "plain-time": {
+      "profile": {
+        "kind": "plain-time",
+        "hourCycle": "h12",
+        "precision": "minute",
+        "separator": ":",
+        "dayPeriod": {
+          "am": "AM",
+          "pm": "PM",
+          "position": "suffix",
+          "separator": " "
+        }
+      },
+      "value": {
+        "kind": "plain-time",
+        "hour": 21,
+        "minute": 30,
+        "second": 0,
+        "nanosecond": 0
+      }
+    },
+    "plain-date-time": {
+      "profile": {
+        "kind": "plain-date-time",
+        "date": { "order": "year-month-day", "separator": "-" },
+        "time": { "hourCycle": "h23", "precision": "second", "separator": ":" },
+        "separator": " "
+      },
+      "value": {
+        "kind": "plain-date-time",
+        "date": {
+          "kind": "plain-date",
+          "year": 2026,
+          "month": 3,
+          "day": 14,
+          "calendar": "iso8601"
+        },
+        "time": {
+          "kind": "plain-time",
+          "hour": 9,
+          "minute": 30,
+          "second": 5,
+          "nanosecond": 0
+        }
+      }
+    },
+    "time-zone": {
+      "profile": {
+        "kind": "time-zone",
+        "options": [
+          { "timeZone": "Africa/Cairo", "labels": ["Cairo", "القاهرة"] },
+          { "timeZone": "UTC", "labels": ["UTC"] }
+        ]
+      },
+      "value": { "kind": "time-zone", "id": "Africa/Cairo" }
+    },
+    "duration": {
+      "profile": {
+        "kind": "duration",
+        "pattern": [
+          { "field": "hours" },
+          ":",
+          { "field": "minutes", "minimumIntegerDigits": 2 }
+        ],
+        "sign": "forbidden"
+      },
+      "value": {
+        "kind": "duration",
+        "sign": 1,
+        "years": 0,
+        "months": 0,
+        "weeks": 0,
+        "days": 0,
+        "hours": 2,
+        "minutes": 30,
+        "seconds": { "kind": "decimal", "value": "0" }
+      }
+    },
+    "instant": {
+      "profile": { "kind": "instant", "syntax": "rfc3339" },
+      "value": { "kind": "instant", "epochNanoseconds": "1773480600000000000" }
+    }
+  }
+}

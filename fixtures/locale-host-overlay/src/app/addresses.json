@@ -1,0 +1,132 @@
+{
+  "policy": "locale-host",
+  "prerendered": ["second", "article", "exercise values", "deferred"],
+  "xDefault": "http://en-us.localhost/",
+  "localeNeutralRoots": ["assets"],
+  "pageCaching": "per-visitor",
+  "navigationMode": "progressive",
+  "origins": {
+    "en-US": "http://en-us.localhost",
+    "ar-EG": "http://ar-eg.localhost",
+    "en-Arab-XB": "http://en-arab-xb.localhost"
+  },
+  "pages": {
+    "home": {
+      "en-US": "http://en-us.localhost/",
+      "ar-EG": "http://ar-eg.localhost/",
+      "en-Arab-XB": "http://en-arab-xb.localhost/"
+    },
+    "second": {
+      "en-US": "http://en-us.localhost/second",
+      "ar-EG": "http://ar-eg.localhost/second",
+      "en-Arab-XB": "http://en-arab-xb.localhost/second"
+    },
+    "lazy": {
+      "en-US": "http://en-us.localhost/lazy",
+      "ar-EG": "http://ar-eg.localhost/lazy",
+      "en-Arab-XB": "http://en-arab-xb.localhost/lazy"
+    },
+    "deferred": {
+      "en-US": "http://en-us.localhost/deferred",
+      "ar-EG": "http://ar-eg.localhost/deferred",
+      "en-Arab-XB": "http://en-arab-xb.localhost/deferred"
+    },
+    "item": {
+      "en-US": "http://en-us.localhost/items/42",
+      "ar-EG": "http://ar-eg.localhost/عناصر/42",
+      "en-Arab-XB": "http://en-arab-xb.localhost/items/42"
+    },
+    "withdrawn item": {
+      "en-US": "http://en-us.localhost/items/410",
+      "ar-EG": "http://ar-eg.localhost/عناصر/410",
+      "en-Arab-XB": "http://en-arab-xb.localhost/items/410"
+    },
+    "unreachable item": {
+      "en-US": "http://en-us.localhost/items/503",
+      "ar-EG": "http://ar-eg.localhost/عناصر/503",
+      "en-Arab-XB": "http://en-arab-xb.localhost/items/503"
+    },
+    "article": {
+      "en-US": "http://en-us.localhost/articles/handbook",
+      "ar-EG": "http://ar-eg.localhost/articles/دليل",
+      "en-Arab-XB": "http://en-arab-xb.localhost/articles/handbook"
+    },
+    "article under the English slug": {
+      "ar-EG": "http://ar-eg.localhost/articles/handbook"
+    },
+    "topic": {
+      "en-US": "http://en-us.localhost/topics/handbook",
+      "ar-EG": "http://ar-eg.localhost/topics/handbook",
+      "en-Arab-XB": "http://en-arab-xb.localhost/topics/handbook"
+    },
+    "unfiled topic": {
+      "en-US": "http://en-us.localhost/topics/unfiled-topic",
+      "ar-EG": "http://ar-eg.localhost/topics/unfiled-topic",
+      "en-Arab-XB": "http://en-arab-xb.localhost/topics/unfiled-topic"
+    },
+    "retired topic": {
+      "en-US": "http://en-us.localhost/topics/retired-topic",
+      "ar-EG": "http://ar-eg.localhost/topics/retired-topic",
+      "en-Arab-XB": "http://en-arab-xb.localhost/topics/retired-topic"
+    },
+    "unavailable topic": {
+      "en-US": "http://en-us.localhost/topics/unavailable-topic",
+      "ar-EG": "http://ar-eg.localhost/topics/unavailable-topic",
+      "en-Arab-XB": "http://en-arab-xb.localhost/topics/unavailable-topic"
+    },
+    "dossier": {
+      "en-US": "http://en-us.localhost/dossiers/dossier",
+      "ar-EG": "http://ar-eg.localhost/dossiers/dossier",
+      "en-Arab-XB": "http://en-arab-xb.localhost/dossiers/dossier"
+    },
+    "withdrawn dossier": {
+      "en-US": "http://en-us.localhost/dossiers/withdrawn-dossier",
+      "ar-EG": "http://ar-eg.localhost/dossiers/withdrawn-dossier",
+      "en-Arab-XB": "http://en-arab-xb.localhost/dossiers/withdrawn-dossier"
+    },
+    "unreachable dossier": {
+      "en-US": "http://en-us.localhost/dossiers/unreachable-dossier",
+      "ar-EG": "http://ar-eg.localhost/dossiers/unreachable-dossier",
+      "en-Arab-XB": "http://en-arab-xb.localhost/dossiers/unreachable-dossier"
+    },
+    "declared dossier": {
+      "en-US": "http://en-us.localhost/dossiers/dossier",
+      "ar-EG": "http://ar-eg.localhost/dossiers/ملف"
+    },
+    "unlisted dossier": {
+      "en-US": "http://en-us.localhost/dossiers/unlisted-dossier",
+      "ar-EG": "http://ar-eg.localhost/dossiers/unlisted-dossier"
+    },
+    "second under an alias": {},
+    "legacy": {
+      "en-US": "http://en-us.localhost/legacy",
+      "ar-EG": "http://ar-eg.localhost/legacy",
+      "en-Arab-XB": "http://en-arab-xb.localhost/legacy"
+    },
+    "removed": {
+      "en-US": "http://en-us.localhost/removed",
+      "ar-EG": "http://ar-eg.localhost/removed",
+      "en-Arab-XB": "http://en-arab-xb.localhost/removed"
+    },
+    "exercise": {
+      "en-US": "http://en-us.localhost/exercise/live",
+      "ar-EG": "http://ar-eg.localhost/تمرين/مباشر",
+      "en-Arab-XB": "http://en-arab-xb.localhost/exercise/live"
+    },
+    "exercise values": {
+      "en-US": "http://en-us.localhost/exercise/values",
+      "ar-EG": "http://ar-eg.localhost/تمرين/قيم",
+      "en-Arab-XB": "http://en-arab-xb.localhost/exercise/values"
+    },
+    "drawn sheet": {
+      "en-US": "http://en-us.localhost/drawn-sheet",
+      "ar-EG": "http://ar-eg.localhost/drawn-sheet",
+      "en-Arab-XB": "http://en-arab-xb.localhost/drawn-sheet"
+    },
+    "missing": {
+      "en-US": "http://en-us.localhost/nothing-is-mounted-here",
+      "ar-EG": "http://ar-eg.localhost/nothing-is-mounted-here",
+      "en-Arab-XB": "http://en-arab-xb.localhost/nothing-is-mounted-here"
+    }
+  }
+}

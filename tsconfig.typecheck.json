@@ -1,0 +1,28 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "target": "ES2022",
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022", "DOM"],
+    "types": ["node"],
+    "isolatedModules": true,
+    "paths": {
+      "@neolorn/equator": ["./packages/runtime/src/public-api.ts"],
+      "@neolorn/equator-toolkit": ["./packages/toolkit/src/index.ts"],
+      "@neolorn/equator/core": ["./packages/runtime/core/src/public-api.ts"],
+      "@neolorn/equator/forms": ["./packages/runtime/forms/src/public-api.ts"],
+      "@neolorn/equator/http": ["./packages/runtime/http/src/public-api.ts"],
+      "@neolorn/equator/router": [
+        "./packages/runtime/router/src/public-api.ts"
+      ],
+      "@neolorn/equator/ssr": ["./packages/runtime/ssr/src/public-api.ts"],
+      "@neolorn/equator/testing": [
+        "./packages/runtime/testing/src/public-api.ts"
+      ]
+    }
+  },
+  "include": ["packages/**/src/**/*.ts", "packages/**/test/**/*.ts"],
+  "exclude": ["**/node_modules/**", "**/dist/**"]
+}

@@ -1,0 +1,4552 @@
+{
+  "formats": {
+    "equator-compiled-ir/1": {
+      "readers": "closed",
+      "declarations": {
+        "dist/toolkit/compiled-artifacts.d.ts#CompiledCatalog": {
+          "object": {
+            "applicationContractFingerprint": {
+              "type": "string"
+            },
+            "generatedAbi": {
+              "type": "string"
+            },
+            "key": {
+              "type": {
+                "object": {
+                  "catalogLocale": {
+                    "type": "string"
+                  },
+                  "providerId": {
+                    "type": "string"
+                  },
+                  "scopeId": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "messages": {
+              "type": {
+                "array": {
+                  "object": {
+                    "body": {
+                      "type": {
+                        "union": [
+                          "boolean",
+                          "null",
+                          "number",
+                          "string",
+                          {
+                            "array": {
+                              "union": [
+                                "boolean",
+                                "null",
+                                "number",
+                                "string",
+                                {
+                                  "object": {},
+                                  "index": {
+                                    "union": [
+                                      "boolean",
+                                      "null",
+                                      "number",
+                                      "string",
+                                      {
+                                        "recursive": "CanonicalJsonArray"
+                                      },
+                                      {
+                                        "recursive": "CanonicalJsonObject"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "recursive": "CanonicalJsonArray"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "object": {},
+                            "index": {
+                              "union": [
+                                "boolean",
+                                "null",
+                                "number",
+                                "string",
+                                {
+                                  "array": {
+                                    "union": [
+                                      "boolean",
+                                      "null",
+                                      "number",
+                                      "string",
+                                      {
+                                        "recursive": "CanonicalJsonArray"
+                                      },
+                                      {
+                                        "recursive": "CanonicalJsonObject"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "recursive": "CanonicalJsonObject"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "inputs": {
+                      "type": {
+                        "array": {
+                          "object": {
+                            "description": {
+                              "optional": true,
+                              "type": "string"
+                            },
+                            "enum": {
+                              "optional": true,
+                              "type": {
+                                "array": {
+                                  "union": ["boolean", "number", "string"]
+                                }
+                              }
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "nullable": {
+                              "type": "boolean"
+                            },
+                            "optional": {
+                              "type": "boolean"
+                            },
+                            "type": {
+                              "type": {
+                                "union": [
+                                  {
+                                    "literal": "boolean"
+                                  },
+                                  {
+                                    "literal": "date-time"
+                                  },
+                                  {
+                                    "literal": "integer"
+                                  },
+                                  {
+                                    "literal": "number"
+                                  },
+                                  {
+                                    "literal": "string"
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "kind": {
+                      "type": {
+                        "union": [
+                          {
+                            "literal": "empty"
+                          },
+                          {
+                            "literal": "message"
+                          }
+                        ]
+                      }
+                    },
+                    "messageId": {
+                      "type": "string"
+                    },
+                    "resultKind": {
+                      "type": {
+                        "union": [
+                          {
+                            "literal": "plain"
+                          },
+                          {
+                            "literal": "structured"
+                          }
+                        ]
+                      }
+                    },
+                    "slots": {
+                      "type": {
+                        "array": {
+                          "object": {
+                            "description": {
+                              "optional": true,
+                              "type": "string"
+                            },
+                            "kind": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "optional": {
+                              "type": "boolean"
+                            },
+                            "repeatable": {
+                              "type": "boolean"
+                            },
+                            "shape": {
+                              "type": {
+                                "union": [
+                                  {
+                                    "literal": "paired"
+                                  },
+                                  {
+                                    "literal": "standalone"
+                                  }
+                                ]
+                              }
+                            },
+                            "within": {
+                              "type": {
+                                "array": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "sourceFingerprint": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "profile": {
+              "type": {
+                "literal": "equator-compiled-ir/1"
+              }
+            },
+            "requiredExtensions": {
+              "type": {
+                "array": {
+                  "union": [
+                    {
+                      "object": {
+                        "fingerprint": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "inputType": {
+                          "type": "string"
+                        },
+                        "kind": {
+                          "type": {
+                            "literal": "formatting-adapter"
+                          }
+                        },
+                        "maximumOutputLength": {
+                          "type": "number"
+                        },
+                        "profile": {
+                          "type": {
+                            "literal": "equator-extension-descriptor/1"
+                          }
+                        },
+                        "result": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "parts"
+                              },
+                              {
+                                "literal": "text"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "object": {
+                        "fingerprint": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "interactive": {
+                          "type": "boolean"
+                        },
+                        "kind": {
+                          "type": {
+                            "literal": "rich-slot-kind"
+                          }
+                        },
+                        "options": {
+                          "optional": true,
+                          "type": {
+                            "object": {},
+                            "index": {
+                              "array": "string"
+                            }
+                          }
+                        },
+                        "profile": {
+                          "type": {
+                            "literal": "equator-extension-descriptor/1"
+                          }
+                        },
+                        "shape": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "paired"
+                              },
+                              {
+                                "literal": "standalone"
+                              }
+                            ]
+                          }
+                        },
+                        "textProjection": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "binding-required"
+                              },
+                              {
+                                "literal": "children"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "object": {
+                        "fingerprint": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "kind": {
+                          "type": {
+                            "literal": "identifier-segment"
+                          }
+                        },
+                        "maximumLength": {
+                          "type": "number"
+                        },
+                        "profile": {
+                          "type": {
+                            "literal": "equator-extension-descriptor/1"
+                          }
+                        },
+                        "syntax": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "ascii-token"
+                              },
+                              {
+                                "literal": "lower-kebab"
+                              },
+                              {
+                                "literal": "unicode-token"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "object": {
+                        "fingerprint": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "kind": {
+                          "type": {
+                            "literal": "message-function"
+                          }
+                        },
+                        "maximumOutputLength": {
+                          "type": "number"
+                        },
+                        "operandType": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "boolean"
+                              },
+                              {
+                                "literal": "date-time"
+                              },
+                              {
+                                "literal": "integer"
+                              },
+                              {
+                                "literal": "number"
+                              },
+                              {
+                                "literal": "string"
+                              }
+                            ]
+                          }
+                        },
+                        "options": {
+                          "optional": true,
+                          "type": {
+                            "object": {},
+                            "index": {
+                              "object": {
+                                "required": {
+                                  "optional": true,
+                                  "type": "boolean"
+                                },
+                                "type": {
+                                  "type": {
+                                    "union": [
+                                      {
+                                        "literal": "boolean"
+                                      },
+                                      {
+                                        "literal": "date-time"
+                                      },
+                                      {
+                                        "literal": "integer"
+                                      },
+                                      {
+                                        "literal": "number"
+                                      },
+                                      {
+                                        "literal": "string"
+                                      }
+                                    ]
+                                  }
+                                },
+                                "values": {
+                                  "optional": true,
+                                  "type": {
+                                    "array": {
+                                      "union": ["boolean", "number", "string"]
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "profile": {
+                          "type": {
+                            "literal": "equator-extension-descriptor/1"
+                          }
+                        },
+                        "resultType": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "date-time"
+                              },
+                              {
+                                "literal": "number"
+                              },
+                              {
+                                "literal": "string"
+                              }
+                            ]
+                          }
+                        },
+                        "selector": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "exact"
+                              },
+                              {
+                                "literal": "none"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "object": {
+                        "fingerprint": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "kind": {
+                          "type": {
+                            "literal": "parsing-adapter"
+                          }
+                        },
+                        "maximumInputLength": {
+                          "type": "number"
+                        },
+                        "outputType": {
+                          "type": "string"
+                        },
+                        "profile": {
+                          "type": {
+                            "literal": "equator-extension-descriptor/1"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "resources": {
+              "type": {
+                "object": {
+                  "decodedBytes": {
+                    "type": "number"
+                  },
+                  "depth": {
+                    "type": "number"
+                  },
+                  "functions": {
+                    "type": "number"
+                  },
+                  "identifiers": {
+                    "type": "number"
+                  },
+                  "inputs": {
+                    "type": "number"
+                  },
+                  "irNodes": {
+                    "type": "number"
+                  },
+                  "literals": {
+                    "type": "number"
+                  },
+                  "maximumMessage": {
+                    "type": {
+                      "object": {
+                        "depth": {
+                          "type": "number"
+                        },
+                        "inputs": {
+                          "type": "number"
+                        },
+                        "irNodes": {
+                          "type": "number"
+                        },
+                        "outputParts": {
+                          "type": "number"
+                        },
+                        "selectors": {
+                          "type": "number"
+                        },
+                        "slots": {
+                          "type": "number"
+                        },
+                        "variants": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  },
+                  "messages": {
+                    "type": "number"
+                  },
+                  "outputParts": {
+                    "type": "number"
+                  },
+                  "profile": {
+                    "type": {
+                      "literal": "equator-resource-summary/1"
+                    }
+                  },
+                  "references": {
+                    "type": "number"
+                  },
+                  "selectors": {
+                    "type": "number"
+                  },
+                  "slots": {
+                    "type": "number"
+                  },
+                  "variants": {
+                    "type": "number"
+                  }
+                }
+              }
+            },
+            "semanticRegistryFingerprint": {
+              "type": "string"
+            },
+            "standardsProfile": {
+              "type": {
+                "literal": "equator-1"
+              }
+            }
+          }
+        }
+      }
+    },
+    "equator-compiled-catalog/1": {
+      "readers": "open",
+      "declarations": {
+        "dist/toolkit/compiled-artifacts.d.ts#ArtifactAddress": {
+          "object": {
+            "applicationContractFingerprint": {
+              "type": "string"
+            },
+            "compiledIrProfile": {
+              "type": {
+                "literal": "equator-compiled-ir/1"
+              }
+            },
+            "contentDigest": {
+              "type": "string"
+            },
+            "generatedAbi": {
+              "type": "string"
+            },
+            "key": {
+              "type": {
+                "object": {
+                  "catalogLocale": {
+                    "type": "string"
+                  },
+                  "providerId": {
+                    "type": "string"
+                  },
+                  "scopeId": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "requiredExtensions": {
+              "type": {
+                "array": {
+                  "union": [
+                    {
+                      "object": {
+                        "fingerprint": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "inputType": {
+                          "type": "string"
+                        },
+                        "kind": {
+                          "type": {
+                            "literal": "formatting-adapter"
+                          }
+                        },
+                        "maximumOutputLength": {
+                          "type": "number"
+                        },
+                        "profile": {
+                          "type": {
+                            "literal": "equator-extension-descriptor/1"
+                          }
+                        },
+                        "result": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "parts"
+                              },
+                              {
+                                "literal": "text"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "object": {
+                        "fingerprint": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "interactive": {
+                          "type": "boolean"
+                        },
+                        "kind": {
+                          "type": {
+                            "literal": "rich-slot-kind"
+                          }
+                        },
+                        "options": {
+                          "optional": true,
+                          "type": {
+                            "object": {},
+                            "index": {
+                              "array": "string"
+                            }
+                          }
+                        },
+                        "profile": {
+                          "type": {
+                            "literal": "equator-extension-descriptor/1"
+                          }
+                        },
+                        "shape": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "paired"
+                              },
+                              {
+                                "literal": "standalone"
+                              }
+                            ]
+                          }
+                        },
+                        "textProjection": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "binding-required"
+                              },
+                              {
+                                "literal": "children"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "object": {
+                        "fingerprint": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "kind": {
+                          "type": {
+                            "literal": "identifier-segment"
+                          }
+                        },
+                        "maximumLength": {
+                          "type": "number"
+                        },
+                        "profile": {
+                          "type": {
+                            "literal": "equator-extension-descriptor/1"
+                          }
+                        },
+                        "syntax": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "ascii-token"
+                              },
+                              {
+                                "literal": "lower-kebab"
+                              },
+                              {
+                                "literal": "unicode-token"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "object": {
+                        "fingerprint": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "kind": {
+                          "type": {
+                            "literal": "message-function"
+                          }
+                        },
+                        "maximumOutputLength": {
+                          "type": "number"
+                        },
+                        "operandType": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "boolean"
+                              },
+                              {
+                                "literal": "date-time"
+                              },
+                              {
+                                "literal": "integer"
+                              },
+                              {
+                                "literal": "number"
+                              },
+                              {
+                                "literal": "string"
+                              }
+                            ]
+                          }
+                        },
+                        "options": {
+                          "optional": true,
+                          "type": {
+                            "object": {},
+                            "index": {
+                              "object": {
+                                "required": {
+                                  "optional": true,
+                                  "type": "boolean"
+                                },
+                                "type": {
+                                  "type": {
+                                    "union": [
+                                      {
+                                        "literal": "boolean"
+                                      },
+                                      {
+                                        "literal": "date-time"
+                                      },
+                                      {
+                                        "literal": "integer"
+                                      },
+                                      {
+                                        "literal": "number"
+                                      },
+                                      {
+                                        "literal": "string"
+                                      }
+                                    ]
+                                  }
+                                },
+                                "values": {
+                                  "optional": true,
+                                  "type": {
+                                    "array": {
+                                      "union": ["boolean", "number", "string"]
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "profile": {
+                          "type": {
+                            "literal": "equator-extension-descriptor/1"
+                          }
+                        },
+                        "resultType": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "date-time"
+                              },
+                              {
+                                "literal": "number"
+                              },
+                              {
+                                "literal": "string"
+                              }
+                            ]
+                          }
+                        },
+                        "selector": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "exact"
+                              },
+                              {
+                                "literal": "none"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "object": {
+                        "fingerprint": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "kind": {
+                          "type": {
+                            "literal": "parsing-adapter"
+                          }
+                        },
+                        "maximumInputLength": {
+                          "type": "number"
+                        },
+                        "outputType": {
+                          "type": "string"
+                        },
+                        "profile": {
+                          "type": {
+                            "literal": "equator-extension-descriptor/1"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "requiredFeatures": {
+              "type": {
+                "array": "string"
+              }
+            },
+            "schema": {
+              "type": {
+                "literal": "equator-compiled-catalog/1"
+              }
+            },
+            "semanticRegistryFingerprint": {
+              "type": "string"
+            },
+            "standardsProfile": {
+              "type": {
+                "literal": "equator-1"
+              }
+            }
+          }
+        },
+        "dist/runtime/types/neolorn-equator-core.d.ts#ArtifactAddress": {
+          "object": {
+            "applicationContractFingerprint": {
+              "type": "string"
+            },
+            "compiledIrProfile": {
+              "type": {
+                "literal": "equator-compiled-ir/1"
+              }
+            },
+            "contentDigest": {
+              "type": "string"
+            },
+            "generatedAbi": {
+              "type": {
+                "literal": "equator-generated/1"
+              }
+            },
+            "key": {
+              "type": {
+                "object": {
+                  "catalogLocale": {
+                    "type": "string"
+                  },
+                  "providerId": {
+                    "type": "string"
+                  },
+                  "scopeId": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "requiredExtensions": {
+              "type": {
+                "array": {
+                  "union": [
+                    {
+                      "object": {
+                        "fingerprint": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "inputType": {
+                          "type": "string"
+                        },
+                        "kind": {
+                          "type": {
+                            "literal": "formatting-adapter"
+                          }
+                        },
+                        "maximumOutputLength": {
+                          "type": "number"
+                        },
+                        "profile": {
+                          "type": {
+                            "literal": "equator-extension-descriptor/1"
+                          }
+                        },
+                        "result": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "parts"
+                              },
+                              {
+                                "literal": "text"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "object": {
+                        "fingerprint": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "interactive": {
+                          "type": "boolean"
+                        },
+                        "kind": {
+                          "type": {
+                            "literal": "rich-slot-kind"
+                          }
+                        },
+                        "options": {
+                          "optional": true,
+                          "type": {
+                            "object": {},
+                            "index": {
+                              "array": "string"
+                            }
+                          }
+                        },
+                        "profile": {
+                          "type": {
+                            "literal": "equator-extension-descriptor/1"
+                          }
+                        },
+                        "shape": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "paired"
+                              },
+                              {
+                                "literal": "standalone"
+                              }
+                            ]
+                          }
+                        },
+                        "textProjection": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "binding-required"
+                              },
+                              {
+                                "literal": "children"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "object": {
+                        "fingerprint": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "kind": {
+                          "type": {
+                            "literal": "identifier-segment"
+                          }
+                        },
+                        "maximumLength": {
+                          "type": "number"
+                        },
+                        "profile": {
+                          "type": {
+                            "literal": "equator-extension-descriptor/1"
+                          }
+                        },
+                        "syntax": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "ascii-token"
+                              },
+                              {
+                                "literal": "lower-kebab"
+                              },
+                              {
+                                "literal": "unicode-token"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "object": {
+                        "fingerprint": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "kind": {
+                          "type": {
+                            "literal": "message-function"
+                          }
+                        },
+                        "maximumOutputLength": {
+                          "type": "number"
+                        },
+                        "operandType": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "boolean"
+                              },
+                              {
+                                "literal": "date-time"
+                              },
+                              {
+                                "literal": "integer"
+                              },
+                              {
+                                "literal": "number"
+                              },
+                              {
+                                "literal": "string"
+                              }
+                            ]
+                          }
+                        },
+                        "options": {
+                          "optional": true,
+                          "type": {
+                            "object": {},
+                            "index": {
+                              "object": {
+                                "required": {
+                                  "optional": true,
+                                  "type": "boolean"
+                                },
+                                "type": {
+                                  "type": {
+                                    "union": [
+                                      {
+                                        "literal": "boolean"
+                                      },
+                                      {
+                                        "literal": "date-time"
+                                      },
+                                      {
+                                        "literal": "integer"
+                                      },
+                                      {
+                                        "literal": "number"
+                                      },
+                                      {
+                                        "literal": "string"
+                                      }
+                                    ]
+                                  }
+                                },
+                                "values": {
+                                  "optional": true,
+                                  "type": {
+                                    "array": {
+                                      "union": ["boolean", "number", "string"]
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "profile": {
+                          "type": {
+                            "literal": "equator-extension-descriptor/1"
+                          }
+                        },
+                        "resultType": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "date-time"
+                              },
+                              {
+                                "literal": "number"
+                              },
+                              {
+                                "literal": "string"
+                              }
+                            ]
+                          }
+                        },
+                        "selector": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "exact"
+                              },
+                              {
+                                "literal": "none"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "object": {
+                        "fingerprint": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "kind": {
+                          "type": {
+                            "literal": "parsing-adapter"
+                          }
+                        },
+                        "maximumInputLength": {
+                          "type": "number"
+                        },
+                        "outputType": {
+                          "type": "string"
+                        },
+                        "profile": {
+                          "type": {
+                            "literal": "equator-extension-descriptor/1"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "requiredFeatures": {
+              "type": {
+                "array": "string"
+              }
+            },
+            "schema": {
+              "type": {
+                "literal": "equator-compiled-catalog/1"
+              }
+            },
+            "semanticRegistryFingerprint": {
+              "type": "string"
+            },
+            "standardsProfile": {
+              "type": {
+                "literal": "equator-1"
+              }
+            }
+          }
+        }
+      }
+    },
+    "equator-catalog-set/1": {
+      "readers": "open",
+      "declarations": {
+        "dist/toolkit/compiled-artifacts.d.ts#CatalogSetDescriptor": {
+          "object": {
+            "applicationContractFingerprint": {
+              "type": "string"
+            },
+            "generatedAbi": {
+              "type": "string"
+            },
+            "profile": {
+              "type": {
+                "literal": "equator-catalog-set/1"
+              }
+            },
+            "providers": {
+              "type": {
+                "array": {
+                  "object": {
+                    "artifacts": {
+                      "type": {
+                        "array": {
+                          "object": {
+                            "address": {
+                              "type": {
+                                "object": {
+                                  "applicationContractFingerprint": {
+                                    "type": "string"
+                                  },
+                                  "compiledIrProfile": {
+                                    "type": {
+                                      "literal": "equator-compiled-ir/1"
+                                    }
+                                  },
+                                  "contentDigest": {
+                                    "type": "string"
+                                  },
+                                  "generatedAbi": {
+                                    "type": "string"
+                                  },
+                                  "key": {
+                                    "type": {
+                                      "object": {
+                                        "catalogLocale": {
+                                          "type": "string"
+                                        },
+                                        "providerId": {
+                                          "type": "string"
+                                        },
+                                        "scopeId": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "requiredExtensions": {
+                                    "type": {
+                                      "array": {
+                                        "union": [
+                                          {
+                                            "object": {
+                                              "fingerprint": {
+                                                "type": "string"
+                                              },
+                                              "id": {
+                                                "type": "string"
+                                              },
+                                              "inputType": {
+                                                "type": "string"
+                                              },
+                                              "kind": {
+                                                "type": {
+                                                  "literal": "formatting-adapter"
+                                                }
+                                              },
+                                              "maximumOutputLength": {
+                                                "type": "number"
+                                              },
+                                              "profile": {
+                                                "type": {
+                                                  "literal": "equator-extension-descriptor/1"
+                                                }
+                                              },
+                                              "result": {
+                                                "type": {
+                                                  "union": [
+                                                    {
+                                                      "literal": "parts"
+                                                    },
+                                                    {
+                                                      "literal": "text"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            }
+                                          },
+                                          {
+                                            "object": {
+                                              "fingerprint": {
+                                                "type": "string"
+                                              },
+                                              "id": {
+                                                "type": "string"
+                                              },
+                                              "interactive": {
+                                                "type": "boolean"
+                                              },
+                                              "kind": {
+                                                "type": {
+                                                  "literal": "rich-slot-kind"
+                                                }
+                                              },
+                                              "options": {
+                                                "optional": true,
+                                                "type": {
+                                                  "object": {},
+                                                  "index": {
+                                                    "array": "string"
+                                                  }
+                                                }
+                                              },
+                                              "profile": {
+                                                "type": {
+                                                  "literal": "equator-extension-descriptor/1"
+                                                }
+                                              },
+                                              "shape": {
+                                                "type": {
+                                                  "union": [
+                                                    {
+                                                      "literal": "paired"
+                                                    },
+                                                    {
+                                                      "literal": "standalone"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "textProjection": {
+                                                "type": {
+                                                  "union": [
+                                                    {
+                                                      "literal": "binding-required"
+                                                    },
+                                                    {
+                                                      "literal": "children"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            }
+                                          },
+                                          {
+                                            "object": {
+                                              "fingerprint": {
+                                                "type": "string"
+                                              },
+                                              "id": {
+                                                "type": "string"
+                                              },
+                                              "kind": {
+                                                "type": {
+                                                  "literal": "identifier-segment"
+                                                }
+                                              },
+                                              "maximumLength": {
+                                                "type": "number"
+                                              },
+                                              "profile": {
+                                                "type": {
+                                                  "literal": "equator-extension-descriptor/1"
+                                                }
+                                              },
+                                              "syntax": {
+                                                "type": {
+                                                  "union": [
+                                                    {
+                                                      "literal": "ascii-token"
+                                                    },
+                                                    {
+                                                      "literal": "lower-kebab"
+                                                    },
+                                                    {
+                                                      "literal": "unicode-token"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            }
+                                          },
+                                          {
+                                            "object": {
+                                              "fingerprint": {
+                                                "type": "string"
+                                              },
+                                              "id": {
+                                                "type": "string"
+                                              },
+                                              "kind": {
+                                                "type": {
+                                                  "literal": "message-function"
+                                                }
+                                              },
+                                              "maximumOutputLength": {
+                                                "type": "number"
+                                              },
+                                              "operandType": {
+                                                "type": {
+                                                  "union": [
+                                                    {
+                                                      "literal": "boolean"
+                                                    },
+                                                    {
+                                                      "literal": "date-time"
+                                                    },
+                                                    {
+                                                      "literal": "integer"
+                                                    },
+                                                    {
+                                                      "literal": "number"
+                                                    },
+                                                    {
+                                                      "literal": "string"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "options": {
+                                                "optional": true,
+                                                "type": {
+                                                  "object": {},
+                                                  "index": {
+                                                    "object": {
+                                                      "required": {
+                                                        "optional": true,
+                                                        "type": "boolean"
+                                                      },
+                                                      "type": {
+                                                        "type": {
+                                                          "union": [
+                                                            {
+                                                              "literal": "boolean"
+                                                            },
+                                                            {
+                                                              "literal": "date-time"
+                                                            },
+                                                            {
+                                                              "literal": "integer"
+                                                            },
+                                                            {
+                                                              "literal": "number"
+                                                            },
+                                                            {
+                                                              "literal": "string"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "values": {
+                                                        "optional": true,
+                                                        "type": {
+                                                          "array": {
+                                                            "union": [
+                                                              "boolean",
+                                                              "number",
+                                                              "string"
+                                                            ]
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              },
+                                              "profile": {
+                                                "type": {
+                                                  "literal": "equator-extension-descriptor/1"
+                                                }
+                                              },
+                                              "resultType": {
+                                                "type": {
+                                                  "union": [
+                                                    {
+                                                      "literal": "date-time"
+                                                    },
+                                                    {
+                                                      "literal": "number"
+                                                    },
+                                                    {
+                                                      "literal": "string"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "selector": {
+                                                "type": {
+                                                  "union": [
+                                                    {
+                                                      "literal": "exact"
+                                                    },
+                                                    {
+                                                      "literal": "none"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            }
+                                          },
+                                          {
+                                            "object": {
+                                              "fingerprint": {
+                                                "type": "string"
+                                              },
+                                              "id": {
+                                                "type": "string"
+                                              },
+                                              "kind": {
+                                                "type": {
+                                                  "literal": "parsing-adapter"
+                                                }
+                                              },
+                                              "maximumInputLength": {
+                                                "type": "number"
+                                              },
+                                              "outputType": {
+                                                "type": "string"
+                                              },
+                                              "profile": {
+                                                "type": {
+                                                  "literal": "equator-extension-descriptor/1"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  },
+                                  "requiredFeatures": {
+                                    "type": {
+                                      "array": "string"
+                                    }
+                                  },
+                                  "schema": {
+                                    "type": {
+                                      "literal": "equator-compiled-catalog/1"
+                                    }
+                                  },
+                                  "semanticRegistryFingerprint": {
+                                    "type": "string"
+                                  },
+                                  "standardsProfile": {
+                                    "type": {
+                                      "literal": "equator-1"
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "modulePath": {
+                              "type": "string"
+                            },
+                            "resources": {
+                              "type": {
+                                "object": {
+                                  "decodedBytes": {
+                                    "type": "number"
+                                  },
+                                  "depth": {
+                                    "type": "number"
+                                  },
+                                  "functions": {
+                                    "type": "number"
+                                  },
+                                  "identifiers": {
+                                    "type": "number"
+                                  },
+                                  "inputs": {
+                                    "type": "number"
+                                  },
+                                  "irNodes": {
+                                    "type": "number"
+                                  },
+                                  "literals": {
+                                    "type": "number"
+                                  },
+                                  "maximumMessage": {
+                                    "type": {
+                                      "object": {
+                                        "depth": {
+                                          "type": "number"
+                                        },
+                                        "inputs": {
+                                          "type": "number"
+                                        },
+                                        "irNodes": {
+                                          "type": "number"
+                                        },
+                                        "outputParts": {
+                                          "type": "number"
+                                        },
+                                        "selectors": {
+                                          "type": "number"
+                                        },
+                                        "slots": {
+                                          "type": "number"
+                                        },
+                                        "variants": {
+                                          "type": "number"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "messages": {
+                                    "type": "number"
+                                  },
+                                  "outputParts": {
+                                    "type": "number"
+                                  },
+                                  "profile": {
+                                    "type": {
+                                      "literal": "equator-resource-summary/1"
+                                    }
+                                  },
+                                  "references": {
+                                    "type": "number"
+                                  },
+                                  "selectors": {
+                                    "type": "number"
+                                  },
+                                  "slots": {
+                                    "type": "number"
+                                  },
+                                  "variants": {
+                                    "type": "number"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "catalogSetId": {
+                      "type": "string"
+                    },
+                    "providerId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "semanticRegistryFingerprint": {
+              "type": "string"
+            }
+          }
+        },
+        "dist/runtime/types/neolorn-equator-core.d.ts#CatalogSetDescriptor": {
+          "object": {
+            "applicationContractFingerprint": {
+              "type": "string"
+            },
+            "generatedAbi": {
+              "type": {
+                "literal": "equator-generated/1"
+              }
+            },
+            "profile": {
+              "type": {
+                "literal": "equator-catalog-set/1"
+              }
+            },
+            "providers": {
+              "type": {
+                "array": {
+                  "object": {
+                    "artifacts": {
+                      "type": {
+                        "array": {
+                          "object": {
+                            "address": {
+                              "type": {
+                                "object": {
+                                  "applicationContractFingerprint": {
+                                    "type": "string"
+                                  },
+                                  "compiledIrProfile": {
+                                    "type": {
+                                      "literal": "equator-compiled-ir/1"
+                                    }
+                                  },
+                                  "contentDigest": {
+                                    "type": "string"
+                                  },
+                                  "generatedAbi": {
+                                    "type": {
+                                      "literal": "equator-generated/1"
+                                    }
+                                  },
+                                  "key": {
+                                    "type": {
+                                      "object": {
+                                        "catalogLocale": {
+                                          "type": "string"
+                                        },
+                                        "providerId": {
+                                          "type": "string"
+                                        },
+                                        "scopeId": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "requiredExtensions": {
+                                    "type": {
+                                      "array": {
+                                        "union": [
+                                          {
+                                            "object": {
+                                              "fingerprint": {
+                                                "type": "string"
+                                              },
+                                              "id": {
+                                                "type": "string"
+                                              },
+                                              "inputType": {
+                                                "type": "string"
+                                              },
+                                              "kind": {
+                                                "type": {
+                                                  "literal": "formatting-adapter"
+                                                }
+                                              },
+                                              "maximumOutputLength": {
+                                                "type": "number"
+                                              },
+                                              "profile": {
+                                                "type": {
+                                                  "literal": "equator-extension-descriptor/1"
+                                                }
+                                              },
+                                              "result": {
+                                                "type": {
+                                                  "union": [
+                                                    {
+                                                      "literal": "parts"
+                                                    },
+                                                    {
+                                                      "literal": "text"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            }
+                                          },
+                                          {
+                                            "object": {
+                                              "fingerprint": {
+                                                "type": "string"
+                                              },
+                                              "id": {
+                                                "type": "string"
+                                              },
+                                              "interactive": {
+                                                "type": "boolean"
+                                              },
+                                              "kind": {
+                                                "type": {
+                                                  "literal": "rich-slot-kind"
+                                                }
+                                              },
+                                              "options": {
+                                                "optional": true,
+                                                "type": {
+                                                  "object": {},
+                                                  "index": {
+                                                    "array": "string"
+                                                  }
+                                                }
+                                              },
+                                              "profile": {
+                                                "type": {
+                                                  "literal": "equator-extension-descriptor/1"
+                                                }
+                                              },
+                                              "shape": {
+                                                "type": {
+                                                  "union": [
+                                                    {
+                                                      "literal": "paired"
+                                                    },
+                                                    {
+                                                      "literal": "standalone"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "textProjection": {
+                                                "type": {
+                                                  "union": [
+                                                    {
+                                                      "literal": "binding-required"
+                                                    },
+                                                    {
+                                                      "literal": "children"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            }
+                                          },
+                                          {
+                                            "object": {
+                                              "fingerprint": {
+                                                "type": "string"
+                                              },
+                                              "id": {
+                                                "type": "string"
+                                              },
+                                              "kind": {
+                                                "type": {
+                                                  "literal": "identifier-segment"
+                                                }
+                                              },
+                                              "maximumLength": {
+                                                "type": "number"
+                                              },
+                                              "profile": {
+                                                "type": {
+                                                  "literal": "equator-extension-descriptor/1"
+                                                }
+                                              },
+                                              "syntax": {
+                                                "type": {
+                                                  "union": [
+                                                    {
+                                                      "literal": "ascii-token"
+                                                    },
+                                                    {
+                                                      "literal": "lower-kebab"
+                                                    },
+                                                    {
+                                                      "literal": "unicode-token"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            }
+                                          },
+                                          {
+                                            "object": {
+                                              "fingerprint": {
+                                                "type": "string"
+                                              },
+                                              "id": {
+                                                "type": "string"
+                                              },
+                                              "kind": {
+                                                "type": {
+                                                  "literal": "message-function"
+                                                }
+                                              },
+                                              "maximumOutputLength": {
+                                                "type": "number"
+                                              },
+                                              "operandType": {
+                                                "type": {
+                                                  "union": [
+                                                    {
+                                                      "literal": "boolean"
+                                                    },
+                                                    {
+                                                      "literal": "date-time"
+                                                    },
+                                                    {
+                                                      "literal": "integer"
+                                                    },
+                                                    {
+                                                      "literal": "number"
+                                                    },
+                                                    {
+                                                      "literal": "string"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "options": {
+                                                "optional": true,
+                                                "type": {
+                                                  "object": {},
+                                                  "index": {
+                                                    "object": {
+                                                      "required": {
+                                                        "optional": true,
+                                                        "type": "boolean"
+                                                      },
+                                                      "type": {
+                                                        "type": {
+                                                          "union": [
+                                                            {
+                                                              "literal": "boolean"
+                                                            },
+                                                            {
+                                                              "literal": "date-time"
+                                                            },
+                                                            {
+                                                              "literal": "integer"
+                                                            },
+                                                            {
+                                                              "literal": "number"
+                                                            },
+                                                            {
+                                                              "literal": "string"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "values": {
+                                                        "optional": true,
+                                                        "type": {
+                                                          "array": {
+                                                            "union": [
+                                                              "boolean",
+                                                              "number",
+                                                              "string"
+                                                            ]
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              },
+                                              "profile": {
+                                                "type": {
+                                                  "literal": "equator-extension-descriptor/1"
+                                                }
+                                              },
+                                              "resultType": {
+                                                "type": {
+                                                  "union": [
+                                                    {
+                                                      "literal": "date-time"
+                                                    },
+                                                    {
+                                                      "literal": "number"
+                                                    },
+                                                    {
+                                                      "literal": "string"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "selector": {
+                                                "type": {
+                                                  "union": [
+                                                    {
+                                                      "literal": "exact"
+                                                    },
+                                                    {
+                                                      "literal": "none"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            }
+                                          },
+                                          {
+                                            "object": {
+                                              "fingerprint": {
+                                                "type": "string"
+                                              },
+                                              "id": {
+                                                "type": "string"
+                                              },
+                                              "kind": {
+                                                "type": {
+                                                  "literal": "parsing-adapter"
+                                                }
+                                              },
+                                              "maximumInputLength": {
+                                                "type": "number"
+                                              },
+                                              "outputType": {
+                                                "type": "string"
+                                              },
+                                              "profile": {
+                                                "type": {
+                                                  "literal": "equator-extension-descriptor/1"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  },
+                                  "requiredFeatures": {
+                                    "type": {
+                                      "array": "string"
+                                    }
+                                  },
+                                  "schema": {
+                                    "type": {
+                                      "literal": "equator-compiled-catalog/1"
+                                    }
+                                  },
+                                  "semanticRegistryFingerprint": {
+                                    "type": "string"
+                                  },
+                                  "standardsProfile": {
+                                    "type": {
+                                      "literal": "equator-1"
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "modulePath": {
+                              "type": "string"
+                            },
+                            "resources": {
+                              "type": {
+                                "object": {
+                                  "decodedBytes": {
+                                    "type": "number"
+                                  },
+                                  "depth": {
+                                    "type": "number"
+                                  },
+                                  "functions": {
+                                    "type": "number"
+                                  },
+                                  "identifiers": {
+                                    "type": "number"
+                                  },
+                                  "inputs": {
+                                    "type": "number"
+                                  },
+                                  "irNodes": {
+                                    "type": "number"
+                                  },
+                                  "literals": {
+                                    "type": "number"
+                                  },
+                                  "maximumMessage": {
+                                    "type": {
+                                      "object": {
+                                        "depth": {
+                                          "type": "number"
+                                        },
+                                        "inputs": {
+                                          "type": "number"
+                                        },
+                                        "irNodes": {
+                                          "type": "number"
+                                        },
+                                        "outputParts": {
+                                          "type": "number"
+                                        },
+                                        "selectors": {
+                                          "type": "number"
+                                        },
+                                        "slots": {
+                                          "type": "number"
+                                        },
+                                        "variants": {
+                                          "type": "number"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "messages": {
+                                    "type": "number"
+                                  },
+                                  "outputParts": {
+                                    "type": "number"
+                                  },
+                                  "profile": {
+                                    "type": {
+                                      "literal": "equator-resource-summary/1"
+                                    }
+                                  },
+                                  "references": {
+                                    "type": "number"
+                                  },
+                                  "selectors": {
+                                    "type": "number"
+                                  },
+                                  "slots": {
+                                    "type": "number"
+                                  },
+                                  "variants": {
+                                    "type": "number"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "catalogSetId": {
+                      "type": "string"
+                    },
+                    "providerId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "semanticRegistryFingerprint": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "equator-resource-summary/1": {
+      "readers": "closed",
+      "declarations": {
+        "dist/toolkit/compiled-artifacts.d.ts#CatalogResourceSummary": {
+          "object": {
+            "decodedBytes": {
+              "type": "number"
+            },
+            "depth": {
+              "type": "number"
+            },
+            "functions": {
+              "type": "number"
+            },
+            "identifiers": {
+              "type": "number"
+            },
+            "inputs": {
+              "type": "number"
+            },
+            "irNodes": {
+              "type": "number"
+            },
+            "literals": {
+              "type": "number"
+            },
+            "maximumMessage": {
+              "type": {
+                "object": {
+                  "depth": {
+                    "type": "number"
+                  },
+                  "inputs": {
+                    "type": "number"
+                  },
+                  "irNodes": {
+                    "type": "number"
+                  },
+                  "outputParts": {
+                    "type": "number"
+                  },
+                  "selectors": {
+                    "type": "number"
+                  },
+                  "slots": {
+                    "type": "number"
+                  },
+                  "variants": {
+                    "type": "number"
+                  }
+                }
+              }
+            },
+            "messages": {
+              "type": "number"
+            },
+            "outputParts": {
+              "type": "number"
+            },
+            "profile": {
+              "type": {
+                "literal": "equator-resource-summary/1"
+              }
+            },
+            "references": {
+              "type": "number"
+            },
+            "selectors": {
+              "type": "number"
+            },
+            "slots": {
+              "type": "number"
+            },
+            "variants": {
+              "type": "number"
+            }
+          }
+        },
+        "dist/runtime/types/neolorn-equator-core.d.ts#CatalogResourceSummary": {
+          "object": {
+            "decodedBytes": {
+              "type": "number"
+            },
+            "depth": {
+              "type": "number"
+            },
+            "functions": {
+              "type": "number"
+            },
+            "identifiers": {
+              "type": "number"
+            },
+            "inputs": {
+              "type": "number"
+            },
+            "irNodes": {
+              "type": "number"
+            },
+            "literals": {
+              "type": "number"
+            },
+            "maximumMessage": {
+              "type": {
+                "object": {
+                  "depth": {
+                    "type": "number"
+                  },
+                  "inputs": {
+                    "type": "number"
+                  },
+                  "irNodes": {
+                    "type": "number"
+                  },
+                  "outputParts": {
+                    "type": "number"
+                  },
+                  "selectors": {
+                    "type": "number"
+                  },
+                  "slots": {
+                    "type": "number"
+                  },
+                  "variants": {
+                    "type": "number"
+                  }
+                }
+              }
+            },
+            "messages": {
+              "type": "number"
+            },
+            "outputParts": {
+              "type": "number"
+            },
+            "profile": {
+              "type": {
+                "literal": "equator-resource-summary/1"
+              }
+            },
+            "references": {
+              "type": "number"
+            },
+            "selectors": {
+              "type": "number"
+            },
+            "slots": {
+              "type": "number"
+            },
+            "variants": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "equator-generated/1": {
+      "readers": "closed",
+      "declarations": {
+        "dist/runtime/types/neolorn-equator-core.d.ts#GeneratedConfiguration": {
+          "object": {
+            "aliases": {
+              "type": {
+                "object": {},
+                "index": "string"
+              }
+            },
+            "applicationContractFingerprint": {
+              "type": "string"
+            },
+            "defaultLocale": {
+              "type": "string"
+            },
+            "extensionDescriptors": {
+              "optional": true,
+              "type": {
+                "array": {
+                  "union": [
+                    {
+                      "object": {
+                        "fingerprint": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "inputType": {
+                          "type": "string"
+                        },
+                        "kind": {
+                          "type": {
+                            "literal": "formatting-adapter"
+                          }
+                        },
+                        "maximumOutputLength": {
+                          "type": "number"
+                        },
+                        "profile": {
+                          "type": {
+                            "literal": "equator-extension-descriptor/1"
+                          }
+                        },
+                        "result": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "parts"
+                              },
+                              {
+                                "literal": "text"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "object": {
+                        "fingerprint": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "interactive": {
+                          "type": "boolean"
+                        },
+                        "kind": {
+                          "type": {
+                            "literal": "rich-slot-kind"
+                          }
+                        },
+                        "options": {
+                          "optional": true,
+                          "type": {
+                            "object": {},
+                            "index": {
+                              "array": "string"
+                            }
+                          }
+                        },
+                        "profile": {
+                          "type": {
+                            "literal": "equator-extension-descriptor/1"
+                          }
+                        },
+                        "shape": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "paired"
+                              },
+                              {
+                                "literal": "standalone"
+                              }
+                            ]
+                          }
+                        },
+                        "textProjection": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "binding-required"
+                              },
+                              {
+                                "literal": "children"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "object": {
+                        "fingerprint": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "kind": {
+                          "type": {
+                            "literal": "identifier-segment"
+                          }
+                        },
+                        "maximumLength": {
+                          "type": "number"
+                        },
+                        "profile": {
+                          "type": {
+                            "literal": "equator-extension-descriptor/1"
+                          }
+                        },
+                        "syntax": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "ascii-token"
+                              },
+                              {
+                                "literal": "lower-kebab"
+                              },
+                              {
+                                "literal": "unicode-token"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "object": {
+                        "fingerprint": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "kind": {
+                          "type": {
+                            "literal": "message-function"
+                          }
+                        },
+                        "maximumOutputLength": {
+                          "type": "number"
+                        },
+                        "operandType": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "boolean"
+                              },
+                              {
+                                "literal": "date-time"
+                              },
+                              {
+                                "literal": "integer"
+                              },
+                              {
+                                "literal": "number"
+                              },
+                              {
+                                "literal": "string"
+                              }
+                            ]
+                          }
+                        },
+                        "options": {
+                          "optional": true,
+                          "type": {
+                            "object": {},
+                            "index": {
+                              "object": {
+                                "required": {
+                                  "optional": true,
+                                  "type": "boolean"
+                                },
+                                "type": {
+                                  "type": {
+                                    "union": [
+                                      {
+                                        "literal": "boolean"
+                                      },
+                                      {
+                                        "literal": "date-time"
+                                      },
+                                      {
+                                        "literal": "integer"
+                                      },
+                                      {
+                                        "literal": "number"
+                                      },
+                                      {
+                                        "literal": "string"
+                                      }
+                                    ]
+                                  }
+                                },
+                                "values": {
+                                  "optional": true,
+                                  "type": {
+                                    "array": {
+                                      "union": ["boolean", "number", "string"]
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "profile": {
+                          "type": {
+                            "literal": "equator-extension-descriptor/1"
+                          }
+                        },
+                        "resultType": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "date-time"
+                              },
+                              {
+                                "literal": "number"
+                              },
+                              {
+                                "literal": "string"
+                              }
+                            ]
+                          }
+                        },
+                        "selector": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "exact"
+                              },
+                              {
+                                "literal": "none"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "object": {
+                        "fingerprint": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "kind": {
+                          "type": {
+                            "literal": "parsing-adapter"
+                          }
+                        },
+                        "maximumInputLength": {
+                          "type": "number"
+                        },
+                        "outputType": {
+                          "type": "string"
+                        },
+                        "profile": {
+                          "type": {
+                            "literal": "equator-extension-descriptor/1"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "formatting": {
+              "optional": true,
+              "type": {
+                "object": {},
+                "index": {
+                  "object": {
+                    "calendar": {
+                      "optional": true,
+                      "type": "string"
+                    },
+                    "hourCycle": {
+                      "optional": true,
+                      "type": {
+                        "union": [
+                          {
+                            "literal": "h11"
+                          },
+                          {
+                            "literal": "h12"
+                          },
+                          {
+                            "literal": "h23"
+                          },
+                          {
+                            "literal": "h24"
+                          }
+                        ]
+                      }
+                    },
+                    "numberingSystem": {
+                      "optional": true,
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "generatedAbi": {
+              "type": {
+                "literal": "equator-generated/1"
+              }
+            },
+            "localeFallbacks": {
+              "optional": true,
+              "type": {
+                "object": {},
+                "index": {
+                  "array": "string"
+                }
+              }
+            },
+            "localeNames": {
+              "optional": true,
+              "type": {
+                "object": {},
+                "index": "string"
+              }
+            },
+            "locales": {
+              "type": {
+                "array": "string"
+              }
+            },
+            "pseudoLocales": {
+              "optional": true,
+              "type": {
+                "array": "string"
+              }
+            },
+            "scopes": {
+              "type": {
+                "array": {
+                  "object": {
+                    "applicationContractFingerprint": {
+                      "type": "string"
+                    },
+                    "providerId": {
+                      "type": "string"
+                    },
+                    "requiredExtensions": {
+                      "type": {
+                        "array": {
+                          "union": [
+                            {
+                              "object": {
+                                "fingerprint": {
+                                  "type": "string"
+                                },
+                                "id": {
+                                  "type": "string"
+                                },
+                                "inputType": {
+                                  "type": "string"
+                                },
+                                "kind": {
+                                  "type": {
+                                    "literal": "formatting-adapter"
+                                  }
+                                },
+                                "maximumOutputLength": {
+                                  "type": "number"
+                                },
+                                "profile": {
+                                  "type": {
+                                    "literal": "equator-extension-descriptor/1"
+                                  }
+                                },
+                                "result": {
+                                  "type": {
+                                    "union": [
+                                      {
+                                        "literal": "parts"
+                                      },
+                                      {
+                                        "literal": "text"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "object": {
+                                "fingerprint": {
+                                  "type": "string"
+                                },
+                                "id": {
+                                  "type": "string"
+                                },
+                                "interactive": {
+                                  "type": "boolean"
+                                },
+                                "kind": {
+                                  "type": {
+                                    "literal": "rich-slot-kind"
+                                  }
+                                },
+                                "options": {
+                                  "optional": true,
+                                  "type": {
+                                    "object": {},
+                                    "index": {
+                                      "array": "string"
+                                    }
+                                  }
+                                },
+                                "profile": {
+                                  "type": {
+                                    "literal": "equator-extension-descriptor/1"
+                                  }
+                                },
+                                "shape": {
+                                  "type": {
+                                    "union": [
+                                      {
+                                        "literal": "paired"
+                                      },
+                                      {
+                                        "literal": "standalone"
+                                      }
+                                    ]
+                                  }
+                                },
+                                "textProjection": {
+                                  "type": {
+                                    "union": [
+                                      {
+                                        "literal": "binding-required"
+                                      },
+                                      {
+                                        "literal": "children"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "object": {
+                                "fingerprint": {
+                                  "type": "string"
+                                },
+                                "id": {
+                                  "type": "string"
+                                },
+                                "kind": {
+                                  "type": {
+                                    "literal": "identifier-segment"
+                                  }
+                                },
+                                "maximumLength": {
+                                  "type": "number"
+                                },
+                                "profile": {
+                                  "type": {
+                                    "literal": "equator-extension-descriptor/1"
+                                  }
+                                },
+                                "syntax": {
+                                  "type": {
+                                    "union": [
+                                      {
+                                        "literal": "ascii-token"
+                                      },
+                                      {
+                                        "literal": "lower-kebab"
+                                      },
+                                      {
+                                        "literal": "unicode-token"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "object": {
+                                "fingerprint": {
+                                  "type": "string"
+                                },
+                                "id": {
+                                  "type": "string"
+                                },
+                                "kind": {
+                                  "type": {
+                                    "literal": "message-function"
+                                  }
+                                },
+                                "maximumOutputLength": {
+                                  "type": "number"
+                                },
+                                "operandType": {
+                                  "type": {
+                                    "union": [
+                                      {
+                                        "literal": "boolean"
+                                      },
+                                      {
+                                        "literal": "date-time"
+                                      },
+                                      {
+                                        "literal": "integer"
+                                      },
+                                      {
+                                        "literal": "number"
+                                      },
+                                      {
+                                        "literal": "string"
+                                      }
+                                    ]
+                                  }
+                                },
+                                "options": {
+                                  "optional": true,
+                                  "type": {
+                                    "object": {},
+                                    "index": {
+                                      "object": {
+                                        "required": {
+                                          "optional": true,
+                                          "type": "boolean"
+                                        },
+                                        "type": {
+                                          "type": {
+                                            "union": [
+                                              {
+                                                "literal": "boolean"
+                                              },
+                                              {
+                                                "literal": "date-time"
+                                              },
+                                              {
+                                                "literal": "integer"
+                                              },
+                                              {
+                                                "literal": "number"
+                                              },
+                                              {
+                                                "literal": "string"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "values": {
+                                          "optional": true,
+                                          "type": {
+                                            "array": {
+                                              "union": [
+                                                "boolean",
+                                                "number",
+                                                "string"
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "profile": {
+                                  "type": {
+                                    "literal": "equator-extension-descriptor/1"
+                                  }
+                                },
+                                "resultType": {
+                                  "type": {
+                                    "union": [
+                                      {
+                                        "literal": "date-time"
+                                      },
+                                      {
+                                        "literal": "number"
+                                      },
+                                      {
+                                        "literal": "string"
+                                      }
+                                    ]
+                                  }
+                                },
+                                "selector": {
+                                  "type": {
+                                    "union": [
+                                      {
+                                        "literal": "exact"
+                                      },
+                                      {
+                                        "literal": "none"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "object": {
+                                "fingerprint": {
+                                  "type": "string"
+                                },
+                                "id": {
+                                  "type": "string"
+                                },
+                                "kind": {
+                                  "type": {
+                                    "literal": "parsing-adapter"
+                                  }
+                                },
+                                "maximumInputLength": {
+                                  "type": "number"
+                                },
+                                "outputType": {
+                                  "type": "string"
+                                },
+                                "profile": {
+                                  "type": {
+                                    "literal": "equator-extension-descriptor/1"
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "scopeId": {
+                      "type": "string"
+                    },
+                    "semanticRegistryFingerprint": {
+                      "type": "string"
+                    },
+                    "startup": {
+                      "optional": true,
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            },
+            "semanticRegistryFingerprint": {
+              "type": "string"
+            },
+            "sourceLocale": {
+              "type": "string"
+            }
+          }
+        },
+        "dist/runtime/types/neolorn-equator-core.d.ts#MessageHandle": {
+          "object": {
+            "__contract": {
+              "optional": true,
+              "type": {
+                "object": {
+                  "inputs": {
+                    "type": "unknown"
+                  },
+                  "resultKind": {
+                    "type": {
+                      "union": [
+                        {
+                          "literal": "plain"
+                        },
+                        {
+                          "literal": "structured"
+                        }
+                      ]
+                    }
+                  },
+                  "slots": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "generatedAbi": {
+              "type": {
+                "literal": "equator-generated/1"
+              }
+            },
+            "identity": {
+              "type": "string"
+            },
+            "inputNames": {
+              "type": {
+                "array": "string"
+              }
+            },
+            "messageId": {
+              "type": "string"
+            },
+            "providerId": {
+              "type": "string"
+            },
+            "resultKind": {
+              "type": {
+                "union": [
+                  {
+                    "literal": "plain"
+                  },
+                  {
+                    "literal": "structured"
+                  }
+                ]
+              }
+            },
+            "scopeId": {
+              "type": "string"
+            },
+            "slotNames": {
+              "type": {
+                "array": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "equator-route-projection/1": {
+      "readers": "open",
+      "declarations": {
+        "dist/runtime/types/neolorn-equator-core.d.ts#GeneratedRouteProjection": {
+          "object": {
+            "identity": {
+              "type": "string"
+            },
+            "profile": {
+              "type": {
+                "literal": "equator-route-projection/1"
+              }
+            },
+            "routes": {
+              "type": {
+                "array": {
+                  "object": {
+                    "caching": {
+                      "optional": true,
+                      "type": {
+                        "union": [
+                          {
+                            "literal": "not-stored"
+                          },
+                          {
+                            "literal": "per-visitor"
+                          }
+                        ]
+                      }
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "indexing": {
+                      "optional": true,
+                      "type": {
+                        "union": [
+                          {
+                            "literal": "indexable"
+                          },
+                          {
+                            "literal": "non-indexable"
+                          },
+                          {
+                            "literal": "private"
+                          }
+                        ]
+                      }
+                    },
+                    "parameterNames": {
+                      "type": {
+                        "array": "string"
+                      }
+                    },
+                    "path": {
+                      "type": "string"
+                    },
+                    "scopes": {
+                      "optional": true,
+                      "type": {
+                        "array": {
+                          "object": {
+                            "providerId": {
+                              "type": "string"
+                            },
+                            "scopeId": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "sitemap": {
+                      "optional": true,
+                      "type": {
+                        "object": {
+                          "changefreq": {
+                            "optional": true,
+                            "type": {
+                              "union": [
+                                {
+                                  "literal": "always"
+                                },
+                                {
+                                  "literal": "daily"
+                                },
+                                {
+                                  "literal": "hourly"
+                                },
+                                {
+                                  "literal": "monthly"
+                                },
+                                {
+                                  "literal": "never"
+                                },
+                                {
+                                  "literal": "weekly"
+                                },
+                                {
+                                  "literal": "yearly"
+                                }
+                              ]
+                            }
+                          },
+                          "lastmod": {
+                            "optional": true,
+                            "type": "string"
+                          },
+                          "priority": {
+                            "optional": true,
+                            "type": "number"
+                          }
+                        }
+                      }
+                    },
+                    "sourcePath": {
+                      "optional": true,
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "equator-extension-descriptor/1": {
+      "readers": "closed",
+      "declarations": {
+        "dist/toolkit/extensions.d.ts#ExtensionDescriptor": {
+          "union": [
+            {
+              "object": {
+                "fingerprint": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "inputType": {
+                  "type": "string"
+                },
+                "kind": {
+                  "type": {
+                    "literal": "formatting-adapter"
+                  }
+                },
+                "maximumOutputLength": {
+                  "type": "number"
+                },
+                "profile": {
+                  "type": {
+                    "literal": "equator-extension-descriptor/1"
+                  }
+                },
+                "result": {
+                  "type": {
+                    "union": [
+                      {
+                        "literal": "parts"
+                      },
+                      {
+                        "literal": "text"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "object": {
+                "fingerprint": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "interactive": {
+                  "type": "boolean"
+                },
+                "kind": {
+                  "type": {
+                    "literal": "rich-slot-kind"
+                  }
+                },
+                "options": {
+                  "optional": true,
+                  "type": {
+                    "object": {},
+                    "index": {
+                      "array": "string"
+                    }
+                  }
+                },
+                "profile": {
+                  "type": {
+                    "literal": "equator-extension-descriptor/1"
+                  }
+                },
+                "shape": {
+                  "type": {
+                    "union": [
+                      {
+                        "literal": "paired"
+                      },
+                      {
+                        "literal": "standalone"
+                      }
+                    ]
+                  }
+                },
+                "textProjection": {
+                  "type": {
+                    "union": [
+                      {
+                        "literal": "binding-required"
+                      },
+                      {
+                        "literal": "children"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "object": {
+                "fingerprint": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "kind": {
+                  "type": {
+                    "literal": "identifier-segment"
+                  }
+                },
+                "maximumLength": {
+                  "type": "number"
+                },
+                "profile": {
+                  "type": {
+                    "literal": "equator-extension-descriptor/1"
+                  }
+                },
+                "syntax": {
+                  "type": {
+                    "union": [
+                      {
+                        "literal": "ascii-token"
+                      },
+                      {
+                        "literal": "lower-kebab"
+                      },
+                      {
+                        "literal": "unicode-token"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "object": {
+                "fingerprint": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "kind": {
+                  "type": {
+                    "literal": "message-function"
+                  }
+                },
+                "maximumOutputLength": {
+                  "type": "number"
+                },
+                "operandType": {
+                  "type": {
+                    "union": [
+                      {
+                        "literal": "boolean"
+                      },
+                      {
+                        "literal": "date-time"
+                      },
+                      {
+                        "literal": "integer"
+                      },
+                      {
+                        "literal": "number"
+                      },
+                      {
+                        "literal": "string"
+                      }
+                    ]
+                  }
+                },
+                "options": {
+                  "optional": true,
+                  "type": {
+                    "object": {},
+                    "index": {
+                      "object": {
+                        "required": {
+                          "optional": true,
+                          "type": "boolean"
+                        },
+                        "type": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "boolean"
+                              },
+                              {
+                                "literal": "date-time"
+                              },
+                              {
+                                "literal": "integer"
+                              },
+                              {
+                                "literal": "number"
+                              },
+                              {
+                                "literal": "string"
+                              }
+                            ]
+                          }
+                        },
+                        "values": {
+                          "optional": true,
+                          "type": {
+                            "array": {
+                              "union": ["boolean", "number", "string"]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "profile": {
+                  "type": {
+                    "literal": "equator-extension-descriptor/1"
+                  }
+                },
+                "resultType": {
+                  "type": {
+                    "union": [
+                      {
+                        "literal": "date-time"
+                      },
+                      {
+                        "literal": "number"
+                      },
+                      {
+                        "literal": "string"
+                      }
+                    ]
+                  }
+                },
+                "selector": {
+                  "type": {
+                    "union": [
+                      {
+                        "literal": "exact"
+                      },
+                      {
+                        "literal": "none"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "object": {
+                "fingerprint": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "kind": {
+                  "type": {
+                    "literal": "parsing-adapter"
+                  }
+                },
+                "maximumInputLength": {
+                  "type": "number"
+                },
+                "outputType": {
+                  "type": "string"
+                },
+                "profile": {
+                  "type": {
+                    "literal": "equator-extension-descriptor/1"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "dist/runtime/types/neolorn-equator-core.d.ts#RuntimeExtensionDescriptor": {
+          "union": [
+            {
+              "object": {
+                "fingerprint": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "inputType": {
+                  "type": "string"
+                },
+                "kind": {
+                  "type": {
+                    "literal": "formatting-adapter"
+                  }
+                },
+                "maximumOutputLength": {
+                  "type": "number"
+                },
+                "profile": {
+                  "type": {
+                    "literal": "equator-extension-descriptor/1"
+                  }
+                },
+                "result": {
+                  "type": {
+                    "union": [
+                      {
+                        "literal": "parts"
+                      },
+                      {
+                        "literal": "text"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "object": {
+                "fingerprint": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "interactive": {
+                  "type": "boolean"
+                },
+                "kind": {
+                  "type": {
+                    "literal": "rich-slot-kind"
+                  }
+                },
+                "options": {
+                  "optional": true,
+                  "type": {
+                    "object": {},
+                    "index": {
+                      "array": "string"
+                    }
+                  }
+                },
+                "profile": {
+                  "type": {
+                    "literal": "equator-extension-descriptor/1"
+                  }
+                },
+                "shape": {
+                  "type": {
+                    "union": [
+                      {
+                        "literal": "paired"
+                      },
+                      {
+                        "literal": "standalone"
+                      }
+                    ]
+                  }
+                },
+                "textProjection": {
+                  "type": {
+                    "union": [
+                      {
+                        "literal": "binding-required"
+                      },
+                      {
+                        "literal": "children"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "object": {
+                "fingerprint": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "kind": {
+                  "type": {
+                    "literal": "identifier-segment"
+                  }
+                },
+                "maximumLength": {
+                  "type": "number"
+                },
+                "profile": {
+                  "type": {
+                    "literal": "equator-extension-descriptor/1"
+                  }
+                },
+                "syntax": {
+                  "type": {
+                    "union": [
+                      {
+                        "literal": "ascii-token"
+                      },
+                      {
+                        "literal": "lower-kebab"
+                      },
+                      {
+                        "literal": "unicode-token"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "object": {
+                "fingerprint": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "kind": {
+                  "type": {
+                    "literal": "message-function"
+                  }
+                },
+                "maximumOutputLength": {
+                  "type": "number"
+                },
+                "operandType": {
+                  "type": {
+                    "union": [
+                      {
+                        "literal": "boolean"
+                      },
+                      {
+                        "literal": "date-time"
+                      },
+                      {
+                        "literal": "integer"
+                      },
+                      {
+                        "literal": "number"
+                      },
+                      {
+                        "literal": "string"
+                      }
+                    ]
+                  }
+                },
+                "options": {
+                  "optional": true,
+                  "type": {
+                    "object": {},
+                    "index": {
+                      "object": {
+                        "required": {
+                          "optional": true,
+                          "type": "boolean"
+                        },
+                        "type": {
+                          "type": {
+                            "union": [
+                              {
+                                "literal": "boolean"
+                              },
+                              {
+                                "literal": "date-time"
+                              },
+                              {
+                                "literal": "integer"
+                              },
+                              {
+                                "literal": "number"
+                              },
+                              {
+                                "literal": "string"
+                              }
+                            ]
+                          }
+                        },
+                        "values": {
+                          "optional": true,
+                          "type": {
+                            "array": {
+                              "union": ["boolean", "number", "string"]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "profile": {
+                  "type": {
+                    "literal": "equator-extension-descriptor/1"
+                  }
+                },
+                "resultType": {
+                  "type": {
+                    "union": [
+                      {
+                        "literal": "date-time"
+                      },
+                      {
+                        "literal": "number"
+                      },
+                      {
+                        "literal": "string"
+                      }
+                    ]
+                  }
+                },
+                "selector": {
+                  "type": {
+                    "union": [
+                      {
+                        "literal": "exact"
+                      },
+                      {
+                        "literal": "none"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "object": {
+                "fingerprint": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "kind": {
+                  "type": {
+                    "literal": "parsing-adapter"
+                  }
+                },
+                "maximumInputLength": {
+                  "type": "number"
+                },
+                "outputType": {
+                  "type": "string"
+                },
+                "profile": {
+                  "type": {
+                    "literal": "equator-extension-descriptor/1"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "equator-extension-registry/1": {
+      "readers": "closed",
+      "schemas": {
+        "dist/toolkit/schemas/extension-registry.v1.schema.json": "sha256--R-MZ80vuRlXl-0FqXasIQcphTrztWCBBWTMpcYEav8"
+      }
+    },
+    "equator-runtime-observability-event/1": {
+      "readers": "closed",
+      "declarations": {
+        "dist/runtime/types/neolorn-equator.d.ts#LocalizationObservabilityEvent": {
+          "object": {
+            "code": {
+              "type": {
+                "open": [
+                  "EQ-E2001",
+                  "EQ-E2002",
+                  "EQ-E2003",
+                  "EQ-E2004",
+                  "EQ-E2005",
+                  "EQ-E2006",
+                  "EQ-E2007",
+                  "EQ-E2008"
+                ]
+              }
+            },
+            "correlationId": {
+              "optional": true,
+              "type": "string"
+            },
+            "count": {
+              "optional": true,
+              "type": "number"
+            },
+            "durationMilliseconds": {
+              "optional": true,
+              "type": "number"
+            },
+            "participantId": {
+              "optional": true,
+              "type": "string"
+            },
+            "phase": {
+              "type": {
+                "union": [
+                  {
+                    "literal": "cache"
+                  },
+                  {
+                    "literal": "catalog"
+                  },
+                  {
+                    "literal": "formatting"
+                  },
+                  {
+                    "literal": "initialization"
+                  },
+                  {
+                    "literal": "integration"
+                  },
+                  {
+                    "literal": "persistence"
+                  },
+                  {
+                    "literal": "ssr-hydration"
+                  },
+                  {
+                    "literal": "transition"
+                  }
+                ]
+              }
+            },
+            "profile": {
+              "type": {
+                "literal": "equator-runtime-observability-event/1"
+              }
+            },
+            "providerId": {
+              "optional": true,
+              "type": "string"
+            },
+            "reason": {
+              "optional": true,
+              "type": {
+                "union": [
+                  {
+                    "literal": "cancelled"
+                  },
+                  {
+                    "literal": "catalog-admission-failed"
+                  },
+                  {
+                    "literal": "catalog-load-failed"
+                  },
+                  {
+                    "literal": "disposed"
+                  },
+                  {
+                    "literal": "effect-failed"
+                  },
+                  {
+                    "literal": "internal-invariant"
+                  },
+                  {
+                    "literal": "invalid-configuration"
+                  },
+                  {
+                    "literal": "invalid-localized-input"
+                  },
+                  {
+                    "literal": "invalid-message-input"
+                  },
+                  {
+                    "literal": "invalid-rich-message"
+                  },
+                  {
+                    "literal": "message-unavailable"
+                  },
+                  {
+                    "literal": "participant-contract-rejected"
+                  },
+                  {
+                    "literal": "participant-failed"
+                  },
+                  {
+                    "literal": "participant-timeout"
+                  },
+                  {
+                    "literal": "participant-unavailable"
+                  },
+                  {
+                    "literal": "route-unavailable"
+                  },
+                  {
+                    "literal": "scope-unavailable"
+                  },
+                  {
+                    "literal": "superseded"
+                  },
+                  {
+                    "literal": "unknown-presentation-code"
+                  },
+                  {
+                    "literal": "unsafe-route"
+                  },
+                  {
+                    "literal": "unsupported-formatting-capability"
+                  },
+                  {
+                    "literal": "unsupported-input-capability"
+                  },
+                  {
+                    "literal": "unsupported-locale"
+                  }
+                ]
+              }
+            },
+            "scopeId": {
+              "optional": true,
+              "type": "string"
+            },
+            "snapshotId": {
+              "optional": true,
+              "type": "number"
+            },
+            "status": {
+              "type": {
+                "union": [
+                  {
+                    "literal": "cancelled"
+                  },
+                  {
+                    "literal": "failed"
+                  },
+                  {
+                    "literal": "recovered"
+                  },
+                  {
+                    "literal": "redirected"
+                  },
+                  {
+                    "literal": "started"
+                  },
+                  {
+                    "literal": "succeeded"
+                  },
+                  {
+                    "literal": "superseded"
+                  },
+                  {
+                    "literal": "unavailable"
+                  }
+                ]
+              }
+            },
+            "supplyingLocale": {
+              "optional": true,
+              "type": "string"
+            },
+            "targetLocale": {
+              "optional": true,
+              "type": "string"
+            },
+            "transitionId": {
+              "optional": true,
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "equator-toolkit-observability-event/1": {
+      "readers": "closed",
+      "declarations": {
+        "dist/toolkit/observability.d.ts#ToolkitObservabilityEvent": {
+          "object": {
+            "code": {
+              "type": {
+                "open": ["EQ-E1001", "EQ-E1002", "EQ-E1003"]
+              }
+            },
+            "count": {
+              "optional": true,
+              "type": "number"
+            },
+            "diagnosticCode": {
+              "optional": true,
+              "type": {
+                "open": [
+                  "EQ1001",
+                  "EQ1002",
+                  "EQ1003",
+                  "EQ1004",
+                  "EQ1005",
+                  "EQ1006",
+                  "EQ1007",
+                  "EQ1008",
+                  "EQ1101",
+                  "EQ1102",
+                  "EQ1103",
+                  "EQ1104",
+                  "EQ1105",
+                  "EQ1201",
+                  "EQ1202",
+                  "EQ1203",
+                  "EQ1204",
+                  "EQ1205",
+                  "EQ1206",
+                  "EQ1301",
+                  "EQ1302",
+                  "EQ1303",
+                  "EQ1304",
+                  "EQ1305",
+                  "EQ1306",
+                  "EQ1307",
+                  "EQ1308",
+                  "EQ1309",
+                  "EQ1310",
+                  "EQ1311",
+                  "EQ1401",
+                  "EQ1402",
+                  "EQ1403",
+                  "EQ1404",
+                  "EQ1405",
+                  "EQ1406",
+                  "EQ1407",
+                  "EQ1408",
+                  "EQ1409",
+                  "EQ1410",
+                  "EQ1411",
+                  "EQ1412",
+                  "EQ1413",
+                  "EQ1414",
+                  "EQ1415",
+                  "EQ1416",
+                  "EQ1417",
+                  "EQ1501",
+                  "EQ1502",
+                  "EQ1503",
+                  "EQ1601",
+                  "EQ1602",
+                  "EQ1603",
+                  "EQ1701",
+                  "EQ1702",
+                  "EQ1703",
+                  "EQ1704",
+                  "EQ1705",
+                  "EQ1706",
+                  "EQ1801",
+                  "EQ1802",
+                  "EQ1803",
+                  "EQ1804",
+                  "EQ1805",
+                  "EQ1806"
+                ]
+              }
+            },
+            "durationMilliseconds": {
+              "optional": true,
+              "type": "number"
+            },
+            "locale": {
+              "optional": true,
+              "type": "string"
+            },
+            "operationId": {
+              "optional": true,
+              "type": "string"
+            },
+            "phase": {
+              "type": {
+                "union": [
+                  {
+                    "literal": "analysis"
+                  },
+                  {
+                    "literal": "catalog"
+                  },
+                  {
+                    "literal": "compilation"
+                  },
+                  {
+                    "literal": "configuration"
+                  },
+                  {
+                    "literal": "generation"
+                  },
+                  {
+                    "literal": "integration"
+                  },
+                  {
+                    "literal": "interchange"
+                  },
+                  {
+                    "literal": "migration"
+                  }
+                ]
+              }
+            },
+            "profile": {
+              "type": {
+                "literal": "equator-toolkit-observability-event/1"
+              }
+            },
+            "providerId": {
+              "optional": true,
+              "type": "string"
+            },
+            "scopeId": {
+              "optional": true,
+              "type": "string"
+            },
+            "status": {
+              "type": {
+                "union": [
+                  {
+                    "literal": "failed"
+                  },
+                  {
+                    "literal": "started"
+                  },
+                  {
+                    "literal": "succeeded"
+                  },
+                  {
+                    "literal": "unchanged"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "equator-compiler-state/1": {
+      "readers": "closed",
+      "declarations": {
+        "dist/toolkit/compiler.d.ts#CompilerState": {
+          "object": {
+            "inputFingerprint": {
+              "type": "string"
+            },
+            "inputs": {
+              "type": {
+                "array": {
+                  "object": {
+                    "digest": {
+                      "type": "string"
+                    },
+                    "identity": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "outputPlanDigest": {
+              "type": "string"
+            },
+            "profile": {
+              "type": {
+                "literal": "equator-compiler-state/1"
+              }
+            }
+          }
+        }
+      }
+    },
+    "equator-compiler-cache/1": {
+      "readers": "closed",
+      "declarations": {
+        "dist/toolkit/project-host.d.ts#CompilerCacheEnvelope": {
+          "object": {
+            "ownerId": {
+              "type": "string"
+            },
+            "profile": {
+              "type": {
+                "literal": "equator-compiler-cache/1"
+              }
+            },
+            "state": {
+              "type": {
+                "object": {
+                  "inputFingerprint": {
+                    "type": "string"
+                  },
+                  "inputs": {
+                    "type": {
+                      "array": {
+                        "object": {
+                          "digest": {
+                            "type": "string"
+                          },
+                          "identity": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "outputPlanDigest": {
+                    "type": "string"
+                  },
+                  "profile": {
+                    "type": {
+                      "literal": "equator-compiler-state/1"
+                    }
+                  }
+                }
+              }
+            },
+            "stateDigest": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "equator-output-transaction/1": {
+      "readers": "open",
+      "declarations": {
+        "dist/toolkit/output-host.d.ts#TransactionJournal": {
+          "object": {
+            "operations": {
+              "type": {
+                "array": {
+                  "object": {
+                    "backup": {
+                      "type": "string"
+                    },
+                    "hadOriginal": {
+                      "type": "boolean"
+                    },
+                    "path": {
+                      "type": "string"
+                    },
+                    "temporary": {
+                      "optional": true,
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "ownerId": {
+              "type": "string"
+            },
+            "profile": {
+              "type": {
+                "literal": "equator-output-transaction/1"
+              }
+            }
+          }
+        }
+      }
+    },
+    "equator-work-owner/1": {
+      "readers": "closed",
+      "declarations": {
+        "dist/toolkit/output-host.d.ts#WorkOwnerMarker": {
+          "object": {
+            "ownerId": {
+              "type": "string"
+            },
+            "profile": {
+              "type": {
+                "literal": "equator-work-owner/1"
+              }
+            }
+          }
+        }
+      }
+    },
+    "equator-completion-manifest/1": {
+      "readers": "closed",
+      "declarations": {
+        "dist/toolkit/output-plan.d.ts#CompletionManifest": {
+          "object": {
+            "files": {
+              "type": {
+                "array": {
+                  "object": {
+                    "bytes": {
+                      "type": "number"
+                    },
+                    "digest": {
+                      "type": "string"
+                    },
+                    "path": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "ownerId": {
+              "type": "string"
+            },
+            "planDigest": {
+              "type": "string"
+            },
+            "profile": {
+              "type": {
+                "literal": "equator-completion-manifest/1"
+              }
+            }
+          }
+        }
+      }
+    },
+    "equator-authored-change-plan/1": {
+      "readers": "closed",
+      "declarations": {
+        "dist/toolkit/authoring-transaction.d.ts#AuthoredChangePlan": {
+          "object": {
+            "changes": {
+              "type": {
+                "array": {
+                  "object": {
+                    "after": {
+                      "optional": true,
+                      "type": "string"
+                    },
+                    "afterDigest": {
+                      "optional": true,
+                      "type": "string"
+                    },
+                    "before": {
+                      "optional": true,
+                      "type": "string"
+                    },
+                    "beforeDigest": {
+                      "optional": true,
+                      "type": "string"
+                    },
+                    "path": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "digest": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "kind": {
+              "type": {
+                "union": [
+                  {
+                    "literal": "migration"
+                  },
+                  {
+                    "literal": "refactor"
+                  }
+                ]
+              }
+            },
+            "profile": {
+              "type": {
+                "literal": "equator-authored-change-plan/1"
+              }
+            },
+            "regenerate": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "equator-semantic-catalog-diff/1": {
+      "readers": "closed",
+      "declarations": {
+        "dist/toolkit/catalog-diff.d.ts#CatalogDiff": {
+          "object": {
+            "digest": {
+              "type": "string"
+            },
+            "entries": {
+              "type": {
+                "array": {
+                  "object": {
+                    "afterFingerprint": {
+                      "optional": true,
+                      "type": "string"
+                    },
+                    "beforeFingerprint": {
+                      "optional": true,
+                      "type": "string"
+                    },
+                    "identity": {
+                      "type": "string"
+                    },
+                    "kind": {
+                      "type": {
+                        "union": [
+                          {
+                            "literal": "added"
+                          },
+                          {
+                            "literal": "fallback-impact"
+                          },
+                          {
+                            "literal": "identity-contract-changed"
+                          },
+                          {
+                            "literal": "removed"
+                          },
+                          {
+                            "literal": "source-changed"
+                          },
+                          {
+                            "literal": "stale-source"
+                          },
+                          {
+                            "literal": "translation-changed"
+                          }
+                        ]
+                      }
+                    },
+                    "locale": {
+                      "optional": true,
+                      "type": "string"
+                    },
+                    "previousIdentity": {
+                      "optional": true,
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "profile": {
+              "type": {
+                "literal": "equator-semantic-catalog-diff/1"
+              }
+            }
+          }
+        }
+      }
+    },
+    "equator-translation-state/1": {
+      "readers": "closed",
+      "declarations": {
+        "dist/toolkit/translation-state.d.ts#TranslationState": {
+          "object": {
+            "entries": {
+              "type": {
+                "object": {},
+                "index": {
+                  "object": {
+                    "source": {
+                      "type": "string"
+                    },
+                    "target": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "profile": {
+              "type": {
+                "literal": "equator-translation-state/1"
+              }
+            }
+          }
+        }
+      }
+    },
+    "equator-xliff-2.2/1": {
+      "readers": "closed",
+      "declarations": {
+        "dist/toolkit/xliff.d.ts#XliffUnitContract": {
+          "object": {
+            "identity": {
+              "type": "string"
+            },
+            "messageId": {
+              "type": "string"
+            },
+            "profile": {
+              "type": {
+                "literal": "equator-xliff-2.2/1"
+              }
+            },
+            "representation": {
+              "type": {
+                "union": [
+                  {
+                    "literal": "flat"
+                  },
+                  {
+                    "literal": "inline"
+                  }
+                ]
+              }
+            },
+            "sourceFingerprint": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "equator-cli-result/1": {
+      "readers": "closed",
+      "schemas": {
+        "dist/toolkit/schemas/cli-result.v1.schema.json": "sha256-uDRE-S1G9Rvs8iemWgP4WoWf_P79VMGizNQTkXIbQ8s"
+      }
+    },
+    "equator-cli-watch-event/1": {
+      "readers": "closed",
+      "schemas": {
+        "dist/toolkit/schemas/cli-watch-event.v1.schema.json": "sha256-DEvMcWGaNe-EYdgNDxaV53kw_yLyKTnVC6B8-lmPdXM"
+      }
+    },
+    "configuration schemaVersion 1": {
+      "readers": "closed",
+      "schemas": {
+        "dist/toolkit/schemas/configuration.v1.schema.json": "sha256-Pl9JcF6_pi2w1Zu2vSMKR2KgDA4zjY9Ee4tfXNqyh7Q"
+      }
+    }
+  }
+}

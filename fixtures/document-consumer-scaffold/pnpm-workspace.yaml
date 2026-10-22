@@ -1,0 +1,13 @@
+# The length pnpm gives a folder under node_modules/.pnpm, which is 120 by default and 60 on
+# Windows. The folder of a package installed from a path is named in the source maps a
+# production build writes, and the debug id written into each script is a hash of its source map,
+# so without one length the same code built on two hosts differs in that id and in its compressed
+# size. One length on every host keeps the built files the same, and 60 is the length Windows
+# already uses.
+virtualStoreDirMaxLength: 60
+
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true
+  lmdb: true
+  msgpackr-extract: true

@@ -1,0 +1,26 @@
+{
+  "released": [
+    "configuration schemaVersion 1",
+    "equator-authored-change-plan/1",
+    "equator-catalog-set/1",
+    "equator-cli-result/1",
+    "equator-cli-watch-event/1",
+    "equator-compiled-catalog/1",
+    "equator-compiled-ir/1",
+    "equator-compiler-cache/1",
+    "equator-compiler-state/1",
+    "equator-completion-manifest/1",
+    "equator-extension-descriptor/1",
+    "equator-extension-registry/1",
+    "equator-generated/1",
+    "equator-output-transaction/1",
+    "equator-resource-summary/1",
+    "equator-route-projection/1",
+    "equator-runtime-observability-event/1",
+    "equator-semantic-catalog-diff/1",
+    "equator-toolkit-observability-event/1",
+    "equator-translation-state/1",
+    "equator-work-owner/1",
+    "equator-xliff-2.2/1"
+  ]
+}

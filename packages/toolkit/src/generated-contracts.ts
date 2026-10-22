@@ -1,0 +1,817 @@
+/**
+ * The typed surface a consumer's code sees, projected from the catalog rather than written.
+ *
+ * `specs/04-message-authoring-and-catalogs.spec.md` section 9 projects each dotted identity into a
+ * deep-readonly tree of opaque handles, and the input contract each handle carries is
+ * `specs/04-message-authoring-and-catalogs.spec.md` section 7. The projection is checked in both
+ * directions because a lower camel case name can be reached from more than one kebab-case part,
+ * so a collision is caught at compile time rather than when a consumer adds the second message.
+ */
+import {
+  toolkitDiagnostic,
+  toolkitFailure,
+  toolkitSuccess,
+  type ToolkitDiagnostic,
+  type ToolkitResult,
+} from './diagnostics.js';
+import { digestCanonicalJson } from './canonical-json.js';
+import { messagePartInCode } from './identities.js';
+import { localeEndonym, shippedFallbackChain } from './locales.js';
+import {
+  GENERATED_ABI_PROFILE,
+  recoveryRootRefusal,
+  type EffectiveInputContract,
+  type SemanticFamily,
+  type SemanticGraph,
+  type SemanticMessage,
+  type SemanticScope,
+} from './semantic-model.js';
+import { compareCodeUnit } from './sorted-records.js';
+
+export interface GeneratedContractFile {
+  readonly path: string;
+  readonly contents: string;
+}
+
+export interface GeneratedRouteProjection {
+  readonly id: string;
+  readonly path: string;
+  readonly parameterNames: readonly string[];
+  readonly indexing?: 'indexable' | 'non-indexable' | 'private';
+  /** Who may keep this route's pages, where the route declared it. */
+  readonly caching?: 'per-visitor' | 'not-stored';
+  /**
+   * What this route claims about itself in a sitemap.
+   *
+   * Absent for a route whose class the owner's sitemap declaration does not list, and absent for
+   * every route when the owner declared none. The two optional elements are a claim rather than a
+   * requirement, so an entry without them is a complete entry.
+   */
+  readonly sitemap?: {
+    readonly changefreq?: string;
+    readonly priority?: number;
+    readonly lastmod?: string;
+  };
+  /**
+   * The scopes this route must load before it renders.
+   *
+   * Only scopes the first render does not already carry: a route behind a lazy boundary downloads
+   * its code when it activates, and the messages that code uses have to arrive with it. Derived
+   * from the same analysis that decided which scopes are not startup scopes, so no application
+   * declares scopes per route, which is the whole reason deferring a scope is safe.
+   */
+  readonly scopes?: readonly {
+    readonly providerId: string;
+    readonly scopeId: string;
+  }[];
+  readonly sourcePath?: string;
+}
+
+export interface GenerateContractsOptions {
+  readonly routes?: readonly GeneratedRouteProjection[];
+  readonly recoveryMessageIdentities?: readonly string[];
+  /**
+   * Scopes whose messages the first render does not use.
+   *
+   * Derived from the route tree: a scope every one of whose uses sits behind a `loadComponent` or
+   * `loadChildren` boundary is not needed until that route activates, so loading it at startup
+   * would make first render pay for text nobody is looking at. Emitted into the generated
+   * configuration so the runtime can act on it without any application writing a list.
+   */
+  readonly deferredScopeIds?: readonly string[];
+  /**
+   * Which form of the ready-made provider to emit.
+   *
+   * `'implementation'` is the real one, generated into the owner's `#i18n`.
+   *
+   * `'declaration'` is what the provisional overlay carries while Equator analyses the application.
+   * The implementation imports `@angular/core` and the catalog set, loaders, and recovery payload;
+   * an overlay is not an Angular application and has no reason to synthesize those, and an owner
+   * that is a library has no `@angular/core` to resolve them against.
+   *
+   * Omitting it entirely would be wrong in a way nothing catches: an application composes the
+   * runtime by calling `provideLocalization` from `#i18n`, so an overlay without it reports that
+   * import as unresolved and makes every application look like one that composes nothing. A
+   * declaration resolves the import, carries the symbol detection resolves, and pulls in nothing.
+   */
+  readonly provider?: 'implementation' | 'declaration';
+}
+
+interface ProjectionNode {
+  message?: SemanticMessage;
+  readonly children: Map<string, ProjectionNode>;
+}
+
+function quote(value: string): string {
+  return JSON.stringify(value);
+}
+
+function inputBaseType(input: EffectiveInputContract): string {
+  if (input.enum !== undefined) {
+    return input.enum
+      .map((value) => JSON.stringify(value))
+      .sort(compareCodeUnit)
+      .join(' | ');
+  }
+  switch (input.type) {
+    case 'boolean':
+      return 'boolean';
+    case 'date-time':
+      return 'Date | number';
+    case 'integer':
+    case 'number':
+      return 'number';
+    case 'string':
+      return 'string';
+  }
+}
+
+function inputObjectType(inputs: readonly EffectiveInputContract[]): string {
+  if (inputs.length === 0) return 'Readonly<Record<never, never>>';
+  const properties = inputs.map((input) => {
+    const property = quote(input.name);
+    const optional = input.optional ? '?' : '';
+    const nullable = input.nullable ? ' | null' : '';
+    return `readonly ${property}${optional}: ${inputBaseType(input)}${nullable};`;
+  });
+  return `{ ${properties.join(' ')} }`;
+}
+
+function slotUnion(message: SemanticMessage): string {
+  if (message.slots.length === 0) return 'never';
+  return message.slots.map(({ name }) => quote(name)).join(' | ');
+}
+
+function handleExpression(message: SemanticMessage): string {
+  const identityType = quote(message.identity);
+  const inputsType = inputObjectType(message.inputs);
+  const slotsType = slotUnion(message);
+  const resultType = quote(message.resultKind);
+  return [
+    `defineMessageHandle<${identityType}, ${inputsType}, ${slotsType}, ${resultType}>({`,
+    `  generatedAbi: ${quote(GENERATED_ABI_PROFILE)},`,
+    `  providerId: ${quote(message.providerId)},`,
+    `  scopeId: ${quote(message.scopeId)},`,
+    `  messageId: ${quote(message.messageId)},`,
+    `  identity: ${quote(message.identity)},`,
+    `  resultKind: ${resultType},`,
+    `  inputNames: Object.freeze([${message.inputs.map(({ name }) => quote(name)).join(', ')}]),`,
+    `  slotNames: Object.freeze([${message.slots.map(({ name }) => quote(name)).join(', ')}]),`,
+    '})',
+  ].join('\n');
+}
+
+function messageReference(messageId: string): string {
+  return messageId
+    .split('.')
+    .map(messagePartInCode)
+    .reduce((value, part) => `${value}[${quote(part)}]`, 'messages');
+}
+
+function familyExpression(family: SemanticFamily): string {
+  const segmentType =
+    family.segments.length === 0
+      ? 'Readonly<Record<never, never>>'
+      : `{ ${family.segments
+          .map(({ name }) => `readonly ${quote(name)}: string;`)
+          .join(' ')} }`;
+  const handleType = family.members
+    .map(({ messageId }) => `typeof ${messageReference(messageId)}`)
+    .join(' | ');
+  const memberRows = family.members.map(({ messageId, segments }) => {
+    const key = JSON.stringify(
+      family.segments.map(({ name }) => segments[name] as string),
+    );
+    return `      ${quote(key)}: ${messageReference(messageId)},`;
+  });
+  const validation = family.segments
+    .map(
+      ({ name, syntax, maximumLength }) =>
+        `    if (!isFamilySegment(segments[${quote(name)}], ${quote(syntax)}, ${maximumLength})) return undefined;`,
+    )
+    .join('\n');
+  const keyValues = family.segments
+    .map(({ name }) => `segments[${quote(name)}]`)
+    .join(', ');
+  return [
+    `defineMessageFamily<${quote(family.name)}, ${segmentType}, ${handleType}>({`,
+    `  name: ${quote(family.name)},`,
+    `  template: ${quote(family.template)},`,
+    `  memberIds: Object.freeze([${family.members.map(({ messageId }) => quote(messageId)).join(', ')}]),`,
+    `  segmentNames: Object.freeze([${family.segments.map(({ name }) => quote(name)).join(', ')}]),`,
+    `  resolve(segments) {`,
+    `    if (!hasExactFamilySegments(segments, this.segmentNames)) return undefined;`,
+    validation,
+    `    const members = Object.freeze({`,
+    ...memberRows,
+    `    });`,
+    `    const key = JSON.stringify([${keyValues}]);`,
+    `    return Object.prototype.hasOwnProperty.call(members, key)`,
+    `      ? members[key as keyof typeof members]`,
+    `      : undefined;`,
+    `  },`,
+    `})`,
+  ]
+    .filter((line) => line.length > 0)
+    .join('\n');
+}
+
+function renderFamilies(scope: SemanticScope): string {
+  return [
+    'Object.freeze({',
+    ...scope.families.map(
+      (family) =>
+        `  ${quote(messagePartInCode(family.name))}: ${familyExpression(family)
+          .split('\n')
+          .map((line, index) => (index === 0 ? line : `  ${line}`))
+          .join('\n')},`,
+    ),
+    '})',
+  ].join('\n');
+}
+
+function renderProjectionNode(node: ProjectionNode): string {
+  const children = [...node.children.entries()].sort(([left], [right]) =>
+    compareCodeUnit(left, right),
+  );
+  if (children.length === 0) {
+    if (node.message === undefined) {
+      throw new TypeError(
+        'An empty Equator generated projection node is invalid.',
+      );
+    }
+    return handleExpression(node.message);
+  }
+
+  const childObject = [
+    '{',
+    ...children.map(
+      ([name, child]) =>
+        `  ${quote(name)}: ${renderProjectionNode(child)
+          .split('\n')
+          .map((line, index) => (index === 0 ? line : `  ${line}`))
+          .join('\n')},`,
+    ),
+    '}',
+  ].join('\n');
+  if (node.message === undefined) {
+    return `Object.freeze(${childObject})`;
+  }
+  return `Object.freeze(Object.assign(${handleExpression(node.message)}, ${childObject}))`;
+}
+
+function projectionTree(
+  scope: SemanticScope,
+  diagnostics: ToolkitDiagnostic[],
+): ProjectionNode {
+  const root: ProjectionNode = { children: new Map() };
+  const reverse = new Map<string, string>();
+  for (const message of scope.messages) {
+    const projected = message.messageId
+      .split('.')
+      .map(messagePartInCode)
+      .join('.');
+    const existing = reverse.get(projected);
+    if (existing !== undefined && existing !== message.messageId) {
+      diagnostics.push(
+        toolkitDiagnostic(
+          'EQ1305',
+          `Message identities ${JSON.stringify(existing)} and ${JSON.stringify(message.messageId)} collide at generated path ${JSON.stringify(projected)}.`,
+          { path: ['messages', message.messageId] },
+        ),
+      );
+      continue;
+    }
+    reverse.set(projected, message.messageId);
+    let node = root;
+    for (const part of message.messageId.split('.').map(messagePartInCode)) {
+      const child = node.children.get(part) ?? { children: new Map() };
+      node.children.set(part, child);
+      node = child;
+    }
+    if (node.message !== undefined) {
+      diagnostics.push(
+        toolkitDiagnostic(
+          'EQ1305',
+          `Generated message path ${JSON.stringify(projected)} is duplicated.`,
+          { path: ['messages', message.messageId] },
+        ),
+      );
+    } else {
+      node.message = message;
+    }
+  }
+  return root;
+}
+
+const handlePrelude = `declare const generatedMessageHandle: unique symbol;
+
+export interface GeneratedMessageHandle<
+  Identity extends string,
+  Inputs,
+  Slots extends string,
+  ResultKind extends 'plain' | 'structured',
+> {
+  readonly [generatedMessageHandle]: {
+    readonly identity: Identity;
+    readonly inputs: Inputs;
+    readonly slots: Slots;
+    readonly resultKind: ResultKind;
+  };
+  /** Type-only runtime inference contract; no corresponding value is emitted. */
+  readonly __contract?: {
+    readonly inputs: Inputs;
+    readonly slots: Slots;
+    readonly resultKind: ResultKind;
+  };
+  readonly generatedAbi: '${GENERATED_ABI_PROFILE}';
+  readonly providerId: string;
+  readonly scopeId: string;
+  readonly messageId: string;
+  readonly identity: Identity;
+  readonly resultKind: ResultKind;
+  readonly inputNames: readonly (keyof Inputs & string)[];
+  readonly slotNames: readonly Slots[];
+}
+
+function defineMessageHandle<
+  Identity extends string,
+  Inputs,
+  Slots extends string,
+  ResultKind extends 'plain' | 'structured',
+>(value: {
+  readonly generatedAbi: '${GENERATED_ABI_PROFILE}';
+  readonly providerId: string;
+  readonly scopeId: string;
+  readonly messageId: string;
+  readonly identity: Identity;
+  readonly resultKind: ResultKind;
+  readonly inputNames: readonly (keyof Inputs & string)[];
+  readonly slotNames: readonly Slots[];
+}): GeneratedMessageHandle<Identity, Inputs, Slots, ResultKind> {
+  return Object.freeze(value) as GeneratedMessageHandle<
+    Identity,
+    Inputs,
+    Slots,
+    ResultKind
+  >;
+}`;
+
+// Emitted only into a scope that declares a family. A scope without one reads none of this, and a
+// consumer compiling with `noUnusedLocals` is told its own build carries unread declarations in a
+// file it did not write and must not edit.
+const familyPrelude = `export interface GeneratedMessageFamily<
+  Name extends string,
+  Segments extends Readonly<Record<string, string>>,
+  Handle,
+> {
+  readonly name: Name;
+  readonly template: string;
+  readonly memberIds: readonly string[];
+  readonly segmentNames: readonly (keyof Segments & string)[];
+  resolve(segments: Segments): Handle | undefined;
+}
+
+function defineMessageFamily<
+  Name extends string,
+  Segments extends Readonly<Record<string, string>>,
+  Handle,
+>(value: GeneratedMessageFamily<Name, Segments, Handle>): GeneratedMessageFamily<Name, Segments, Handle> {
+  return Object.freeze(value);
+}
+
+function hasExactFamilySegments(
+  segments: Readonly<Record<string, string>>,
+  expected: readonly string[],
+): boolean {
+  const actual = Object.keys(segments).sort();
+  return actual.length === expected.length && actual.every((name, index) => name === expected[index]);
+}
+
+function isFamilySegment(
+  value: unknown,
+  syntax: 'lower-kebab' | 'ascii-token' | 'unicode-token',
+  maximumLength: number,
+): value is string {
+  if (typeof value !== 'string' || value.length === 0 || value.length > maximumLength || value.normalize('NFC') !== value) return false;
+  switch (syntax) {
+    case 'lower-kebab':
+      return /^[a-z][a-z0-9]*(?:-[a-z][a-z0-9]*)*$/u.test(value);
+    case 'ascii-token':
+      return /^[A-Za-z][A-Za-z0-9-]*$/u.test(value);
+    case 'unicode-token':
+      return /^[\\p{L}\\p{N}][\\p{L}\\p{N}-]*$/u.test(value);
+  }
+}`;
+
+function scopeModule(
+  scope: SemanticScope,
+  diagnostics: ToolkitDiagnostic[],
+): string {
+  const tree = projectionTree(scope, diagnostics);
+  const rendered = renderProjectionNode(tree);
+  return [
+    '/** Generated by Equator. Do not edit. */',
+    handlePrelude,
+    ...(scope.families.length === 0 ? [] : ['', familyPrelude]),
+    '',
+    `export const providerId = ${quote(scope.providerId)} as const;`,
+    `export const scopeId = ${quote(scope.scopeId)} as const;`,
+    `export const applicationContractFingerprint = ${quote(scope.applicationContractFingerprint)} as const;`,
+    `export const semanticRegistryFingerprint = ${quote(scope.semanticRegistryFingerprint)} as const;`,
+    `export const requiredExtensions = Object.freeze(${JSON.stringify(scope.requiredExtensions)} as const);`,
+    '',
+    `export const messages = ${rendered};`,
+    '',
+    // Only for content that exists (`specs/04-message-authoring-and-catalogs.spec.md` section 3):
+    // a scope with no family has no registry to import, empty or otherwise.
+    ...(scope.families.length === 0
+      ? []
+      : [`export const families = ${renderFamilies(scope)};`, '']),
+  ].join('\n');
+}
+
+/**
+ * The setup and the ready-made provider over it, emitted into `#i18n` beside the configuration.
+ *
+ * The provisional overlay gets declarations instead: same names, same call shape, no imports.
+ */
+function providerLines(
+  form: 'implementation' | 'declaration',
+): readonly string[] {
+  if (form === 'declaration') {
+    return [
+      '/**',
+      ' * Provisional. The real one is generated once this owner has been analysed.',
+      ' *',
+      ' * Declared rather than implemented so that the overlay resolving `#i18n` during analysis',
+      ' * pulls in none of the generated modules the implementation closes over, while still',
+      ' * resolving the import an application composes the runtime through.',
+      ' *',
+      ' * The return type asserts nothing, which is the honest thing for a stub to do. `unknown`',
+      ' * asserted something false: it made every application`s own providers array report a type',
+      ' * error during analysis, Equator telling a consumer their correct code is wrong. Naming',
+      ' * `EnvironmentProviders` would be precise and would drag `@angular/core` into the overlay',
+      ' * of every owner, including the ones that have no Angular at all. The real provider,',
+      ' * generated after analysis, is precisely typed.',
+      ' */',
+      'export declare function provideLocalization(',
+      '  ...features: readonly unknown[]',
+      '): any;',
+      '',
+      '/**',
+      ' * Provisional. The real one is generated once this owner has been analysed.',
+      ' *',
+      ' * Declared for the same reason as the provider above: an owner`s own test files are part of',
+      ' * the graph Equator analyses, and a test that imports this must resolve during analysis, before',
+      ' * there is anything to import.',
+      ' */',
+      'export declare const localizationSetup: any;',
+      '',
+    ];
+  }
+  return providerImplementationLines();
+}
+
+function providerImplementationLines(): readonly string[] {
+  return [
+    // Decision section 3: one import and one call. Everything closed over here is something Equator
+    // generated for itself, which every application was importing by hand to pass straight back.
+    // What an application actually decides (locale sources, persistence, recovery message,
+    // extension bindings) stays an argument, because Equator cannot know it.
+    "import type { EnvironmentProviders } from '@angular/core';",
+    "import { provideLocalizationSetup } from '@neolorn/equator';",
+    "import type { LocalizationFeature } from '@neolorn/equator';",
+    // Package-import specifiers rather than relative paths: the provisional overlay Equator
+    // compiles during analysis resolves `#i18n/*` and knows nothing about relative paths inside it,
+    // and a consumer's own tsconfig resolves the same specifiers through package imports. One form
+    // works in both places.
+    "import { catalogSet } from '#i18n/catalog-set';",
+    "import { catalogLoaders } from '#i18n/catalog-loaders';",
+    "import { recoveryPayload } from '#i18n/recovery-payload';",
+    "import { personNames } from '#i18n/person-names';",
+    "import { routeProjection } from '#i18n/routes';",
+    '',
+    // Named, and exported, because the provider is not the only thing that composes it. A test
+    // reaches the runtime through `provideLocalizationTesting()` from `@neolorn/equator/testing`,
+    // which takes the setup rather than building it, so a test does not hand-assemble these six
+    // fields from five generated modules, which is the hand-assembly the provider below exists to
+    // remove.
+    //
+    // Hand-assembly also drifts silently: a test composing five of the six still passes under a
+    // name claiming the runtime the application provider composes, because it is two copies of a
+    // shape only one of which anything checks.
+    'export const localizationSetup = Object.freeze({',
+    '  configuration: configuration,',
+    '  catalogSet: catalogSet,',
+    '  catalogLoaders: catalogLoaders,',
+    '  recoveryPayload: recoveryPayload,',
+    // Only the configured locales' profiles. Equator carries the pinned release whole; an
+    // application carries what its own locales reach.
+    '  personNames: personNames,',
+    // The half of a route projection Equator knows. `withRouting()` carries the half it cannot
+    // (the URL policy, localized spellings, parameter codecs) so the table is declared once.
+    '  routeProjection: routeProjection,',
+    '});',
+    '',
+    'export function provideLocalization(',
+    '  ...features: readonly LocalizationFeature[]',
+    '): EnvironmentProviders {',
+    '  return provideLocalizationSetup(localizationSetup, ...features);',
+    '}',
+    '',
+  ];
+}
+
+/**
+ * The scope table, and what it says about the first render.
+ *
+ * `undefined` and `[]` are different answers here for the same reason they are for the route
+ * table. A scope is deferred when every use of its messages sits behind a lazy route boundary,
+ * which is read out of the application's source by the analysis pass, so the overlay that pass
+ * starts from cannot know it. An empty deferred set says the question was asked and nothing was
+ * behind a boundary, and the table then states `startup: true` for every scope, which is false for
+ * any application that has one.
+ *
+ * So the unknown case leaves the field absent. `startup` is optional in the runtime contract and
+ * absent is read as a startup scope, which is the same conservative direction the invented `true`
+ * was pointing in, without the table claiming an answer it does not have.
+ *
+ * The field is absent from the value and present in the type. An application may read `startup`
+ * off the table it declared, and a row whose inferred type leaves the property out reports every
+ * such read as a property that does not exist, against a line the application wrote correctly. So
+ * the rows of the unknown case go through a helper that adds the optional field and says nothing
+ * about it, which is what the overlay already does for the provider it cannot build: carry what
+ * the application imports, and assert nothing about the result.
+ */
+function indexModule(
+  graph: SemanticGraph,
+  deferredScopeIds: readonly string[] | undefined,
+  provider: 'implementation' | 'declaration',
+): string {
+  const deferred =
+    deferredScopeIds === undefined ? undefined : new Set(deferredScopeIds);
+  // Emitted only where a row calls it. A helper nothing reads is an unread declaration in a file
+  // the application did not write and must not edit, which is what `noUnusedLocals` reports.
+  const startupDeclaration =
+    deferred === undefined && graph.scopes.length > 0
+      ? [
+          'const provisionalScope = <Scope extends object>(',
+          '  scope: Scope,',
+          '): Scope & { readonly startup?: boolean } => scope;',
+          '',
+        ]
+      : [];
+  const scopeRows = graph.scopes.map((scope) => {
+    const row = `Object.freeze({ providerId: ${quote(scope.providerId)}, scopeId: ${quote(scope.scopeId)}, applicationContractFingerprint: ${quote(scope.applicationContractFingerprint)}, semanticRegistryFingerprint: ${quote(scope.semanticRegistryFingerprint)}${deferred === undefined ? '' : `, startup: ${deferred.has(scope.scopeId) ? 'false' : 'true'}`}, requiredExtensions: Object.freeze(${JSON.stringify(scope.requiredExtensions)} as const) })`;
+    return deferred === undefined ? `  provisionalScope(${row}),` : `  ${row},`;
+  });
+  const aliases = Object.entries(graph.aliases)
+    .sort(([left], [right]) => compareCodeUnit(left, right))
+    .map(([alias, locale]) => `  ${quote(alias)}: ${quote(locale)},`);
+  // One name per configured locale, looked up at build time so the visitor's engine does not get
+  // a vote. A locale CLDR has no name for is left out rather than given its tag: the runtime falls
+  // back to the engine there.
+  const localeNames = Object.fromEntries(
+    graph.locales.flatMap((locale) => {
+      const endonym = localeEndonym(locale);
+      return endonym === undefined ? [] : [[locale, endonym] as const];
+    }),
+  );
+  // Each locale's own chain, resolved here because it turns on the owner's own parent declarations
+  // and on which locales are pseudo-locales, which only the build knows, and filtered to the
+  // locales this owner ships: a member with no catalog would cost a lookup and answer nothing. A locale whose chain is empty after the filter is left out, so an
+  // application whose locales are unrelated to each other carries no table at all.
+  const localeFallbacks = Object.fromEntries(
+    graph.locales.flatMap((locale) => {
+      const chain = shippedFallbackChain(
+        locale,
+        graph.locales,
+        graph.parentLocales,
+        graph.pseudoLocales.includes(locale),
+      );
+      return chain.length === 0 ? [] : [[locale, chain] as const];
+    }),
+  );
+  const declaredFormatting = Object.fromEntries(
+    Object.entries(graph.formatting).filter(([locale]) =>
+      graph.locales.includes(locale as (typeof graph.locales)[number]),
+    ),
+  );
+  const formatting =
+    Object.keys(declaredFormatting).length === 0
+      ? undefined
+      : `  formatting: Object.freeze(${JSON.stringify(declaredFormatting)} as const),`;
+  return [
+    '/** Generated by Equator. Do not edit. */',
+    `export const generatedAbi = ${quote(graph.generatedAbi)} as const;`,
+    ...startupDeclaration,
+    'export const aliases = Object.freeze(Object.assign(',
+    '  Object.create(null) as Record<string, string>,',
+    '  {',
+    ...aliases,
+    '  },',
+    '));',
+    `export const configuration = Object.freeze({`,
+    `  generatedAbi: generatedAbi,`,
+    `  sourceLocale: ${quote(graph.sourceLocale)},`,
+    `  defaultLocale: ${quote(graph.defaultLocale)},`,
+    `  locales: Object.freeze([${graph.locales.map(quote).join(', ')}]),`,
+    '  aliases: aliases,',
+    ...(Object.keys(localeNames).length === 0
+      ? []
+      : [
+          `  localeNames: Object.freeze(${JSON.stringify(localeNames)} as const),`,
+        ]),
+    // Emitted only when the owner declared something, and only for locales this generation
+    // actually produced. An empty object would say the application had considered how each locale
+    // is written and chosen nothing, and the runtime's absent-means-CLDR rule already says the
+    // same thing with no data at all.
+    //
+    // The filter is what makes a pseudo-locale declaration safe. `pseudoLocales` is part of the
+    // configuration whether or not `--pseudo` asked for one, so a production build's locale table
+    // does not carry them, and a formatting entry for a locale the table does not list is a
+    // table built against a different configuration, which the runtime refuses on arrival.
+    ...(formatting === undefined ? [] : [formatting]),
+    ...(Object.keys(localeFallbacks).length === 0
+      ? []
+      : [
+          `  localeFallbacks: Object.freeze(${JSON.stringify(localeFallbacks)} as const),`,
+        ]),
+    // Only where this generation produced one, because a build without them has none to name, and
+    // the runtime refuses an empty list as one no build writes.
+    ...(graph.pseudoLocales.length === 0
+      ? []
+      : [
+          `  pseudoLocales: Object.freeze([${graph.pseudoLocales.map(quote).join(', ')}]),`,
+        ]),
+    `  applicationContractFingerprint: ${quote(graph.applicationContractFingerprint)},`,
+    `  semanticRegistryFingerprint: ${quote(graph.semanticRegistryFingerprint)},`,
+    `  extensionDescriptors: Object.freeze(${JSON.stringify(graph.extensionDescriptors)} as const),`,
+    '  scopes: Object.freeze([',
+    ...scopeRows,
+    '  ]),',
+    '} as const);',
+    '',
+    ...providerLines(provider),
+  ].join('\n');
+}
+
+/**
+ * The route table, or the statement that it is not known yet.
+ *
+ * `undefined` and `[]` are different answers and the module says so. An application with no routes
+ * emits an empty table, which is true of it. The overlay the analysis pass reads has no table at
+ * all, because the routes are discovered by that pass and cannot be in the modules it starts from,
+ * and emitting an empty one there says every route is absent. Written `as const`, an empty table
+ * types as `readonly []`, so every read of a route's own field resolves against `never` and the
+ * analysis reports an error for each one, against the consumer's line, about a table the consumer
+ * wrote correctly.
+ *
+ * So the unknown case is a declaration, which is what the rest of the provisional overlay already
+ * is. It types what a route table is without claiming which routes are in it. Route identities
+ * widen to `string` under analysis, which is the honest width at a point where the identities have
+ * not been read yet, and the consumer's own compiler still checks them against the real table.
+ */
+function routeModule(
+  routes: readonly GeneratedRouteProjection[] | undefined,
+): string {
+  if (routes === undefined) {
+    return [
+      '/** Generated by Equator. Do not edit. */',
+      "import type { GeneratedRouteProjection } from '@neolorn/equator';",
+      'export declare const routeProjection: GeneratedRouteProjection;',
+      '',
+    ].join('\n');
+  }
+  const ordered = [...routes].sort((left, right) =>
+    compareCodeUnit(
+      `${left.id}\u0000${left.path}\u0000${left.sourcePath ?? ''}`,
+      `${right.id}\u0000${right.path}\u0000${right.sourcePath ?? ''}`,
+    ),
+  );
+  const identity = digestCanonicalJson(
+    'equator-route-projection/1',
+    ordered.map((route) => ({
+      id: route.id,
+      path: route.path,
+      parameterNames: [...route.parameterNames],
+      ...(route.indexing === undefined ? {} : { indexing: route.indexing }),
+      ...(route.caching === undefined ? {} : { caching: route.caching }),
+      // In the identity, so that editing a claim reprojects. A digest that ignored it would call a
+      // projection fresh while the sitemap it produces has changed.
+      ...(route.sitemap === undefined ? {} : { sitemap: route.sitemap }),
+      ...(route.scopes === undefined || route.scopes.length === 0
+        ? {}
+        : {
+            scopes: route.scopes.map(({ providerId, scopeId }) => ({
+              providerId,
+              scopeId,
+            })),
+          }),
+    })),
+  );
+  const sitemapClaim = (claim: GeneratedRouteProjection['sitemap']): string => {
+    if (claim === undefined) return '';
+    const parts = [
+      ...(claim.changefreq === undefined
+        ? []
+        : [`changefreq: ${quote(claim.changefreq)}`]),
+      ...(claim.priority === undefined ? [] : [`priority: ${claim.priority}`]),
+      ...(claim.lastmod === undefined
+        ? []
+        : [`lastmod: ${quote(claim.lastmod)}`]),
+    ];
+    return parts.length === 0
+      ? ''
+      : `, sitemap: Object.freeze({ ${parts.join(', ')} })`;
+  };
+  const rows = ordered.map(
+    (route) =>
+      `    Object.freeze({ id: ${quote(route.id)}, path: ${quote(route.path)}, parameterNames: Object.freeze([${route.parameterNames.map(quote).join(', ')}] as const)${route.indexing === undefined ? '' : `, indexing: ${quote(route.indexing)}`}${route.caching === undefined ? '' : `, caching: ${quote(route.caching)}`}${sitemapClaim(route.sitemap)}${route.scopes === undefined || route.scopes.length === 0 ? '' : `, scopes: Object.freeze([${route.scopes.map(({ providerId, scopeId }) => `Object.freeze({ providerId: ${quote(providerId)}, scopeId: ${quote(scopeId)} })`).join(', ')}] as const)`}${route.sourcePath === undefined ? '' : `, sourcePath: ${quote(route.sourcePath)}`} }),`,
+  );
+  return [
+    '/** Generated by Equator. Do not edit. */',
+    'export const routeProjection = Object.freeze({',
+    "  profile: 'equator-route-projection/1',",
+    `  identity: ${quote(identity)},`,
+    '  routes: Object.freeze([',
+    ...rows,
+    '  ]),',
+    '} as const);',
+    '',
+  ].join('\n');
+}
+
+function recoveryModule(
+  graph: SemanticGraph,
+  identities: readonly string[],
+  diagnostics: ToolkitDiagnostic[],
+): string {
+  const messages = new Map(
+    graph.scopes.flatMap((scope) =>
+      scope.messages.map((message) => [message.identity, message] as const),
+    ),
+  );
+  const rows: string[] = [];
+  for (const identity of [...new Set(identities)].sort(compareCodeUnit)) {
+    const message = messages.get(identity);
+    const refusal = recoveryRootRefusal(identity, message);
+    if (message === undefined || refusal !== undefined) {
+      if (refusal !== undefined) diagnostics.push(refusal);
+      continue;
+    }
+    rows.push(
+      `  Object.freeze({ identity: ${quote(message.identity)}, sourceFingerprint: ${quote(message.sourceFingerprint)} }),`,
+    );
+  }
+  return [
+    '/** Generated by Equator. Do not edit. */',
+    'export const recoveryRoots = Object.freeze([',
+    ...rows,
+    '] as const);',
+    '',
+  ].join('\n');
+}
+
+export function generateContracts(
+  graph: SemanticGraph,
+  options: GenerateContractsOptions = {},
+): ToolkitResult<readonly GeneratedContractFile[]> {
+  const diagnostics: ToolkitDiagnostic[] = [];
+  const files: GeneratedContractFile[] = [
+    Object.freeze({
+      path: 'index.ts',
+      contents: indexModule(
+        graph,
+        options.deferredScopeIds,
+        options.provider ?? 'implementation',
+      ),
+    }),
+    Object.freeze({
+      path: 'routes.ts',
+      contents: routeModule(options.routes),
+    }),
+    Object.freeze({
+      path: 'recovery.ts',
+      contents: recoveryModule(
+        graph,
+        options.recoveryMessageIdentities ?? [],
+        diagnostics,
+      ),
+    }),
+  ];
+  for (const scope of graph.scopes) {
+    files.push(
+      Object.freeze({
+        path: `${scope.scopeId}.ts`,
+        contents: scopeModule(scope, diagnostics),
+      }),
+    );
+  }
+  if (diagnostics.some(({ severity }) => severity === 'error')) {
+    return toolkitFailure(diagnostics);
+  }
+  files.sort((left, right) => compareCodeUnit(left.path, right.path));
+  return toolkitSuccess(Object.freeze(files), diagnostics);
+}

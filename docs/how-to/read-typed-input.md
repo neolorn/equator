@@ -1,0 +1,222 @@
+# How to read typed input
+
+`@neolorn/equator/forms` exports `LocalizedInput`, a directive that parses what a visitor typed in
+the committed locale and gives the form the value rather than the text. `١٢٣٫٥` typed in Egyptian
+Arabic, `123.5` in American English and `123,5` in German are one amount, and the control returns
+that amount.
+
+## Before you begin
+
+Install `@angular/forms`, which is an optional peer of the runtime, and compose a localization
+runtime.
+
+## Bind the directive
+
+```text
+<input [localizedInput]="profile" [(ngModel)]="amount" />
+```
+
+`LocalizedInput` is a `ControlValueAccessor` and a `Validator`, so it works with template-driven and
+reactive forms the way any other control does. The profile states what kind of value the input
+holds: a decimal, a money amount in a currency, a percentage, a measurement, a date.
+
+It binds to `input` and to `textarea`. What kind of value a field holds does not depend on what it
+is written with, and a `select` is not among them because its value is chosen rather than typed.
+
+## Put it inside your own field component
+
+A design system's own field component sits between the form and this one, and forwards the form's
+write down to it:
+
+```text
+writeValue(value: LocalizedInputValue<Amount> | null): void {
+  this.field().writeValue(value);
+}
+```
+
+That write can arrive before the inner field has been given its profile, because the form writes to
+the outermost accessor during its own binding pass and the inner bindings are applied after. Equator
+holds such a write and renders it when the profile lands, so there is no ordering for you to
+discover and nothing to buffer around.
+
+The control's value is the parsed value. What you read is `money(decimal('19.99'), 'USD')`, not
+`"١٩٫٩٩"`, and what your API receives is that value whichever locale the visitor typed it in. Nothing
+is rounded on the way through.
+
+## Read the outcome
+
+`result()` carries the outcome rather than throwing. A result that did not parse states a code, and
+the code is stable, so a validation message can be a message in your catalog keyed on it. What a
+visitor reads when they mistype a number is content, and it belongs in the catalog with everything
+else they read.
+
+`LocalizedInput` does not validate business rules. Whether an amount is within a limit, whether a
+date is in the future, whether a quantity is in stock: those are yours, and they run on the parsed
+value.
+
+## Assert what it parses
+
+The profile sets `requireCurrency`, which is why the visitor types `$19.99` rather than `19.99`;
+without it a bare number is read too. Parsing happens in the committed locale, and a field reads the
+digits of one numbering system: the one the formatting context declares, or the locale's own where
+it declares none. After a switch to `ar-EG` the field reads Arabic-Indic digits and refuses the
+Latin ones. With `latn` declared it reads the Latin ones and refuses the others.
+
+```ts src/app/forms.spec.ts
+import { afterEach, describe, expect, it } from 'vitest';
+
+import {
+  Component,
+  provideZonelessChangeDetection,
+  viewChild,
+} from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { FormsModule, NgModel } from '@angular/forms';
+import {
+  decimal,
+  Localization,
+  money,
+  withRecoveryMessage,
+  type LocalizedMoneyInputProfile,
+  type MoneyValue,
+} from '@neolorn/equator';
+import { LocalizedInput } from '@neolorn/equator/forms';
+import {
+  provideLocalizationTesting,
+  resetLocalizationTestEnvironment,
+} from '@neolorn/equator/testing';
+import { localizationSetup } from '#i18n';
+import { messages } from '#i18n/shell';
+
+afterEach(resetLocalizationTestEnvironment);
+
+@Component({
+  selector: 'app-price-field',
+  imports: [FormsModule, LocalizedInput],
+  template: `
+    <input
+      [localizedInput]="profile"
+      [(ngModel)]="amount"
+      [ngModelOptions]="{ standalone: true }"
+    />
+  `,
+})
+class PriceField {
+  readonly profile: LocalizedMoneyInputProfile = {
+    kind: 'money',
+    currency: 'USD',
+    requireCurrency: true,
+  };
+  amount: MoneyValue | null = null;
+  readonly control = viewChild.required(NgModel);
+  readonly localized = viewChild.required(LocalizedInput);
+}
+
+async function setup() {
+  TestBed.resetTestingModule();
+  TestBed.configureTestingModule({
+    providers: [
+      provideZonelessChangeDetection(),
+      provideLocalizationTesting(
+        localizationSetup,
+        withRecoveryMessage({ message: messages.recoveryMessage }),
+      ),
+    ],
+  });
+
+  const localization = TestBed.inject(Localization);
+  await localization.initialize();
+
+  const fixture = TestBed.createComponent(PriceField);
+  await fixture.whenStable();
+  fixture.detectChanges();
+
+  const field: HTMLInputElement = fixture.nativeElement.querySelector('input');
+
+  // What a visitor does. Assigning `value` on its own changes nothing, because nothing is
+  // listening to an assignment.
+  async function type(text: string) {
+    field.value = text;
+    field.dispatchEvent(new Event('input'));
+    await fixture.whenStable();
+    fixture.detectChanges();
+  }
+
+  return {
+    fixture,
+    localization,
+    field,
+    type,
+    host: fixture.componentInstance,
+  };
+}
+
+describe('a localized input', () => {
+  it('gives the form a value rather than the text that was typed', async () => {
+    const { host, type } = await setup();
+
+    await type('$19.99');
+
+    expect(host.amount).toEqual(money(decimal('19.99'), 'USD'));
+  });
+
+  it('respells the field when the locale changes, and keeps the amount', async () => {
+    const { fixture, localization, field, type, host } = await setup();
+    await type('$19.99');
+
+    await localization.changeLocale('ar-EG');
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(host.amount).toEqual(money(decimal('19.99'), 'USD'));
+    expect(field.value).toContain('١٩');
+  });
+
+  it('reads back what it wrote, in the other script', async () => {
+    const { fixture, localization, field, type, host } = await setup();
+    await type('$19.99');
+    await localization.changeLocale('ar-EG');
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    // The visitor edits the field they were given, so what is parsed is Arabic-Indic digits and
+    // an Arabic decimal separator. The amount that comes back is the one that went in.
+    await type(field.value);
+
+    expect(host.amount).toEqual(money(decimal('19.99'), 'USD'));
+  });
+
+  it('reports what it could not read, with a code a message can key on', async () => {
+    const { field, host, type } = await setup();
+
+    await type('$nineteen');
+
+    expect(host.localized().result()?.status).toBe('invalid');
+    expect(host.control().errors?.['localizedInput']).toEqual({
+      code: 'equator.input.invalid',
+      status: 'invalid',
+    });
+    // The form keeps the value it had. A field nobody can read does not empty what was already
+    // there, and there is nothing here yet to keep.
+    expect(host.amount).toBe(null);
+    expect(field.getAttribute('aria-invalid')).toBe('true');
+  });
+});
+```
+
+## Present an issue of your own
+
+`issueMessage` and `presentIssue` turn a code and its data into the sentence a visitor reads, in the
+committed locale. Use them for the issues your own code raises, so a form's errors read the way the
+rest of the page does.
+
+## Format the same values back
+
+An input that shows a value the visitor is editing formats it with the conventions it will parse.
+That is [How to format a value](format-values.md), and the two share one formatting context, so a
+value that round-trips through the form comes back spelled the way it went in.
+
+## Related
+
+- [How to format a value](format-values.md)
+- [About canonical values](../explanation/about-values.md)

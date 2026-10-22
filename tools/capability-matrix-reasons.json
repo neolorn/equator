@@ -1,0 +1,217 @@
+{
+  "reasons": [
+    {
+      "id": "cli-outside-pages",
+      "rows": ["cli:*"],
+      "columns": ["render:*", "engine:*"],
+      "reason": "A CLI command runs in a terminal against a project's files; no page renders it and no browser loads it."
+    },
+    {
+      "id": "cli-without-policy",
+      "rows": [
+        "cli:init",
+        "cli:format",
+        "cli:clean",
+        "cli:uninstall",
+        "cli:migrate"
+      ],
+      "columns": ["policy:*"],
+      "reason": "These commands write the configuration, catalogs, generated files and package metadata; they never reach the compiler, which is the only place a URL policy is read, and the configuration has no field for one."
+    },
+    {
+      "id": "xliff-outside-pages",
+      "rows": ["capability:xliff"],
+      "columns": ["render:*", "engine:*", "policy:*"],
+      "reason": "XLIFF export and import read and write catalog files at build time; no page, browser or URL policy is involved."
+    },
+    {
+      "id": "toolkit-outside-pages",
+      "rows": ["entry:@neolorn/equator-toolkit"],
+      "columns": ["render:*", "engine:*"],
+      "reason": "The toolkit runs at build time in Node and is kept out of every browser graph; the focused consumer proves that absence."
+    },
+    {
+      "id": "one-policy-per-application",
+      "rows": ["policy:*"],
+      "columns": ["policy:*"],
+      "exceptOwnColumn": true,
+      "reason": "An application runs one URL policy, so each policy row is exercised in its own column."
+    },
+    {
+      "id": "http-server-only",
+      "rows": [
+        "entry:@neolorn/equator/http",
+        "outcome:declarePageOutcome",
+        "outcome:declareOperationalFailure"
+      ],
+      "columns": [
+        "render:prerender",
+        "render:client-navigation",
+        "render:hydration"
+      ],
+      "reason": "The request handler answers a request, on a server or in a test through the server seat: a build has no request for it to answer and fails on a declaration made while prerendering (spec 07 section 5), and a client navigation sends it no document request."
+    },
+    {
+      "id": "ssr-server-only",
+      "rows": [
+        "entry:@neolorn/equator/ssr",
+        "feature:provideLocalizedServerRendering"
+      ],
+      "columns": ["render:client-navigation", "render:hydration", "engine:*"],
+      "reason": "Server rendering configuration is read only by the server bundle; the browser bundle never imports it."
+    },
+    {
+      "id": "server-seat-no-client",
+      "rows": ["testing:createLocalizedServerSeat", "testing:answeredHead"],
+      "columns": [
+        "render:client",
+        "render:client-navigation",
+        "render:hydration"
+      ],
+      "reason": "The server seat renders one response on the server platform and reads it; nothing renders or boots on a client."
+    },
+    {
+      "id": "testing-in-a-test-host",
+      "rows": [
+        "testing:ControllableLocalizationParticipant",
+        "testing:LocalizationTestingController",
+        "testing:createInMemoryCatalogLoaders",
+        "testing:provideLocalizationTesting",
+        "testing:renderedText",
+        "testing:resetLocalizationTestEnvironment"
+      ],
+      "columns": [
+        "render:server",
+        "render:prerender",
+        "render:client-navigation",
+        "render:hydration"
+      ],
+      "reason": "These helpers run in a test host: TestBed, which Angular's unit-test builder starts on the browser platform before any setup file runs, creating components into a fixture, which is a client render. No reader reaches that page by a server render, a prerender, a hydration or a navigation after a document; the engines a test host runs in are the engine columns."
+    },
+    {
+      "id": "testing-entry-without-a-client",
+      "rows": ["entry:@neolorn/equator/testing"],
+      "columns": ["render:client-navigation", "render:hydration"],
+      "reason": "The entry point's helpers run in a test host or, in the server seat, answer one response and read it; nothing boots on a client after either, and nothing adopts markup a server drew."
+    },
+    {
+      "id": "testing-helpers-without-a-platform",
+      "rows": [
+        "testing:ControllableLocalizationParticipant",
+        "testing:createInMemoryCatalogLoaders",
+        "testing:resetLocalizationTestEnvironment"
+      ],
+      "columns": ["render:client"],
+      "reason": "A controllable participant, an in-memory loader map and the environment reset take no injector and read no platform: a test hands the first two to a localization it creates, and the reset clears the browser's address, cookies and storages. They run the same whatever renders the page, and the runtime they feed is claimed at render:client on its own rows."
+    },
+    {
+      "id": "testing-helpers-without-policy",
+      "rows": [
+        "testing:ControllableLocalizationParticipant",
+        "testing:createInMemoryCatalogLoaders",
+        "testing:resetLocalizationTestEnvironment"
+      ],
+      "columns": ["policy:*"],
+      "reason": "A controllable participant, an in-memory loader map and the environment reset are handed no URL policy and read none: a participant is driven by the test, a loader by a catalog key, and the reset clears the address, cookies and storages whatever policy wrote them."
+    },
+    {
+      "id": "sitemap-for-crawlers",
+      "rows": ["capability:sitemap"],
+      "columns": ["render:*", "engine:*"],
+      "reason": "Equator produces the sitemap files as data, and the deployment writes or serves them to crawlers as they are (spec 07 section 11); no render of the application produces them and no page boots from them."
+    },
+    {
+      "id": "caching-is-a-response-header",
+      "rows": [
+        "declaration:route-caching-class",
+        "declaration:host-page-floor",
+        "declaration:RouteCacheDurations.revalidateSuccess"
+      ],
+      "columns": ["render:client-navigation", "render:hydration", "engine:*"],
+      "reason": "A caching declaration becomes a response header the server writes; no browser runs it, and a client navigation or hydration makes no document request."
+    },
+    {
+      "id": "caching-refused-when-prerendered",
+      "rows": ["declaration:route-caching-class"],
+      "columns": ["render:prerender"],
+      "reason": "A prerendered page has no response to carry a caching header; what the class does to a build is refuse a per-visitor or not-stored route and write no page for it (spec 07 section 9), which verify:consumer requires of the lazy route."
+    },
+    {
+      "id": "renderer-declares-without-a-page",
+      "rows": [
+        "outcome:declarePageOutcome",
+        "outcome:declareOperationalFailure"
+      ],
+      "columns": ["render:server"],
+      "reason": "A renderer states what it decided with no page rendered at all (spec 07 section 5), so its answer is never a server-rendered page; verify:consumer claims both from the server's answers for the withdrawn and the unreachable dossier."
+    },
+    {
+      "id": "descriptor-describes-a-response",
+      "rows": ["outcome:pageOutcomeHttpDescriptor"],
+      "columns": [
+        "render:prerender",
+        "render:client-navigation",
+        "render:hydration",
+        "engine:*"
+      ],
+      "reason": "It describes the response a declaration produces. A build writes no page for a declared outcome (spec 07 section 5, checked by verify:consumer for the topic page), and a client navigation or a hydrated page has no response, which a release must not synthesize, so no build and no browser has a response for it to describe."
+    },
+    {
+      "id": "sitemap-entry-read-by-projection",
+      "rows": ["declaration:route-sitemap-entry"],
+      "columns": ["render:*", "engine:*"],
+      "reason": "A route's sitemap entry is read only when the sitemap is projected (projectSitemap, spec 07 section 11), and the files that projection produces are served to crawlers as data; no render of a page reads it."
+    },
+    {
+      "id": "outcome-refused-when-prerendered",
+      "rows": [
+        "outcome:pageAbsent",
+        "outcome:pageGone",
+        "outcome:pageOperationalFailure"
+      ],
+      "columns": ["render:prerender"],
+      "reason": "A page that declares its outcome while prerendering has no request to answer, so its render fails and no page is written (spec 07 section 5); verify:consumer lists the topic page for prerender with a value for each outcome and requires the refusal."
+    },
+    {
+      "id": "aliases-are-path-prefixes",
+      "rows": ["declaration:locale-aliases"],
+      "columns": ["policy:locale-neutral", "policy:locale-host"],
+      "reason": "An alias is a second prefix a path-prefix policy accepts; the neutral and host policies have no prefix to alias."
+    },
+    {
+      "id": "no-duration-formatter-on-node-22",
+      "rows": ["format:formatDuration", "pipe:localizedDuration"],
+      "columns": ["node:22"],
+      "reason": "Node 22 has no Intl.DurationFormat, so no duration can be formatted there; the exercise sheet holds Equator to the typed result spec 08 section 3 requires instead."
+    },
+    {
+      "id": "no-page-for-an-outcome-to-prerender",
+      "rows": ["declaration:outcome-documents"],
+      "columns": ["render:prerender"],
+      "reason": "An outcome document is the head of an address answered with a status and no page of its own, and a prerendered file carries no status. A build writes files only for the routes its render table names, each by a route id checked against the projection; the not-found page is the wildcard, which is never prerendered, and a page that declares an absence or a removal while prerendering fails the build (spec 07 sections 5 and 9)."
+    },
+    {
+      "id": "alias-answered-before-a-render",
+      "rows": ["declaration:locale-aliases"],
+      "columns": [
+        "render:server",
+        "render:prerender",
+        "render:client",
+        "render:hydration"
+      ],
+      "reason": "An address under an alias is answered with a correction before anything renders: the server draws no page and sends no application shell for it, a build writes none, and the page a browser adopts or renders afterwards is the address the correction names."
+    },
+    {
+      "id": "locale-neutral-roots-left-to-their-owner",
+      "rows": ["declaration:locale-neutral-roots"],
+      "columns": ["render:*", "engine:*"],
+      "reason": "An address under a locale-neutral root is left to whatever serves it (spec 07 sections 3 and 4): Equator renders no page there, writes none, and has none for a browser to adopt or its router to draw, so what can be observed is the server declining it."
+    },
+    {
+      "id": "browser-source-absent-at-build",
+      "rows": ["source:browser"],
+      "columns": ["render:prerender"],
+      "reason": "A build has no request, so no language preference reaches it, and the page it writes is adopted as it was decided; once hydrated only the stores are read again (spec 03 section 8), so the browser's languages never decide a prerendered page."
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+messages:
+  heading: Embedded account panel
+  greeting: Signed in and ready.
+  about: About this panel
+  forget: "Use my browser's language"
+  home: Back to the panel
+  recovery.unavailable: The panel cannot show its text right now.

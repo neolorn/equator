@@ -1,0 +1,569 @@
+{
+  "halves": {
+    "runtime": {
+      "configuration": "stryker.config.mjs",
+      "basis": {
+        "reading": "A full runtime reading: 20,070 mutants in 23,450 s, 23,150 s of it after the initial test run, at 21 workers with the patient clock and bail off. Runner factor 1.5: the toolkit slice took 360 job minutes at four workers on a hosted runner and 43 minutes 32 seconds at 24 workers on the 32-thread machine the readings were taken on, 1.38 times the local worker time, rounded up.",
+        "mutants": 20070,
+        "wallSeconds": 23150,
+        "workers": 21,
+        "dryRunNetSeconds": 80.36,
+        "secondsPerTestFile": 0.164,
+        "runnerFactor": 1.5,
+        "minutesPerPart": 240
+      },
+      "shards": [
+        {
+          "minutes": 240,
+          "parts": [
+            {
+              "file": "packages/runtime/core/src/contracts.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/core/src/cookie-attributes.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/core/src/locale-negotiation.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/core/src/locale-profile.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/core/src/page-outcome.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/core/src/routing.ts",
+              "from": 1,
+              "to": 1672
+            }
+          ]
+        },
+        {
+          "minutes": 240,
+          "parts": [
+            {
+              "file": "packages/runtime/core/src/routing.ts",
+              "from": 1672,
+              "to": 2065
+            }
+          ]
+        },
+        {
+          "minutes": 240,
+          "parts": [
+            {
+              "file": "packages/runtime/core/src/routing.ts",
+              "from": 2065,
+              "to": 2986
+            }
+          ]
+        },
+        {
+          "minutes": 240,
+          "parts": [
+            {
+              "file": "packages/runtime/core/src/routing.ts",
+              "from": 2986,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/forms/src/caret.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/forms/src/public-api.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/http/src/handler.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/http/src/node.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/http/src/raw-target.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/router/src/address-sync.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/router/src/document-messages.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/router/src/location-strategy.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/router/src/navigation-scopes.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/router/src/page-outcome.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/router/src/provide.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/router/src/response-headers.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/router/src/route-localization.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/router/src/route-parameters.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/router/src/route-table.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/router/src/title-strategy.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/router/src/url-handling-strategy.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/src/angular.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/src/assets.ts",
+              "from": 1,
+              "to": 316
+            }
+          ]
+        },
+        {
+          "minutes": 240,
+          "parts": [
+            {
+              "file": "packages/runtime/src/assets.ts",
+              "from": 316,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/src/catalog-runtime.ts",
+              "from": 1,
+              "to": 434
+            }
+          ]
+        },
+        {
+          "minutes": 240,
+          "parts": [
+            {
+              "file": "packages/runtime/src/catalog-runtime.ts",
+              "from": 434,
+              "to": 629
+            }
+          ]
+        },
+        {
+          "minutes": 240,
+          "parts": [
+            {
+              "file": "packages/runtime/src/catalog-runtime.ts",
+              "from": 629,
+              "to": 1089
+            }
+          ]
+        },
+        {
+          "minutes": 240,
+          "parts": [
+            {
+              "file": "packages/runtime/src/catalog-runtime.ts",
+              "from": 1089,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/src/destinations.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/src/evaluator.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/src/extensions.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/src/formatting-pipes.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/src/formatting-runtime.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/src/formatting.ts",
+              "from": 1,
+              "to": 223
+            }
+          ]
+        },
+        {
+          "minutes": 240,
+          "parts": [
+            {
+              "file": "packages/runtime/src/formatting.ts",
+              "from": 223,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/src/issue-convention.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/src/label.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/src/locale-choice.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/src/locale-presentation.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/src/locale-resolution.ts",
+              "from": 1,
+              "to": 348
+            }
+          ]
+        },
+        {
+          "minutes": 240,
+          "parts": [
+            {
+              "file": "packages/runtime/src/locale-resolution.ts",
+              "from": 348,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/src/localization.ts",
+              "from": 1,
+              "to": 1568
+            }
+          ]
+        },
+        {
+          "minutes": 240,
+          "parts": [
+            {
+              "file": "packages/runtime/src/localization.ts",
+              "from": 1568,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/src/localized-input.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/src/message-template.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/src/observability.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/src/participant-runtime.ts",
+              "from": 1,
+              "to": 723
+            }
+          ]
+        },
+        {
+          "minutes": 240,
+          "parts": [
+            {
+              "file": "packages/runtime/src/participant-runtime.ts",
+              "from": 723,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/src/persistence.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/src/presentation.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/src/recovery.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/src/relative-time-policy.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/src/runtime-safety.ts",
+              "from": 1,
+              "to": 338
+            }
+          ]
+        },
+        {
+          "minutes": 161,
+          "parts": [
+            {
+              "file": "packages/runtime/src/runtime-safety.ts",
+              "from": 338,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/ssr/src/public-api.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/testing/src/public-api.ts",
+              "from": 1,
+              "to": null
+            },
+            {
+              "file": "packages/runtime/testing/src/server-seat.ts",
+              "from": 1,
+              "to": null
+            }
+          ]
+        }
+      ]
+    },
+    "toolkit": {
+      "configuration": "stryker.toolkit.config.mjs",
+      "basis": {
+        "reading": "A full toolkit reading: 2,831 mutants in 27,472 s, 27,070 s of it after the initial test run, at 21 workers with the patient clock and bail off. Runner factor 1.5: the toolkit slice took 360 job minutes at four workers on a hosted runner and 43 minutes 32 seconds at 24 workers on the 32-thread machine the readings were taken on, 1.38 times the local worker time, rounded up.",
+        "mutants": 2831,
+        "wallSeconds": 27070,
+        "workers": 21,
+        "dryRunNetSeconds": 143.77,
+        "secondsPerTestFile": 1.236,
+        "runnerFactor": 1.5,
+        "minutesPerPart": 240
+      },
+      "shards": [
+        {
+          "minutes": 239,
+          "parts": [
+            {
+              "file": "packages/toolkit/src/compiler.ts",
+              "from": 1,
+              "to": 627
+            }
+          ]
+        },
+        {
+          "minutes": 239,
+          "parts": [
+            {
+              "file": "packages/toolkit/src/compiler.ts",
+              "from": 627,
+              "to": 1073
+            }
+          ]
+        },
+        {
+          "minutes": 237,
+          "parts": [
+            {
+              "file": "packages/toolkit/src/compiler.ts",
+              "from": 1073,
+              "to": null
+            },
+            {
+              "file": "packages/toolkit/src/message-format.ts",
+              "from": 1,
+              "to": 543
+            }
+          ]
+        },
+        {
+          "minutes": 240,
+          "parts": [
+            {
+              "file": "packages/toolkit/src/message-format.ts",
+              "from": 543,
+              "to": 693
+            }
+          ]
+        },
+        {
+          "minutes": 238,
+          "parts": [
+            {
+              "file": "packages/toolkit/src/message-format.ts",
+              "from": 693,
+              "to": 896
+            }
+          ]
+        },
+        {
+          "minutes": 237,
+          "parts": [
+            {
+              "file": "packages/toolkit/src/message-format.ts",
+              "from": 896,
+              "to": 1027
+            }
+          ]
+        },
+        {
+          "minutes": 240,
+          "parts": [
+            {
+              "file": "packages/toolkit/src/message-format.ts",
+              "from": 1027,
+              "to": 1181
+            }
+          ]
+        },
+        {
+          "minutes": 238,
+          "parts": [
+            {
+              "file": "packages/toolkit/src/message-format.ts",
+              "from": 1181,
+              "to": null
+            },
+            {
+              "file": "packages/toolkit/src/semantic-model.ts",
+              "from": 1,
+              "to": 529
+            }
+          ]
+        },
+        {
+          "minutes": 238,
+          "parts": [
+            {
+              "file": "packages/toolkit/src/semantic-model.ts",
+              "from": 529,
+              "to": 866
+            }
+          ]
+        },
+        {
+          "minutes": 238,
+          "parts": [
+            {
+              "file": "packages/toolkit/src/semantic-model.ts",
+              "from": 866,
+              "to": 987
+            }
+          ]
+        },
+        {
+          "minutes": 238,
+          "parts": [
+            {
+              "file": "packages/toolkit/src/semantic-model.ts",
+              "from": 987,
+              "to": 1120
+            }
+          ]
+        },
+        {
+          "minutes": 238,
+          "parts": [
+            {
+              "file": "packages/toolkit/src/semantic-model.ts",
+              "from": 1120,
+              "to": 1484
+            }
+          ]
+        },
+        {
+          "minutes": 238,
+          "parts": [
+            {
+              "file": "packages/toolkit/src/semantic-model.ts",
+              "from": 1484,
+              "to": 1918
+            }
+          ]
+        },
+        {
+          "minutes": 240,
+          "parts": [
+            {
+              "file": "packages/toolkit/src/semantic-model.ts",
+              "from": 1918,
+              "to": 2054
+            }
+          ]
+        },
+        {
+          "minutes": 215,
+          "parts": [
+            {
+              "file": "packages/toolkit/src/semantic-model.ts",
+              "from": 2054,
+              "to": null
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

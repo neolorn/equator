@@ -1,0 +1,3 @@
+sitemap.xsd and siteindex.xsd in sitemaps-0.9-schemas/ are the schemas of the sitemaps protocol, version 0.9, published at https://www.sitemaps.org/schemas/sitemap/0.9/ by the sponsors of sitemaps.org: Google, Inc., Yahoo, Inc., and Microsoft Corporation. They are copied here unmodified.
+
+The sitemaps.org Terms of Service, https://www.sitemaps.org/terms.html, license the sponsors' copyrights in the sitemaps protocol specification under the Creative Commons Attribution-ShareAlike License, version 2.5: https://creativecommons.org/licenses/by-sa/2.5/legalcode

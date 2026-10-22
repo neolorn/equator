@@ -1,0 +1,21 @@
+{
+  "name": "@neolorn/npm-consumer",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@angular/common": "22.2.1",
+    "@angular/compiler": "22.2.1",
+    "@angular/core": "22.2.1",
+    "@angular/forms": "22.2.1",
+    "@angular/platform-browser": "22.2.1",
+    "@angular/platform-server": "22.2.1",
+    "@angular/router": "22.2.1",
+    "@angular/ssr": "22.2.1",
+    "@neolorn/equator": "file:equator/runtime.tgz",
+    "@neolorn/equator-toolkit": "file:equator/toolkit.tgz",
+    "rxjs": "7.8.2",
+    "tslib": "2.8.1",
+    "typescript": "6.0.3"
+  }
+}

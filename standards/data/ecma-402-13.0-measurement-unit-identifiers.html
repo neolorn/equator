@@ -1,0 +1,92 @@
+<emu-clause id="sec-measurement-unit-identifiers">
+    <h1><span class="secnum">6.6</span> Measurement Unit Identifiers</h1>
+
+    <p>This specification identifies measurement units using a <dfn variants="core unit identifiers,core unit ID,core unit IDs" tabindex="-1">core unit identifier</dfn> (or equivalently <em>core unit ID</em>) as defined by <a href="https://unicode.org/reports/tr35/tr35-general.html#Unit_Identifiers">Unicode Technical Standard #35 Part 2 General, Section 6.2 Unit Identifiers</a>.
+ Their canonical form is a string containing only Unicode Basic Latin 
+lowercase letters (U+0061 LATIN SMALL LETTER A through U+007A LATIN 
+SMALL LETTER Z) with zero or more medial hyphens (U+002D HYPHEN-MINUS).</p>
+
+    <p>
+      Only a limited set of core unit identifiers are sanctioned.
+      Attempting to use an unsanctioned core unit identifier results in a <emu-val>RangeError</emu-val>.
+    </p>
+
+    <emu-clause id="sec-iswellformedunitidentifier" type="abstract operation" aoid="IsWellFormedUnitIdentifier">
+      <h1><span class="secnum">6.6.1</span> IsWellFormedUnitIdentifier ( <var>unitIdentifier</var> )</h1>
+      <p>The abstract operation IsWellFormedUnitIdentifier takes argument <var>unitIdentifier</var> (a String) and returns a Boolean. It verifies that the <var>unitIdentifier</var> argument represents a well-formed <emu-xref href="#sec-measurement-unit-identifiers" id="_ref_321"><a href="#sec-measurement-unit-identifiers">core unit identifier</a></emu-xref>
+ that is either a sanctioned single unit or a complex unit formed by 
+division of two sanctioned single units. It performs the following steps
+ when called:</p>
+      <emu-alg><ol><li><span aria-hidden="true" class="list-marker">1. </span>If <emu-xref aoid="IsSanctionedSingleUnitIdentifier" id="_ref_322"><a href="#sec-issanctionedsingleunitidentifier">IsSanctionedSingleUnitIdentifier</a></emu-xref>(<var>unitIdentifier</var>) is <emu-val>true</emu-val>, then<ol><li><span aria-hidden="true" class="list-marker">   a. </span>Return <emu-val>true</emu-val>.</li></ol></li><li><span aria-hidden="true" class="list-marker">2. </span>Let <var>i</var> be <emu-xref aoid="StringIndexOf"><a href="https://tc39.es/ecma262/#sec-stringindexof">StringIndexOf</a></emu-xref>(<var>unitIdentifier</var>, <emu-val>"-per-"</emu-val>, 0).</li><li><span aria-hidden="true" class="list-marker">3. </span>If <var>i</var> is <emu-const>not-found</emu-const> or <emu-xref aoid="StringIndexOf"><a href="https://tc39.es/ecma262/#sec-stringindexof">StringIndexOf</a></emu-xref>(<var>unitIdentifier</var>, <emu-val>"-per-"</emu-val>, <var>i</var> + 1) is not <emu-const>not-found</emu-const>, then<ol><li><span aria-hidden="true" class="list-marker">   a. </span>Return <emu-val>false</emu-val>.</li></ol></li><li><span aria-hidden="true" class="list-marker">4. </span><emu-xref href="#assert"><a href="https://tc39.es/ecma262/#assert">Assert</a></emu-xref>: The five-character <emu-xref href="#substring"><a href="https://tc39.es/ecma262/#substring">substring</a></emu-xref> <emu-val>"-per-"</emu-val> occurs exactly once in <var>unitIdentifier</var>, at index <var>i</var>.</li><li><span aria-hidden="true" class="list-marker">5. </span>Let <var>numerator</var> be the <emu-xref href="#substring"><a href="https://tc39.es/ecma262/#substring">substring</a></emu-xref> of <var>unitIdentifier</var> from 0 to <var>i</var>.</li><li><span aria-hidden="true" class="list-marker">6. </span>Let <var>denominator</var> be the <emu-xref href="#substring"><a href="https://tc39.es/ecma262/#substring">substring</a></emu-xref> of <var>unitIdentifier</var> from <var>i</var> + 5.</li><li><span aria-hidden="true" class="list-marker">7. </span>If <emu-xref aoid="IsSanctionedSingleUnitIdentifier" id="_ref_323"><a href="#sec-issanctionedsingleunitidentifier">IsSanctionedSingleUnitIdentifier</a></emu-xref>(<var>numerator</var>) and <emu-xref aoid="IsSanctionedSingleUnitIdentifier" id="_ref_324"><a href="#sec-issanctionedsingleunitidentifier">IsSanctionedSingleUnitIdentifier</a></emu-xref>(<var>denominator</var>) are both <emu-val>true</emu-val>, then<ol><li><span aria-hidden="true" class="list-marker">   a. </span>Return <emu-val>true</emu-val>.</li></ol></li><li><span aria-hidden="true" class="list-marker">8. </span>Return <emu-val>false</emu-val>.</li></ol></emu-alg>
+    </emu-clause>
+
+    <emu-clause id="sec-issanctionedsingleunitidentifier" type="abstract operation" oldids="sec-issanctionedsimpleunitidentifier" aoid="IsSanctionedSingleUnitIdentifier"><span id="sec-issanctionedsimpleunitidentifier"></span>
+      <h1><span class="secnum">6.6.2</span> IsSanctionedSingleUnitIdentifier ( <var>unitIdentifier</var> )</h1>
+      <p>The abstract operation IsSanctionedSingleUnitIdentifier takes argument <var>unitIdentifier</var> (a String) and returns a Boolean. It verifies that the <var>unitIdentifier</var>
+ argument is among the single unit identifiers sanctioned in the current
+ version of this specification, which are a subset of the Common Locale 
+Data Repository <a href="https://github.com/unicode-org/cldr/blob/maint/maint-38/common/validity/unit.xml">release 38 unit validity data</a>; the list may grow over time. As discussed in <a href="https://unicode.org/reports/tr35/tr35-general.html#Unit_Identifiers">Unicode Technical Standard #35 Part 2 General, Section 6.2 Unit Identifiers</a>, a single unit identifier is a <emu-xref href="#sec-measurement-unit-identifiers" id="_ref_325"><a href="#sec-measurement-unit-identifiers">core unit identifier</a></emu-xref> that is not composed of multiplication or division of other unit identifiers. It performs the following steps when called:</p>
+      <emu-alg><ol><li><span aria-hidden="true" class="list-marker">1. </span>If <var>unitIdentifier</var> is listed in <emu-xref href="#table-sanctioned-single-unit-identifiers" id="_ref_20"><a href="#table-sanctioned-single-unit-identifiers">Table 2</a></emu-xref> below, return <emu-val>true</emu-val>.</li><li><span aria-hidden="true" class="list-marker">2. </span>Else, return <emu-val>false</emu-val>.</li></ol></emu-alg>
+
+      <emu-table id="table-sanctioned-single-unit-identifiers" oldids="table-sanctioned-simple-unit-identifiers"><figure><figcaption>Table 2: Single units sanctioned for use in ECMAScript</figcaption><span id="table-sanctioned-simple-unit-identifiers"></span>
+        
+        <table class="real-table">
+          <thead>
+            <tr>
+              <th>Single Unit Identifier</th>
+            </tr>
+          </thead>
+          <tbody><tr><td>acre</td></tr>
+          <tr><td>bit</td></tr>
+          <tr><td>byte</td></tr>
+          <tr><td>celsius</td></tr>
+          <tr><td>centimeter</td></tr>
+          <tr><td>day</td></tr>
+          <tr><td>degree</td></tr>
+          <tr><td>fahrenheit</td></tr>
+          <tr><td>fluid-ounce</td></tr>
+          <tr><td>foot</td></tr>
+          <tr><td>gallon</td></tr>
+          <tr><td>gigabit</td></tr>
+          <tr><td>gigabyte</td></tr>
+          <tr><td>gram</td></tr>
+          <tr><td>hectare</td></tr>
+          <tr><td>hour</td></tr>
+          <tr><td>inch</td></tr>
+          <tr><td>kilobit</td></tr>
+          <tr><td>kilobyte</td></tr>
+          <tr><td>kilogram</td></tr>
+          <tr><td>kilometer</td></tr>
+          <tr><td>liter</td></tr>
+          <tr><td>megabit</td></tr>
+          <tr><td>megabyte</td></tr>
+          <tr><td>meter</td></tr>
+          <tr><td>microsecond</td></tr>
+          <tr><td>mile</td></tr>
+          <tr><td>mile-scandinavian</td></tr>
+          <tr><td>milliliter</td></tr>
+          <tr><td>millimeter</td></tr>
+          <tr><td>millisecond</td></tr>
+          <tr><td>minute</td></tr>
+          <tr><td>month</td></tr>
+          <tr><td>nanosecond</td></tr>
+          <tr><td>ounce</td></tr>
+          <tr><td>percent</td></tr>
+          <tr><td>petabyte</td></tr>
+          <tr><td>pound</td></tr>
+          <tr><td>second</td></tr>
+          <tr><td>stone</td></tr>
+          <tr><td>terabit</td></tr>
+          <tr><td>terabyte</td></tr>
+          <tr><td>week</td></tr>
+          <tr><td>yard</td></tr>
+          <tr><td>year</td></tr>
+        </tbody></table>
+      </figure></emu-table>
+    </emu-clause>
+
+    <emu-clause id="sec-availablecanonicalunits" type="abstract operation" aoid="AvailableCanonicalUnits">
+      <h1><span class="secnum">6.6.3</span> AvailableCanonicalUnits ( )</h1>
+      <p>The abstract operation AvailableCanonicalUnits takes no arguments and returns a <emu-xref href="#sec-list-and-record-specification-type"><a href="https://tc39.es/ecma262/#sec-list-and-record-specification-type">List</a></emu-xref> of Strings. The returned <emu-xref href="#sec-list-and-record-specification-type"><a href="https://tc39.es/ecma262/#sec-list-and-record-specification-type">List</a></emu-xref> is sorted according to <emu-xref href="#lexicographic-code-unit-order"><a href="https://tc39.es/ecma262/#lexicographic-code-unit-order">lexicographic code unit order</a></emu-xref>, and consists of the unique values of simple unit identifiers listed in every row of <emu-xref href="#table-sanctioned-single-unit-identifiers" id="_ref_21"><a href="#table-sanctioned-single-unit-identifiers">Table 2</a></emu-xref>, except the header row.</p>
+    </emu-clause>
+  </emu-clause>

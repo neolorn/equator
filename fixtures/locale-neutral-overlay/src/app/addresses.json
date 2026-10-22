@@ -1,0 +1,94 @@
+{
+  "policy": "locale-neutral",
+  "prerendered": ["article", "exercise values"],
+  "xDefault": "https://site.example/",
+  "localeNeutralRoots": ["assets"],
+  "sharedWithPseudoLocales": {
+    "article": ["en-US"],
+    "exercise values": ["en-US"]
+  },
+  "origins": {
+    "en-US": "https://site.example",
+    "ar-EG": "https://site.example",
+    "en-Arab-XB": "https://site.example"
+  },
+  "pages": {
+    "home": {
+      "en-US": "/"
+    },
+    "second": {
+      "en-US": "/second"
+    },
+    "lazy": {
+      "en-US": "/lazy"
+    },
+    "deferred": {
+      "en-US": "/deferred"
+    },
+    "item": {
+      "en-US": "/items/42",
+      "ar-EG": "/عناصر/42"
+    },
+    "withdrawn item": {
+      "en-US": "/items/410",
+      "ar-EG": "/عناصر/410"
+    },
+    "unreachable item": {
+      "en-US": "/items/503",
+      "ar-EG": "/عناصر/503"
+    },
+    "article": {
+      "en-US": "/articles/handbook",
+      "ar-EG": "/articles/دليل"
+    },
+    "article under the English slug": {},
+    "topic": {
+      "en-US": "/topics/handbook"
+    },
+    "unfiled topic": {
+      "en-US": "/topics/unfiled-topic"
+    },
+    "retired topic": {
+      "en-US": "/topics/retired-topic"
+    },
+    "unavailable topic": {
+      "en-US": "/topics/unavailable-topic"
+    },
+    "dossier": {
+      "en-US": "/dossiers/dossier"
+    },
+    "withdrawn dossier": {
+      "en-US": "/dossiers/withdrawn-dossier"
+    },
+    "unreachable dossier": {
+      "en-US": "/dossiers/unreachable-dossier"
+    },
+    "declared dossier": {
+      "en-US": "/dossiers/dossier"
+    },
+    "unlisted dossier": {
+      "en-US": "/dossiers/unlisted-dossier"
+    },
+    "second under an alias": {},
+    "legacy": {
+      "en-US": "/legacy"
+    },
+    "removed": {
+      "en-US": "/removed"
+    },
+    "exercise": {
+      "en-US": "/exercise/live",
+      "ar-EG": "/تمرين/مباشر"
+    },
+    "exercise values": {
+      "en-US": "/exercise/values",
+      "ar-EG": "/تمرين/قيم"
+    },
+    "drawn sheet": {
+      "en-US": "/drawn-sheet"
+    },
+    "missing": {
+      "en-US": "/nothing-is-mounted-here"
+    }
+  }
+}

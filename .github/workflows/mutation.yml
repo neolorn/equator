@@ -1,0 +1,196 @@
+# Mutation testing, on request.
+#
+# Not a stage in `verify`. The gate already mutation-tests by hand, with the declared injections of
+# its two assurance harnesses: the mutations somebody thought of. This is the general form, tens of
+# thousands of mutants, and its cost is why it is not automatic.
+#
+# What comes out is a reading list, not a verdict. `thresholds.break` is null, so a score cannot
+# fail this job; only an error can. Each survivor is answered with a test, or recorded with its
+# reason in `tools/mutation-reasons.json`, and
+# `node tools/verify-mutation-reasons.mjs --report <every part's report.json>` reads the parts
+# together.
+#
+# A reading is taken in parts, because a hosted job ends at 330 minutes and a whole half takes many
+# times that on a runner's four workers. `tools/mutation-shards.json` divides each half between
+# parts, and `tools/mutation-shards.mjs` says how a part reads its share and why every mutant is
+# read by exactly one part. The division was estimated from local readings to take 240 minutes or
+# less per part, which leaves room inside the 330 for the install and the initial test run.
+#
+# Dispatch rather than a schedule: a reading produces survivors somebody has to read, and a
+# schedule would take one on the weeks nothing changed.
+name: mutation
+
+on:
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: Which half to read
+        type: choice
+        default: runtime
+        options: [runtime, toolkit, both]
+
+# One at a time, and the newer one wins. A run still going when the next is dispatched is measuring
+# a commit nobody asked about any more.
+concurrency:
+  group: mutation-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  # The parts each half has, checked to cover every file once before any part starts, so a division
+  # that would read a mutant twice or not at all fails in seconds rather than after hours.
+  parts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      runtime: ${{ steps.parts.outputs.runtime }}
+      toolkit: ${{ steps.parts.outputs.toolkit }}
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .node-version
+
+      - name: Install pnpm
+        run: |
+          version="$(node -p "require('./package.json').packageManager.split('@')[1]")"
+          npm install --global "pnpm@${version}"
+          pnpm --version
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Check the parts
+        run: node tools/mutation-shards.mjs check
+
+      - name: List the parts
+        id: parts
+        run: |
+          matrix="$(node tools/mutation-shards.mjs matrix)"
+          echo "runtime=$(node -p "JSON.stringify(${matrix}.runtime)")" >> "$GITHUB_OUTPUT"
+          echo "toolkit=$(node -p "JSON.stringify(${matrix}.toolkit)")" >> "$GITHUB_OUTPUT"
+
+  runtime:
+    needs: parts
+    if: inputs.scope != 'toolkit'
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    strategy:
+      fail-fast: false
+      matrix:
+        part: ${{ fromJSON(needs.parts.outputs.runtime) }}
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .node-version
+
+      - name: Install pnpm
+        run: |
+          version="$(node -p "require('./package.json').packageManager.split('@')[1]")"
+          npm install --global "pnpm@${version}"
+          pnpm --version
+
+      - name: Locate the pnpm store
+        id: store
+        run: echo "path=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/cache@v6
+        with:
+          path: ${{ steps.store.outputs.path }}
+          key: pnpm-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'fixtures/**/pnpm-lock.yaml') }}
+          restore-keys: pnpm-${{ runner.os }}-
+
+      - run: pnpm install --frozen-lockfile
+
+      # The checkout is the job's own and is thrown away with it, so the part's directives can be
+      # written into its sources.
+      - name: Mark this part's mutants
+        id: part
+        run: >
+          echo "mutate=$(node tools/mutation-shards.mjs apply runtime ${{ matrix.part }}
+          --disposable-checkout)" >> "$GITHUB_OUTPUT"
+
+      # The worker count is named because `tools/run-mutation.mjs` otherwise hands Stryker two
+      # thirds of the machine, which is right on a working machine and would narrow this runner.
+      - name: Mutate
+        run: >
+          node tools/run-mutation.mjs stryker.config.mjs --concurrency 4
+          --mutate "${{ steps.part.outputs.mutate }}"
+
+      # The whole point of the run. The HTML report is how a survivor is read: the mutant, the line,
+      # and the tests that did not notice.
+      - name: Keep the report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: mutation-runtime-${{ matrix.part }}-${{ github.run_id }}
+          path: tmp/mutation
+          if-no-files-found: warn
+          retention-days: 90
+
+  toolkit:
+    needs: parts
+    if: inputs.scope != 'runtime'
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    strategy:
+      fail-fast: false
+      matrix:
+        part: ${{ fromJSON(needs.parts.outputs.toolkit) }}
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .node-version
+
+      - name: Install pnpm
+        run: |
+          version="$(node -p "require('./package.json').packageManager.split('@')[1]")"
+          npm install --global "pnpm@${version}"
+          pnpm --version
+
+      - name: Locate the pnpm store
+        id: store
+        run: echo "path=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/cache@v6
+        with:
+          path: ${{ steps.store.outputs.path }}
+          key: pnpm-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'fixtures/**/pnpm-lock.yaml') }}
+          restore-keys: pnpm-${{ runner.os }}-
+
+      - run: pnpm install --frozen-lockfile
+
+      # The checkout is the job's own and is thrown away with it, so the part's directives can be
+      # written into its sources.
+      - name: Mark this part's mutants
+        id: part
+        run: >
+          echo "mutate=$(node tools/mutation-shards.mjs apply toolkit ${{ matrix.part }}
+          --disposable-checkout)" >> "$GITHUB_OUTPUT"
+
+      # The worker count is named because `tools/run-mutation.mjs` otherwise hands Stryker two
+      # thirds of the machine, which is right on a working machine and would narrow this runner.
+      - name: Mutate
+        run: >
+          node tools/run-mutation.mjs stryker.toolkit.config.mjs --concurrency 4
+          --mutate "${{ steps.part.outputs.mutate }}"
+
+      # The whole point of the run. The HTML report is how a survivor is read: the mutant, the line,
+      # and the tests that did not notice.
+      - name: Keep the report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: mutation-toolkit-${{ matrix.part }}-${{ github.run_id }}
+          path: tmp/mutation-toolkit
+          if-no-files-found: warn
+          retention-days: 90

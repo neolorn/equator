@@ -1,0 +1,10 @@
+{
+  "name": "@neolorn/embedded-lab",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#i18n": "./src/generated/i18n/index.ts",
+    "#i18n/*": "./src/generated/i18n/*.ts"
+  }
+}

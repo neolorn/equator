@@ -1,0 +1,134 @@
+{
+  "policy": "default-locale-prefix",
+  "prerendered": ["second", "article", "exercise values", "deferred"],
+  "xDefault": "https://site.example/",
+  "localeNeutralRoots": ["assets"],
+  "revalidateSuccess": false,
+  "origins": {
+    "en-US": "https://site.example",
+    "ar-EG": "https://site.example",
+    "en-Arab-XB": "https://site.example"
+  },
+  "pages": {
+    "home": {
+      "en-US": "/",
+      "ar-EG": "/ar-eg",
+      "en-Arab-XB": "/en-arab-xb"
+    },
+    "second": {
+      "en-US": "/second",
+      "ar-EG": "/ar-eg/second",
+      "en-Arab-XB": "/en-arab-xb/second"
+    },
+    "lazy": {
+      "en-US": "/lazy",
+      "ar-EG": "/ar-eg/lazy",
+      "en-Arab-XB": "/en-arab-xb/lazy"
+    },
+    "deferred": {
+      "en-US": "/deferred",
+      "ar-EG": "/ar-eg/deferred",
+      "en-Arab-XB": "/en-arab-xb/deferred"
+    },
+    "item": {
+      "en-US": "/items/42",
+      "ar-EG": "/ar-eg/عناصر/42",
+      "en-Arab-XB": "/en-arab-xb/items/42"
+    },
+    "withdrawn item": {
+      "en-US": "/items/410",
+      "ar-EG": "/ar-eg/عناصر/410",
+      "en-Arab-XB": "/en-arab-xb/items/410"
+    },
+    "unreachable item": {
+      "en-US": "/items/503",
+      "ar-EG": "/ar-eg/عناصر/503",
+      "en-Arab-XB": "/en-arab-xb/items/503"
+    },
+    "article": {
+      "en-US": "/articles/handbook",
+      "ar-EG": "/ar-eg/articles/دليل",
+      "en-Arab-XB": "/en-arab-xb/articles/handbook"
+    },
+    "article under the English slug": {
+      "ar-EG": "/ar-eg/articles/handbook"
+    },
+    "topic": {
+      "en-US": "/topics/handbook",
+      "ar-EG": "/ar-eg/topics/handbook",
+      "en-Arab-XB": "/en-arab-xb/topics/handbook"
+    },
+    "unfiled topic": {
+      "en-US": "/topics/unfiled-topic",
+      "ar-EG": "/ar-eg/topics/unfiled-topic",
+      "en-Arab-XB": "/en-arab-xb/topics/unfiled-topic"
+    },
+    "retired topic": {
+      "en-US": "/topics/retired-topic",
+      "ar-EG": "/ar-eg/topics/retired-topic",
+      "en-Arab-XB": "/en-arab-xb/topics/retired-topic"
+    },
+    "unavailable topic": {
+      "en-US": "/topics/unavailable-topic",
+      "ar-EG": "/ar-eg/topics/unavailable-topic",
+      "en-Arab-XB": "/en-arab-xb/topics/unavailable-topic"
+    },
+    "dossier": {
+      "en-US": "/dossiers/dossier",
+      "ar-EG": "/ar-eg/dossiers/dossier",
+      "en-Arab-XB": "/en-arab-xb/dossiers/dossier"
+    },
+    "withdrawn dossier": {
+      "en-US": "/dossiers/withdrawn-dossier",
+      "ar-EG": "/ar-eg/dossiers/withdrawn-dossier",
+      "en-Arab-XB": "/en-arab-xb/dossiers/withdrawn-dossier"
+    },
+    "unreachable dossier": {
+      "en-US": "/dossiers/unreachable-dossier",
+      "ar-EG": "/ar-eg/dossiers/unreachable-dossier",
+      "en-Arab-XB": "/en-arab-xb/dossiers/unreachable-dossier"
+    },
+    "declared dossier": {
+      "en-US": "/dossiers/dossier",
+      "ar-EG": "/ar-eg/dossiers/ملف"
+    },
+    "unlisted dossier": {
+      "en-US": "/dossiers/unlisted-dossier",
+      "ar-EG": "/ar-eg/dossiers/unlisted-dossier"
+    },
+    "second under an alias": {
+      "en-US": "/en/second",
+      "ar-EG": "/ar/second"
+    },
+    "legacy": {
+      "en-US": "/legacy",
+      "ar-EG": "/ar-eg/legacy",
+      "en-Arab-XB": "/en-arab-xb/legacy"
+    },
+    "removed": {
+      "en-US": "/removed",
+      "ar-EG": "/ar-eg/removed",
+      "en-Arab-XB": "/en-arab-xb/removed"
+    },
+    "exercise": {
+      "en-US": "/exercise/live",
+      "ar-EG": "/ar-eg/تمرين/مباشر",
+      "en-Arab-XB": "/en-arab-xb/exercise/live"
+    },
+    "exercise values": {
+      "en-US": "/exercise/values",
+      "ar-EG": "/ar-eg/تمرين/قيم",
+      "en-Arab-XB": "/en-arab-xb/exercise/values"
+    },
+    "drawn sheet": {
+      "en-US": "/drawn-sheet",
+      "ar-EG": "/ar-eg/drawn-sheet",
+      "en-Arab-XB": "/en-arab-xb/drawn-sheet"
+    },
+    "missing": {
+      "en-US": "/nothing-is-mounted-here",
+      "ar-EG": "/ar-eg/nothing-is-mounted-here",
+      "en-Arab-XB": "/en-arab-xb/nothing-is-mounted-here"
+    }
+  }
+}

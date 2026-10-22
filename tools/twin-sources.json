@@ -1,0 +1,36 @@
+{
+  "twins": [
+    {
+      "runtime": "packages/runtime/src/message-function-options.ts",
+      "toolkit": "packages/toolkit/src/message-function-options.ts"
+    },
+    {
+      "runtime": "packages/runtime/src/message-format-syntax.ts",
+      "toolkit": "packages/toolkit/src/message-format-syntax.ts"
+    },
+    {
+      "runtime": "packages/runtime/core/src/xml-text.ts",
+      "toolkit": "packages/toolkit/src/xml-text.ts"
+    },
+    {
+      "runtime": "packages/runtime/core/src/pseudo-locale-tags.ts",
+      "toolkit": "packages/toolkit/src/pseudo-locale-tags.ts"
+    },
+    {
+      "runtime": "packages/runtime/core/src/language-tag.ts",
+      "toolkit": "packages/toolkit/src/language-tag.ts"
+    },
+    {
+      "runtime": "packages/runtime/core/src/locale-aliases.generated.ts",
+      "toolkit": "packages/toolkit/src/locale-aliases.generated.ts"
+    },
+    {
+      "runtime": "packages/runtime/src/parent-locales.generated.ts",
+      "toolkit": "packages/toolkit/src/parent-locales.generated.ts"
+    },
+    {
+      "runtime": "packages/runtime/src/time-zone-identities.generated.ts",
+      "toolkit": "packages/toolkit/src/time-zone-identities.generated.ts"
+    }
+  ]
+}
