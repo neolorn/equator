@@ -18,7 +18,8 @@
  * as reports: none at all, which is what a consumer that did not compile leaves; a file that failed
  * without running a test; a failing test; and a passing run. So is its reading of the browser gate,
  * which writes no report: a failure counts as a catch only when it carries the assertion the
- * injection names, and a browser that never started carries none.
+ * injection names, and a browser that never started carries none. A stage that ends on an uncaught
+ * exception with the assertion at the end of a long message is read whole.
  */
 import assert from 'node:assert/strict';
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
@@ -31,6 +32,7 @@ import {
   measureInjection,
   verdictOf,
 } from './assurance-runner.ts';
+import { spawnedOutput, spawnSyncToFiles } from './spawned-text.ts';
 
 const workspaceRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -226,6 +228,32 @@ const browserRuns = [
     expect: 'unmeasured',
   },
 ];
+// A stage that fails by throwing, with the named assertion at the end of a long message, the way the
+// consumer gate fails with its child's output embedded. It reports progress first, as the gate does,
+// because Node makes a piped stream non-blocking only once it is used. Read through a pipe on Linux,
+// the message stops before the assertion; it has to arrive whole wherever the gate runs. The
+// assertion comes in through the environment, because Node prints the line that threw above the
+// message, and a line that spelled the assertion out would carry it however much was lost.
+const thrown = spawnSyncToFiles(
+  process.execPath,
+  [
+    '-e',
+    "process.stderr.write('Building the consumer\\n'); throw new Error('x'.repeat(99).concat('\\n').repeat(3000) + process.env.EQUATOR_SELF_TEST_ASSERTION);",
+  ],
+  {
+    env: {
+      ...process.env,
+      EQUATOR_SELF_TEST_ASSERTION:
+        '[data-locale-choice="ar-EG"] lost focus during the locale commit',
+    },
+  },
+);
+browserRuns.push({
+  name: 'thrown with a long message',
+  status: thrown.status ?? 1,
+  output: spawnedOutput(thrown),
+  expect: 'caught',
+});
 for (const { name, status, output, expect, ...rest } of browserRuns) {
   const { verdict } = gateVerdict({
     gate: 'verify:browser-assurance',
@@ -245,5 +273,5 @@ assert.deepEqual(
   `The assurance runners misclassified planted cases:\n  ${wrong.join('\n  ')}`,
 );
 process.stdout.write(
-  `\nverify:assurance:self-test GREEN: a real injection was caught, an inert one reported unguarded, and a module that never loaded, a missing test, a test failing with nothing injected, and a suite that left no report or ran nothing, and a browser run failing without the named assertion, were none of them counted as a catch.\n`,
+  `\nverify:assurance:self-test GREEN: a real injection was caught, an inert one reported unguarded, and a module that never loaded, a missing test, a test failing with nothing injected, and a suite that left no report or ran nothing, and a browser run failing without the named assertion, were none of them counted as a catch, and a stage that threw a long message was read to its end.\n`,
 );

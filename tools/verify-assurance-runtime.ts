@@ -18,7 +18,6 @@
  */
 
 import assert from 'node:assert/strict';
-import { spawnSync } from 'node:child_process';
 import {
   existsSync,
   mkdirSync,
@@ -43,7 +42,11 @@ import {
   type RuntimeInjection,
 } from './assurance-runtime-injections.ts';
 import { steps } from './verify-stages.ts';
-import { type SpawnedText, spawnedOutput } from './spawned-text.ts';
+import {
+  type SpawnedText,
+  spawnedOutput,
+  spawnSyncToFiles,
+} from './spawned-text.ts';
 
 /** The part of an injection read here. */
 
@@ -69,14 +72,14 @@ function run(
   environment: Readonly<Record<string, string>> = {},
 ): SpawnedText {
   const windows = process.platform === 'win32';
-  return spawnSync(
+  // Through files, because a suite's verdict is read from what it printed, and through a pipe a
+  // child that ends on an uncaught exception loses the end of its message on Linux and macOS.
+  return spawnSyncToFiles(
     windows ? (process.env['ComSpec'] ?? 'cmd.exe') : command,
     windows ? ['/d', '/s', '/c', command, ...args] : args,
     {
       cwd,
-      encoding: 'utf8',
       env: { ...process.env, CI: 'true', NO_COLOR: '1', ...environment },
-      maxBuffer: 16_777_216,
       timeout: 600_000,
     },
   );
