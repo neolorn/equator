@@ -8,7 +8,7 @@ import {
   type FormattingContext,
 } from '@neolorn/equator';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 /**
  * Instants finer than a millisecond.

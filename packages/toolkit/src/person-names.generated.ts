@@ -1,4 +1,4 @@
-/** Generated from cldr-person-names-full 48.2.0 by tools/generate-person-names.mjs. */
+/** Generated from cldr-person-names-full 48.2.0 by tools/generate-person-names.ts. */
 export const PERSON_NAME_DATA_PROFILE =
   'cldr-48.2/equator-person-names-1' as const;
 

@@ -35,7 +35,7 @@ import {
   switchInDocument,
 } from './addresses';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 /**
  * A slug the codec cannot translate, supplied by the page that loaded it.

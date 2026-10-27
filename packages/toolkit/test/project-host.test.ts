@@ -28,7 +28,7 @@ import {
   initializeProject,
 } from '../src/project-host.js';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 const temporaryRoots: string[] = [];
 

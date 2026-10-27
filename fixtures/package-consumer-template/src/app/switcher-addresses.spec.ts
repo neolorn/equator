@@ -27,7 +27,7 @@ import {
 } from './addresses';
 import { runtimeExtensions } from './runtime-extensions';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 /**
  * Where this page lives in every other locale, and who is allowed to know.

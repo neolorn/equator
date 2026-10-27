@@ -13,7 +13,7 @@ import {
   type SitemapDocument,
 } from '@neolorn/equator/core';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * Every file Equator writes, against the schemas the publishers ship for the format it claims.

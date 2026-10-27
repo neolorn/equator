@@ -45,7 +45,7 @@
     "cldrLocaleNames": {
       "package": "cldr-localenames-full",
       "version": "48.2.0",
-      "role": "Development-only derivation input. tools/generate-locale-profile.mjs derives packages/toolkit/src/endonyms.generated.ts, the name each locale gives itself, from this package's display-name data. Not shipped: the package is a dependency of neither published package, and only the generated table reaches one.",
+      "role": "Development-only derivation input. tools/generate-locale-profile.ts derives packages/toolkit/src/endonyms.generated.ts, the name each locale gives itself, from this package's display-name data. Not shipped: the package is a dependency of neither published package, and only the generated table reaches one.",
       "url": "https://registry.npmjs.org/cldr-localenames-full/-/cldr-localenames-full-48.2.0.tgz",
       "digest": {
         "algorithm": "SHA-512",
@@ -62,13 +62,13 @@
       "version": "48.2.0",
       "url": "https://registry.npmjs.org/cldr-person-names-full/-/cldr-person-names-full-48.2.0.tgz",
       "projectSnapshot": "data/cldr-person-names-48.2.0",
-      "role": "Development-only derivation input. tools/generate-person-names.mjs derives the deduplicated pattern table the toolkit carries, and the toolkit generates a per-consumer subset of it from the configured locales. Not shipped: neither the vendored files nor the full table reaches a browser.",
+      "role": "Development-only derivation input. tools/generate-person-names.ts derives the deduplicated pattern table the toolkit carries, and the toolkit generates a per-consumer subset of it from the configured locales. Not shipped: neither the vendored files nor the full table reaches a browser.",
       "fileCount": 767,
       "bytes": 4649279,
       "digest": {
         "algorithm": "SHA-256",
         "encoding": "hex",
-        "scope": "Manifest digest. One SHA-256 over the sorted lines `<name> <sha256-of-contents>` for every vendored file, LICENSE included, rather than 767 separate entries. Any single byte in any file moves this value, and tools/verify-standards-sources.mjs recomputes it.",
+        "scope": "Manifest digest. One SHA-256 over the sorted lines `<name> <sha256-of-contents>` for every vendored file, LICENSE included, rather than 767 separate entries. Any single byte in any file moves this value, and tools/verify-standards-sources.ts recomputes it.",
         "value": "37dc79e909311921051eb31eb250f69c9a2887fa6f63288465cf7f2b9ca7d26b"
       },
       "snapshotLayout": "Each `main/<locale>/personNames.json` in the package is vendored as `<locale>.json`, contents byte for byte unchanged. Only the path is flattened; the manifest digest is over contents, so the layout carries no part of the provenance claim.",
@@ -103,13 +103,13 @@
       "version": "LDML48.2",
       "url": "https://codeload.github.com/unicode-org/message-format-wg/tar.gz/refs/tags/LDML48.2",
       "projectSnapshot": "data/message-format-tests-48.2",
-      "role": "Development-only conformance input. tools/verify-message-format-conformance.mjs runs these cases through the built runtime's evaluator against the built toolkit's IR. Not shipped: no vendored file reaches a browser or a published package.",
+      "role": "Development-only conformance input. tools/verify-message-format-conformance.ts runs these cases through the built runtime's evaluator against the built toolkit's IR. Not shipped: no vendored file reaches a browser or a published package.",
       "fileCount": 19,
       "bytes": 90612,
       "digest": {
         "algorithm": "SHA-256",
         "encoding": "hex",
-        "scope": "Manifest digest. One SHA-256 over the sorted lines `<name> <sha256-of-contents>` for every vendored file, LICENSE included. Any single byte in any file moves this value, and tools/verify-standards-sources.mjs recomputes it.",
+        "scope": "Manifest digest. One SHA-256 over the sorted lines `<name> <sha256-of-contents>` for every vendored file, LICENSE included. Any single byte in any file moves this value, and tools/verify-standards-sources.ts recomputes it.",
         "value": "b2178c0ee89fcbf3b0e3cbaf2f320c5d9f5875b2dfbc00cd11e5ada5f3192361"
       },
       "snapshotLayout": "The release's `test/` directory verbatim (`tests/`, `schemas/` and its README) with the repository LICENSE beside it. Nothing else from the release is vendored, because nothing else is data this repository reads.",
@@ -141,7 +141,7 @@
     "ianaLanguageSubtagRegistry": {
       "fileDate": "2026-09-17",
       "url": "https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry",
-      "role": "Development-only derivation input. tools/generate-locale-profile.mjs reads its Macrolanguage relations, beside cldr-core's matching data, to derive packages/runtime/src/encompassed-languages.generated.ts. Only the generated table reaches a published package.",
+      "role": "Development-only derivation input. tools/generate-locale-profile.ts reads its Macrolanguage relations, beside cldr-core's matching data, to derive packages/runtime/src/encompassed-languages.generated.ts. Only the generated table reaches a published package.",
       "projectSnapshot": "data/language-subtag-registry-2026-09-17.txt",
       "bytes": 731819,
       "digest": {
@@ -160,7 +160,7 @@
       "fileDate": "2025-07-24",
       "url": "https://www.unicode.org/Public/17.0.0/ucd/extracted/DerivedBidiClass.txt",
       "projectSnapshot": "data/DerivedBidiClass-17.0.0.txt",
-      "role": "Development-only derivation input. tools/generate-locale-profile.mjs derives the strong right-to-left character class from Bidi_Class in {R, AL}. Not shipped: the generated character class is, the file is not.",
+      "role": "Development-only derivation input. tools/generate-locale-profile.ts derives the strong right-to-left character class from Bidi_Class in {R, AL}. Not shipped: the generated character class is, the file is not.",
       "bytes": 173433,
       "digest": {
         "algorithm": "SHA-256",
@@ -199,7 +199,7 @@
       "released": "2026-09-29",
       "url": "https://data.iana.org/time-zones/releases/tzdata2026e.tar.gz",
       "projectSnapshot": "data/tzdata-2026e",
-      "role": "The time zone database release the profile is pinned to. Development-only derivation input: tools/generate-locale-profile.mjs derives packages/runtime/src/time-zone-identities.generated.ts, the primary identifier of every name the release's zone.tab, backward and etcetera files carry, resolved inside a name's own country with the release's backzone file, and only that table reaches a published package.",
+      "role": "The time zone database release the profile is pinned to. Development-only derivation input: tools/generate-locale-profile.ts derives packages/runtime/src/time-zone-identities.generated.ts, the primary identifier of every name the release's zone.tab, backward and etcetera files carry, resolved inside a name's own country with the release's backzone file, and only that table reaches a published package.",
       "snapshotLayout": "Four files of the release, byte for byte: `backward`, which holds the links from former and merged names; `zone.tab`, whose country and TZ columns say which names a country still calls its own; `backzone`, whose link lines say which of a country's names a former name stood for; and `etcetera`, which holds the zones that belong to no country, UTC, GMT and the fixed offsets from them. Nothing else in the release is read, and of `backzone` only those link lines. The release's `factory` file is left out on purpose: its one zone stands for a clock nobody has set and names no time zone.",
       "renames": [
         {
@@ -209,7 +209,7 @@
           "released": "2022-08-10"
         }
       ],
-      "renamesRole": "Each time the database added a Zone to replace an existing one and kept the former name as a Link, with the release that did it. ECMA-402 section 6.5 recommends that the new name resolve to the former one for two years, and no file of a release dates its Links, so the dates are written here: `released` is the day in the `Release` heading of the release's own NEWS file, read from the verified archive, for the pinned release above and for each renaming release. tools/generate-locale-profile.mjs holds every entry against the pinned `backward` and `zone.tab`, and stops at a rename a newer pin brings that has no entry. An entry is never removed; the latest one stays so that the rule always has a rename to be held against.",
+      "renamesRole": "Each time the database added a Zone to replace an existing one and kept the former name as a Link, with the release that did it. ECMA-402 section 6.5 recommends that the new name resolve to the former one for two years, and no file of a release dates its Links, so the dates are written here: `released` is the day in the `Release` heading of the release's own NEWS file, read from the verified archive, for the pinned release above and for each renaming release. tools/generate-locale-profile.ts holds every entry against the pinned `backward` and `zone.tab`, and stops at a rename a newer pin brings that has no entry. An entry is never removed; the latest one stays so that the rule always has a rename to be held against.",
       "crossCheck": {
         "method": "The release archive was verified against its detached OpenPGP signature before extraction, and the vendored files were taken from that verified archive and from nothing else. The signature is the tz coordinator's, the key the release announcements are signed with.",
         "artifact": "tzdata2026e.tar.gz",
@@ -278,7 +278,7 @@
       "version": "ECMA-402 13th edition, June 2026",
       "url": "https://402.ecma-international.org/13.0/index.html",
       "projectSnapshot": "data/ecma-402-13.0-measurement-unit-identifiers.html",
-      "role": "Development-only derivation input. tools/generate-locale-profile.mjs derives packages/toolkit/src/sanctioned-units.generated.ts, the single unit identifiers Table 2 of section 6.6.2 sanctions, from this extract, and the toolkit judges a message's `unit` option by IsWellFormedUnitIdentifier (section 6.6.1) over that table. Only the generated table reaches a published package.",
+      "role": "Development-only derivation input. tools/generate-locale-profile.ts derives packages/toolkit/src/sanctioned-units.generated.ts, the single unit identifiers Table 2 of section 6.6.2 sanctions, from this extract, and the toolkit judges a message's `unit` option by IsWellFormedUnitIdentifier (section 6.6.1) over that table. Only the generated table reaches a published package.",
       "bytes": 9289,
       "digest": {
         "algorithm": "SHA-256",

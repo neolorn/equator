@@ -75,6 +75,32 @@ const RELEVANT: Readonly<Record<LocaleService, readonly Keyword[]>> = {
   duration: ['numberingSystem'],
 };
 
+/** The `u` extension key of each keyword. */
+const KEY: Readonly<Record<Keyword, string>> = {
+  calendar: 'ca',
+  hourCycle: 'hc',
+  numberingSystem: 'nu',
+  collation: 'co',
+  caseFirst: 'kf',
+  numeric: 'kn',
+};
+
+/**
+ * The keys a tag's `u` extension writes. `Intl.Locale` reads `numeric` as false where a tag has no
+ * `kn` as well as for `kn-false`, so a keyword is the tag's only where its key is written.
+ */
+function unicodeKeys(locale: Intl.Locale): ReadonlySet<string> {
+  const keys = new Set<string>();
+  let inExtension = false;
+  for (const subtag of locale.toString().split('-').slice(1)) {
+    // Everything after `x` is private use, whose subtags are not keys.
+    if (subtag === 'x') break;
+    if (subtag.length === 1) inExtension = subtag === 'u';
+    else if (inExtension && subtag.length === 2) keys.add(subtag);
+  }
+  return keys;
+}
+
 /**
  * The option that takes the place of a keyword. ECMA-402's ResolveLocale drops a keyword whose
  * option differs, and the option is judged by its own rule, so the keyword is not carried.
@@ -248,12 +274,12 @@ function walk(
   } catch {
     return REFUSED;
   }
+  const keys = unicodeKeys(asked);
   const keywords: Record<string, string | boolean> = {};
   for (const keyword of RELEVANT[service]) {
-    const value = asked[keyword];
-    if (value !== undefined && !overridden.includes(keyword)) {
-      keywords[keyword] = value;
-    }
+    if (!keys.has(KEY[keyword]) || overridden.includes(keyword)) continue;
+    // Intl.Locale reads every key the tag writes.
+    keywords[keyword] = asked[keyword] as string | boolean;
   }
   const base = canonicalizeLanguageTag(asked.baseName) ?? asked.baseName;
   if (pseudoLocale && !ɵisGeneratedPseudoLocales([base], [base])) {

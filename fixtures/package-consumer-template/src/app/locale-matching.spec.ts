@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { negotiateLocale, parseAcceptLanguage } from '@neolorn/equator';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 /**
  * Which locale a request is answered in, from what it asked for and what exists.

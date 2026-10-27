@@ -23,16 +23,16 @@ import tseslint from 'typescript-eslint';
  * incubating rule on an independent inference is the wrong place for a check whose whole value is
  * being right about a type.
  *
- * The program is `tsconfig.typecheck.json`, which is the one configuration in this repository that
- * is *checked* to load every file under `packages/`: `tools/verify-typecheck.mjs` derives the source
- * roots from disk and fails naming any file the program did not reach. Pointing the linter at the
- * same config means a file outside every program cannot be quietly unlinted either.
+ * The programs are `tsconfig.typecheck.json` and `tools/tsconfig.json`, the two configurations in
+ * this repository that are *checked* to load every file they cover, the first every file under
+ * `packages/` and the second every file in `tools/`: `tools/verify-typecheck.ts` derives both lists
+ * from disk and fails naming any file a program did not reach. Pointing the linter at the same
+ * configs means a file outside every program cannot be quietly unlinted either.
  */
 export default tseslint.config(
   {
-    // The linter reads what the compiler reads. `tools/` is JavaScript with no program to type it,
-    // the fixtures are consumer applications with their own toolchains, and everything else here is
-    // output.
+    // The linter reads what the compiler reads. The fixtures are consumer applications with their
+    // own toolchains, and everything else here is output.
     ignores: [
       '**/node_modules/',
       '.equator/',
@@ -40,17 +40,24 @@ export default tseslint.config(
       'tmp/',
       'dist/',
       'fixtures/',
-      'tools/',
       '*.mjs',
       '*.ts',
     ],
   },
-  {
-    files: ['packages/**/*.ts'],
+  // One set of rules for both programs, each read through the configuration that types it, so the
+  // tools are held to what the packages are and neither list can drift from the other.
+  ...[
+    { files: ['packages/**/*.ts'], project: './tsconfig.typecheck.json' },
+    {
+      files: ['tools/**/*.ts', 'tools/**/*.cts'],
+      project: './tools/tsconfig.json',
+    },
+  ].map(({ files, project }) => ({
+    files,
     extends: [tseslint.configs.base],
     languageOptions: {
       parserOptions: {
-        project: ['./tsconfig.typecheck.json'],
+        project: [project],
         tsconfigRootDir: import.meta.dirname,
       },
     },
@@ -67,11 +74,7 @@ export default tseslint.config(
       'import-x/parsers': {
         '@typescript-eslint/parser': ['.ts', '.mts', '.cts'],
       },
-      'import-x/resolver-next': [
-        createTypeScriptImportResolver({
-          project: './tsconfig.typecheck.json',
-        }),
-      ],
+      'import-x/resolver-next': [createTypeScriptImportResolver({ project })],
     },
     rules: {
       // The one the stage was asked for. The idiom it expects is already in use here: eleven
@@ -99,7 +102,7 @@ export default tseslint.config(
       // spare.
       '@typescript-eslint/no-unnecessary-condition': 'error',
     },
-  },
+  })),
   {
     // `specs/01-standards-profile.spec.md` section 5 keeps host locale data to presentation. The
     // host's collation and its tailored case mappings are that data, so an order or a comparison

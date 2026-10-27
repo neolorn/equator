@@ -73,10 +73,10 @@ It takes about two and a half hours on a machine with 32 logical processors, mos
 To run some of its stages the way the suite runs them, name them:
 
 ```sh
-node tools/verify.mjs --only verify:consumer,verify:cost-reference
+node tools/verify.ts --only verify:consumer,verify:cost-reference
 ```
 
-This runs the named stages and the stages they need, on the committed tree, in fresh work trees of its own. `node tools/verify.mjs --plan` lists the stages. A stage that passes when its script is run in your checkout can still fail in the suite, which runs it in a fresh work tree without a terminal; this shows that before the full run does.
+This runs the named stages and the stages they need, on the committed tree, in fresh work trees of its own. `node tools/verify.ts --plan` lists the stages. A stage that passes when its script is run in your checkout can still fail in the suite, which runs it in a fresh work tree without a terminal; this shows that before the full run does.
 
 The suite runs below normal priority, except for the stages that run alone (the browser rows, `verify:browser-specs`, and `verify:cost-budget` with its self-test), which run at normal priority. It uses at most two thirds of the machine's logical processors, counting its stages and the workers their test runners start. Set `EQUATOR_VERIFY_PROCESSORS` to a number of logical processors to give it a different share. Set `EQUATOR_VERIFY_PRIORITY_FILE` to a file to change the level while the suite runs: while the file holds the word `normal`, every stage runs at normal priority. On Linux, a process without privilege cannot raise a priority it has lowered, so there the word raises only the stages that start while the file holds it: a stage already below normal stays there, and a stage started at normal is lowered when the word is removed. It does not start a stage while less than a quarter of the machine's memory is free. Only one heavy job goes at a time: the suite, a run of named stages, and a mutation run (`pnpm run mutation`, `pnpm run mutation:toolkit`) take the same lock, and the second to start stops with the name of the first.
 

@@ -112,6 +112,28 @@ describe('a keyword of the tag an option of the operation takes the place of', (
   );
 });
 
+describe('the keywords hostLocale builds a tag with', () => {
+  // `Intl.Locale` reads `numeric` as false where a tag has no `kn`, the same as for `kn-false`, so
+  // only the tag's own extension tells the two apart.
+  it.each([
+    ['de-u-kf-upper', 'de-u-kf-upper'],
+    ['de', 'de'],
+    ['de-u-kn', 'de-u-kn'],
+    ['de-u-kn-false', 'de-u-kn-false'],
+    ['de-u-co-phonebk-kn', 'de-u-co-phonebk-kn'],
+    ['de-t-en-u-kn', 'de-u-kn'],
+    ['de-t-kn', 'de'],
+    ['de-a-kn', 'de'],
+    ['de-x-u-kn', 'de'],
+  ] as const)(
+    'are those of the tag asked for: %s builds %s',
+    async (tag, built) => {
+      const { hostLocale } = await freshHostLocale();
+      expect(hostLocale('collator', tag)).toEqual({ ok: true, tag: built });
+    },
+  );
+});
+
 describe('the chain hostLocale walks', () => {
   it('refuses a tag that is not a language tag', async () => {
     const { hostLocale } = await freshHostLocale();

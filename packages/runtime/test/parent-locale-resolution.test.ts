@@ -8,7 +8,7 @@ import {
 } from '../src/evaluator.js';
 import { LocalizationError, type MessageHandle } from '@neolorn/equator/core';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * The runtime half of the parent-locale chain: which catalog answers, and in what order.

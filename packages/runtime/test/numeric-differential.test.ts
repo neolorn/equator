@@ -10,7 +10,7 @@ import {
   type LocalizedInputProfile,
 } from '@neolorn/equator/core';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * Equator's numeric rendering, checked against the platform's own idea of each locale.

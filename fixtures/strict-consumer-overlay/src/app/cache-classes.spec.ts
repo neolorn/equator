@@ -6,7 +6,7 @@ import {
 import { cacheLogField, redirectLogField } from './cache-classes';
 import { appRouteProjection, routePolicy } from './localization.routes';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 /**
  * What proves the union from this seat is the source above compiling under this row's options.

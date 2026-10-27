@@ -35,7 +35,7 @@ import {
   type RouteRuntimeProjection,
 } from '@neolorn/equator/core';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 const CACHE = { successMaxAge: 600, permanentRedirectMaxAge: 86_400 } as const;
 

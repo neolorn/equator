@@ -38,7 +38,7 @@ import {
   unstatedAddress,
 } from './addresses';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 /**
  * Who decides the locale of a first request.

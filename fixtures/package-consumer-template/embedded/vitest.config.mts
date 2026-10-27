@@ -1,4 +1,4 @@
-import { capabilityClaimsReporters } from '../tools/capability-evidence.mjs';
+import { capabilityClaimsReporters } from '../tools/capability-evidence.ts';
 
 /**
  * One worker, one file at a time, for the reason the feature lab's runner configuration gives: the

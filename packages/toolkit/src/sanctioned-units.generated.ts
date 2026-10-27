@@ -1,4 +1,4 @@
-/** Generated from ECMA-402 13th edition, section 6.6.2, by tools/generate-locale-profile.mjs. */
+/** Generated from ECMA-402 13th edition, section 6.6.2, by tools/generate-locale-profile.ts. */
 
 /** The single unit identifiers Table 2 of the pinned edition sanctions, in code unit order. */
 // prettier-ignore

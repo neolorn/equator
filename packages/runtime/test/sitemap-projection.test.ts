@@ -27,7 +27,7 @@ import {
   type SitemapRouteDeclaration,
 } from '@neolorn/equator/core';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * What a build publishes to a crawler as a file, from the projection it publishes in a head.

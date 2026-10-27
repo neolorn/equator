@@ -52,7 +52,7 @@ import {
 } from './runtime-extensions';
 import { appRouteProjection } from './localization.routes';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 const localizedProjection: RouteRuntimeProjection = Object.freeze({
   ...appRouteProjection,

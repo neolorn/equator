@@ -1,7 +1,7 @@
 import table from './addresses.json';
 import { routePolicy } from './route-policy';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 /**
  * Where this application's pages live, read from `addresses.json` beside this file.

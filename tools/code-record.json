@@ -1,5 +1,5 @@
 {
-  "note": "Every code a release may have shipped, and for an event code the area it names. The diagnostics reference stage fails when a code here is no longer declared by the built packages or names another area, and when a declared code is not here. The file only grows: node ./tools/generate-diagnostics-reference.mjs --record appends what is declared and missing, and refuses to run while a recorded code is withdrawn or moved. Nothing else writes it.",
+  "note": "Every code a release may have shipped, and for an event code the area it names. The diagnostics reference stage fails when a code here is no longer declared by the built packages or names another area, and when a declared code is not here. The file only grows: node ./tools/generate-diagnostics-reference.ts --record appends what is declared and missing, and refuses to run while a recorded code is withdrawn or moved. Nothing else writes it.",
   "toolkitDiagnostics": [
     "EQ1001",
     "EQ1002",

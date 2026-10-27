@@ -38,7 +38,7 @@ import {
   pageUrl,
 } from './addresses';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 const scope = Object.freeze({ providerId, scopeId });
 

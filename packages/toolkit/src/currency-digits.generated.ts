@@ -1,4 +1,4 @@
-/** Generated from cldr-core 48.2.0 by tools/generate-locale-profile.mjs. */
+/** Generated from cldr-core 48.2.0 by tools/generate-locale-profile.ts. */
 
 /**
  * The fraction digits of every currency the release writes with other than 2, which is what

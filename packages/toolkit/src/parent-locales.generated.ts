@@ -1,4 +1,4 @@
-/** Generated from cldr-core 48.2.0 by tools/generate-locale-profile.mjs. */
+/** Generated from cldr-core 48.2.0 by tools/generate-locale-profile.ts. */
 export const PARENT_LOCALE_PROFILE =
   'cldr-48.2/equator-parent-locales-1' as const;
 

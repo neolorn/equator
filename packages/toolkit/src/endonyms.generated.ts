@@ -1,4 +1,4 @@
-/** Generated from cldr-localenames-full 48.2.0 by tools/generate-locale-profile.mjs. */
+/** Generated from cldr-localenames-full 48.2.0 by tools/generate-locale-profile.ts. */
 export const ENDONYM_PROFILE = 'cldr-48.2/equator-endonyms-1' as const;
 
 /**

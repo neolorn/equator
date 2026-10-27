@@ -8092,11 +8092,35 @@
     },
     {
       "file": "packages/runtime/src/host-locale.ts",
+      "mutator": "BooleanLiteral",
+      "original": "false",
+      "replacement": "true",
+      "category": "equivalent",
+      "reason": "Before the first singleton the subtags of a tag are its script, four letters, its region, two letters or three digits, and its variants, four to eight characters, by the unicode_language_id rule of UTS #35. Only a region is two characters, and Intl.Locale writes a region in upper case, which no key of KEY is, so the set answers line 280 as the original's does; the first singleton then sets the flag as in the original."
+    },
+    {
+      "file": "packages/runtime/src/host-locale.ts",
+      "mutator": "MethodExpression",
+      "original": "locale.toString().split('-').slice(1)",
+      "replacement": "locale.toString().split('-')",
+      "category": "equivalent",
+      "reason": "The first subtag of a tag Intl.Locale writes is its language, of two, three or five to eight letters by the unicode_language_subtag rule of UTS #35, so it is neither a singleton nor x, and before a singleton the loop adds nothing; from the second subtag on the loop runs as the original's."
+    },
+    {
+      "file": "packages/runtime/src/host-locale.ts",
+      "mutator": "ConditionalExpression",
+      "original": "subtag.length === 2",
+      "replacement": "true",
+      "category": "equivalent",
+      "reason": "In a u extension a subtag that is not a key is an attribute or a value, of three to eight characters by the unicode_locale_extensions rule of UTS #35, and line 280 asks the set only for a key of KEY, each two characters, so a subtag the mutant adds is never asked for."
+    },
+    {
+      "file": "packages/runtime/src/host-locale.ts",
       "mutator": "ConditionalExpression",
       "original": "!oldest.done",
       "replacement": "true",
       "category": "equivalent",
-      "reason": "The store is full when line 151 runs, and the ceiling is at least one, so keys().next() is never done there and the test is always true already."
+      "reason": "The store is full when line 177 runs, and the ceiling is at least one, so keys().next() is never done there and the test is always true already."
     },
     {
       "file": "packages/runtime/src/host-locale.ts",
@@ -8132,14 +8156,6 @@
     },
     {
       "file": "packages/runtime/src/host-locale.ts",
-      "mutator": "ConditionalExpression",
-      "original": "value !== undefined",
-      "replacement": "true",
-      "category": "equivalent",
-      "reason": "A keyword whose value is undefined is then carried as undefined. new Intl.Locale ignores an undefined option (line 269), the host answers the member it already has, and the check on line 280 compares undefined with the kept locale's undefined, so the answer is the same."
-    },
-    {
-      "file": "packages/runtime/src/host-locale.ts",
       "mutator": "LogicalOperator",
       "original": "canonicalizeLanguageTag(asked.baseName) ?? asked.baseName",
       "replacement": "canonicalizeLanguageTag(asked.baseName) && asked.baseName",
@@ -8152,7 +8168,7 @@
       "original": "member === undefined",
       "replacement": "false",
       "category": "equivalent",
-      "reason": "With member undefined, new Intl.Locale(undefined) on line 269 throws a TypeError, which the catch on line 270 turns into the same refusal."
+      "reason": "With member undefined, new Intl.Locale(undefined) on line 295 throws a TypeError, which the catch on line 296 turns into the same refusal."
     },
     {
       "file": "packages/runtime/src/host-locale.ts",
@@ -8160,7 +8176,7 @@
       "original": "carried.length > 0",
       "replacement": "true",
       "category": "equivalent",
-      "reason": "With no keyword carried, built is the member the host already answered with itself, so the answer on line 277 is defined and some() over no keyword is false; the result is the same."
+      "reason": "With no keyword carried, built is the member the host already answered with itself, so the answer on line 303 is defined and some() over no keyword is false; the result is the same."
     },
     {
       "file": "packages/runtime/src/host-locale.ts",
@@ -8168,7 +8184,7 @@
       "original": "carried.length > 0",
       "replacement": "carried.length >= 0",
       "category": "equivalent",
-      "reason": "With no keyword carried, built is the member the host already answered with itself, so the answer on line 277 is defined and some() over no keyword is false; the result is the same."
+      "reason": "With no keyword carried, built is the member the host already answered with itself, so the answer on line 303 is defined and some() over no keyword is false; the result is the same."
     },
     {
       "file": "packages/runtime/src/host-locale.ts",
@@ -8176,7 +8192,7 @@
       "original": "answer === undefined",
       "replacement": "false",
       "category": "unreachable",
-      "reason": "built is a tag Intl.Locale accepted (line 269) for a member the host built a formatter for (line 264), and a constructor that accepts a tag accepts it with keywords, so the host answers built and answer is never undefined."
+      "reason": "built is a tag Intl.Locale accepted (line 295) for a member the host built a formatter for (line 289), and a constructor that accepts a tag accepts it with keywords, so the host answers built and answer is never undefined."
     },
     {
       "file": "packages/runtime/src/host-locale.ts",
@@ -8224,7 +8240,7 @@
       "original": "askedScript !== undefined",
       "replacement": "true",
       "category": "equivalent",
-      "reason": "differsInWriting returns on line 371 where the languages differ, so the scripts are compared only for one language. The script of the locale asked for is unknown only for a language the pinned table does not hold, written without a script and without a region the table holds. The walk adds a script or a region only through a pinned parent or scriptedRegion, and measured over the pinned parents, 147 that keep the language, none makes a script known that was not; scriptedRegion needs a language_region the table holds. So the used script is unknown too, and the test decides nothing."
+      "reason": "differsInWriting returns on line 397 where the languages differ, so the scripts are compared only for one language. The script of the locale asked for is unknown only for a language the pinned table does not hold, written without a script and without a region the table holds. The walk adds a script or a region only through a pinned parent or scriptedRegion, and measured over the pinned parents, 147 that keep the language, none makes a script known that was not; scriptedRegion needs a language_region the table holds. So the used script is unknown too, and the test decides nothing."
     },
     {
       "file": "packages/toolkit/src/number-format-rules.ts",

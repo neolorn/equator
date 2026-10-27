@@ -7,7 +7,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { generateProject } from '../src/index.js';
 import { cleanProject, uninstallProject } from '../src/project-host.js';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * Removing Equator from an application.

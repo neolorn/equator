@@ -13,7 +13,7 @@ import type { ToolkitDiagnosticCode } from './diagnostics.js';
  * So the reference is derived. `satisfies Record<ToolkitDiagnosticCode, string>` on the literal is
  * the whole of the both-ways check, and the compiler makes it rather than a script asserting it: a
  * code added to the union with no sentence here fails `typecheck` by name, and a sentence for a
- * code that does not exist fails the same way. `tools/generate-diagnostics-reference.mjs` renders
+ * code that does not exist fails the same way. `tools/generate-diagnostics-reference.ts` renders
  * `DIAGNOSTICS.md` from it and re-renders it in the gate, so the shipped document cannot fall
  * behind the table either.
  *

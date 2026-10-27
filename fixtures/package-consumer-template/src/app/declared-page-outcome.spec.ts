@@ -33,7 +33,7 @@ import {
   switchInDocument,
 } from './addresses';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 /**
  * A page that resolved and turned out not to be there, and the head that follows from it.

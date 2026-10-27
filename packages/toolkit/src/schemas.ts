@@ -176,7 +176,7 @@ export const CONFIGURATION_SCHEMA = Object.freeze({
   // Every settable property carries a `description`, and it is not decoration.
   //
   // `equator init`'s option table is generated from this schema by
-  // `tools/generate-cli-options.mjs`, and `--help` prints these lines. A settable property without
+  // `tools/generate-cli-options.ts`, and `--help` prints these lines. A settable property without
   // one fails that generator, so the install line states what the configuration accepts because it
   // is reading the thing that decides rather than a second list of it. They ship too, this constant
   // is staged as `schemas/configuration.v1.schema.json`, so an editor's JSON Schema tooling shows

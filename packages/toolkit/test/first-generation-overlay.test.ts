@@ -15,7 +15,7 @@ import { digestCanonicalJson } from '../src/canonical-json.js';
 import { generateProject } from '../src/index.js';
 import { COMPLETION_MANIFEST_PATH, digestBytes } from '../src/output-plan.js';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * A first generation analyses the application before any generated module exists, through an

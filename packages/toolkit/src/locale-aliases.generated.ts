@@ -1,4 +1,4 @@
-/** Generated from cldr-core 48.2.0 by tools/generate-locale-profile.mjs. */
+/** Generated from cldr-core 48.2.0 by tools/generate-locale-profile.ts. */
 
 /**
  * The alias rules of UTS #35 Part 1 Annex C, from `supplemental/aliases.json`, in the order the

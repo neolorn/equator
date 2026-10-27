@@ -8,7 +8,7 @@ import {
 
 import { externalDestination } from '../src/destinations.js';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * A refusal says why it refused, and keeps what it was refusing.

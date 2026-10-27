@@ -45,7 +45,7 @@ import {
   pageUrl,
 } from './addresses';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 /**
  * The seat a consumer asserts a response from, exercised against the built packages.

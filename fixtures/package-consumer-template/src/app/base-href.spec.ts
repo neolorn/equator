@@ -34,7 +34,7 @@ import { routes } from './app.routes';
 import { routePolicy, appRouteProjection } from './localization.routes';
 import { localeInPath, localeOrigin, pagePath, pageUrl } from './addresses';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 /**
  * An application deployed under a sub-path, which is `https://example.com/app` rather than

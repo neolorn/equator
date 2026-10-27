@@ -7,14 +7,15 @@
 # What comes out is a reading list, not a verdict. `thresholds.break` is null, so a score cannot
 # fail this job; only an error can. Each survivor is answered with a test, or recorded with its
 # reason in `tools/mutation-reasons.json`, and
-# `node tools/verify-mutation-reasons.mjs --report <every part's report.json>` reads the parts
+# `node tools/verify-mutation-reasons.ts --report <every part's report.json>` reads the parts
 # together.
 #
-# A reading is taken in parts, because a hosted job ends at 330 minutes and a whole half takes many
-# times that on a runner's four workers. `tools/mutation-shards.json` divides each half between
-# parts, and `tools/mutation-shards.mjs` says how a part reads its share and why every mutant is
-# read by exactly one part. The division was estimated from local readings to take 240 minutes or
-# less per part, which leaves room inside the 330 for the install and the initial test run.
+# A reading is taken in parts, because a job on a hosted runner ends at six hours and a whole half
+# takes many times that on a runner's four workers. `tools/mutation-shards.json` divides each half
+# between parts, and `tools/mutation-shards.ts` says how a part reads its share and why every
+# mutant is read by exactly one part. The division is estimated from local readings, not measured
+# on a runner, to take 240 minutes or less per part, which leaves room inside the six hours for the
+# install, the initial test run and an estimate that proves short.
 #
 # Dispatch rather than a schedule: a reading produces survivors somebody has to read, and a
 # schedule would take one on the weeks nothing changed.
@@ -64,12 +65,12 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Check the parts
-        run: node tools/mutation-shards.mjs check
+        run: node tools/mutation-shards.ts check
 
       - name: List the parts
         id: parts
         run: |
-          matrix="$(node tools/mutation-shards.mjs matrix)"
+          matrix="$(node tools/mutation-shards.ts matrix)"
           echo "runtime=$(node -p "JSON.stringify(${matrix}.runtime)")" >> "$GITHUB_OUTPUT"
           echo "toolkit=$(node -p "JSON.stringify(${matrix}.toolkit)")" >> "$GITHUB_OUTPUT"
 
@@ -77,7 +78,7 @@ jobs:
     needs: parts
     if: inputs.scope != 'toolkit'
     runs-on: ubuntu-latest
-    timeout-minutes: 330
+    timeout-minutes: 360
     strategy:
       fail-fast: false
       matrix:
@@ -113,14 +114,14 @@ jobs:
       - name: Mark this part's mutants
         id: part
         run: >
-          echo "mutate=$(node tools/mutation-shards.mjs apply runtime ${{ matrix.part }}
+          echo "mutate=$(node tools/mutation-shards.ts apply runtime ${{ matrix.part }}
           --disposable-checkout)" >> "$GITHUB_OUTPUT"
 
-      # The worker count is named because `tools/run-mutation.mjs` otherwise hands Stryker two
+      # The worker count is named because `tools/run-mutation.ts` otherwise hands Stryker two
       # thirds of the machine, which is right on a working machine and would narrow this runner.
       - name: Mutate
         run: >
-          node tools/run-mutation.mjs stryker.config.mjs --concurrency 4
+          node tools/run-mutation.ts stryker.config.mjs --concurrency 4
           --mutate "${{ steps.part.outputs.mutate }}"
 
       # The whole point of the run. The HTML report is how a survivor is read: the mutant, the line,
@@ -138,7 +139,7 @@ jobs:
     needs: parts
     if: inputs.scope != 'runtime'
     runs-on: ubuntu-latest
-    timeout-minutes: 330
+    timeout-minutes: 360
     strategy:
       fail-fast: false
       matrix:
@@ -174,14 +175,14 @@ jobs:
       - name: Mark this part's mutants
         id: part
         run: >
-          echo "mutate=$(node tools/mutation-shards.mjs apply toolkit ${{ matrix.part }}
+          echo "mutate=$(node tools/mutation-shards.ts apply toolkit ${{ matrix.part }}
           --disposable-checkout)" >> "$GITHUB_OUTPUT"
 
-      # The worker count is named because `tools/run-mutation.mjs` otherwise hands Stryker two
+      # The worker count is named because `tools/run-mutation.ts` otherwise hands Stryker two
       # thirds of the machine, which is right on a working machine and would narrow this runner.
       - name: Mutate
         run: >
-          node tools/run-mutation.mjs stryker.toolkit.config.mjs --concurrency 4
+          node tools/run-mutation.ts stryker.toolkit.config.mjs --concurrency 4
           --mutate "${{ steps.part.outputs.mutate }}"
 
       # The whole point of the run. The HTML report is how a survivor is read: the mutant, the line,

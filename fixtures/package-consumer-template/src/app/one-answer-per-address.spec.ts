@@ -32,7 +32,7 @@ import { routes } from './app.routes';
 import { routePolicy, appRouteProjection } from './localization.routes';
 import { entryRedirects, pagePath, pageUrl } from './addresses';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 /**
  * One address, one answer, whichever door the reader came through.

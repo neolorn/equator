@@ -17,7 +17,7 @@ import { appFormattingContext } from './app.config';
 import inputs from './exercise-inputs.json';
 import { runtimeExtensions } from './runtime-extensions';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 /**
  * Does the formatting context this application declares reach rendered output?

@@ -4,7 +4,7 @@ import { type FormattingContext } from '@neolorn/equator/core';
 
 import { RUNTIME_LIMITS } from '../src/runtime-safety.js';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * The standalone formatting functions cache their `Intl` objects, and the cache is the module's.

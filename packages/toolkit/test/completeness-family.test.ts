@@ -8,7 +8,7 @@ import { checkProject, generateProject, parseCatalog } from '../src/index.js';
 import { analyzeCatalogSet } from '../src/semantic-model.js';
 import { testProjectConfiguration } from './fixtures.js';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * Is the release gate about completeness, or about two of its findings?
@@ -23,7 +23,7 @@ import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
  * missing) and `EQ1308` (a plural category missing) are one question at three granularities, and
  * `EQ1309` (a translation written against an older source) is the fourth: it needs a project on
  * disk and a published translation record, so its cases build one below, and the whole gate is run
- * end-to-end through the built CLI in `tools/verify-package-consumer.mjs`.
+ * end-to-end through the built CLI in `tools/verify-package-consumer.ts`.
  *
  * The exemption is the other half. A locale nobody has said anything about is required, because the
  * strict state has to be the default one; a locale the project declares still in progress keeps
@@ -306,7 +306,7 @@ describe('a translation written against an older source', () => {
     // On the severity, and deliberately not on `result.ok`: `ok` reports whether the compile
     // produced output, and gating an assertion on anything but severity is the bug `diagnostics.ts`
     // already records. What turns an error into a failed run is the exit code, and that is asserted
-    // through the built CLI in `tools/verify-package-consumer.mjs`.
+    // through the built CLI in `tools/verify-package-consumer.ts`.
     expect(
       result.diagnostics
         .filter(({ code }) => code === 'EQ1309')

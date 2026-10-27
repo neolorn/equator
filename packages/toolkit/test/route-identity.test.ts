@@ -8,7 +8,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { analyzeApplication } from '../src/static-analysis.js';
 import type { ToolkitDiagnostic, RouteProjection } from '../src/index.js';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * What a route is called, and whether that name can be relied on.

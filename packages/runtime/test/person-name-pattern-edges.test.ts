@@ -7,7 +7,7 @@ import {
 } from '@neolorn/equator/core';
 import { formatPersonName, personName } from '../src/formatting.js';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * The places where a person-name pattern, a name and a profile set do not line up.

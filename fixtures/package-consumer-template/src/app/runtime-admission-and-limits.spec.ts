@@ -41,7 +41,7 @@ import {
 import { appRouteProjection } from './localization.routes';
 import { runtimeExtensions } from './runtime-extensions';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 const scope = Object.freeze({ providerId, scopeId });
 const lazyScope = Object.freeze({

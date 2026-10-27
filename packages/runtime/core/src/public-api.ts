@@ -22,7 +22,7 @@
  * against, and the eight `instanceof LocalizationError` checks in the primary, including the one
  * that turns a thrown error back into a `LocalizationDiagnostic`, stop matching. The error does not
  * fail loudly; it loses its diagnostic and arrives unrecognized, for one entry point only.
- * `verify-package-structure.mjs` enforces the single copy against the built distributable rather
+ * `verify-package-structure.ts` enforces the single copy against the built distributable rather
  * than against review.
  */
 

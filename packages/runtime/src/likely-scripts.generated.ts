@@ -1,4 +1,4 @@
-/** Generated from cldr-core 48.2.0 by tools/generate-locale-profile.mjs. */
+/** Generated from cldr-core 48.2.0 by tools/generate-locale-profile.ts. */
 
 /**
  * The script each language is written in where a tag names none, grouped by script: the

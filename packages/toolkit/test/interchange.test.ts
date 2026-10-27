@@ -12,7 +12,7 @@ import {
 } from '../src/index.js';
 import { pseudoLocalizeMessage } from '../src/pseudo-localization.js';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 import { writtenCatalog } from './fixtures.js';
 
 const sourceOptions: CatalogParseOptions = {

@@ -38,7 +38,7 @@
  *
  * **The survivors that stay are recorded.** `tools/mutation-reasons.json` lists each mutant no test
  * could notice, with its category and a sentence about that site, and
- * `node tools/verify-mutation-reasons.mjs --report tmp/mutation/report.json
+ * `node tools/verify-mutation-reasons.ts --report tmp/mutation/report.json
  * tmp/mutation-toolkit/report.json` reads both halves together. It fails on a survivor with a
  * verdict that the file does not list, and on an entry of the file that neither report scores as
  * survived. The gate holds the file to the source it describes, so a recorded line cannot be
@@ -211,7 +211,7 @@ export default {
    * report cannot tell that from a mutant every test passed over: 575 of 1,873 survivors in one
    * reading were of that kind, and most of them were killed once their tests were allowed to
    * finish. A survivor without a verdict is not a reading, so the cut is off, and
-   * `tools/verify-mutation-reasons.mjs --report` refuses a report that carries one.
+   * `tools/verify-mutation-reasons.ts --report` refuses a report that carries one.
    */
   disableBail: true,
 

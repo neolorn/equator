@@ -13,7 +13,7 @@ import { generateContracts } from '../src/generated-contracts.js';
 import { analyzeCatalogSet } from '../src/semantic-model.js';
 import { analyzeApplication } from '../src/static-analysis.js';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 function configuration(): ProjectConfiguration {
   const result = parseConfiguration(

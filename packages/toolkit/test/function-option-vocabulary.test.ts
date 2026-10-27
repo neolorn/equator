@@ -12,7 +12,7 @@ import { parseMessageSemanticModel } from '../src/message-format.js';
  * that fails in two directions at once: messages that compile and throw while rendering, and
  * messages that compile, render, and ignore the option the author wrote.
  *
- * The exhaustive half of this lives in `tools/verify-message-function-space.mjs`, which generates
+ * The exhaustive half of this lives in `tools/verify-message-function-space.ts`, which generates
  * its cases from the table and runs in the gate. What is here is the named cases: the ones a
  * reader needs to see spelled out, and the ones whose diagnostics a person has to be able to act on.
  */

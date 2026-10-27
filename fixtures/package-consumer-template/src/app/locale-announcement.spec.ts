@@ -33,7 +33,7 @@ import { messages } from '#i18n/shell';
 import { runtimeExtensions } from './runtime-extensions';
 import { routePolicy, appRouteProjection } from './localization.routes';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 const ANNOUNCER = '[data-equator-announcer]';
 

@@ -29,7 +29,7 @@ import { messages } from '#i18n/shell';
 import { runtimeExtensions } from './runtime-extensions';
 import { appRouteProjection, routePolicy } from './localization.routes';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 /**
  * `withoutDocumentLocale()`, which withdraws the one Equator default that touches a document

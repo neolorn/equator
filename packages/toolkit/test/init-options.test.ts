@@ -19,7 +19,7 @@ import {
   InvocationError,
 } from '../src/init-options.js';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * Can `equator init` state everything `equator.config.json` accepts?
