@@ -11,20 +11,20 @@ import {
 } from 'node:fs';
 import { freemem, getPriority, setPriority, totalmem } from 'node:os';
 import { basename, dirname, resolve, sep } from 'node:path';
-import type { Readable } from 'node:stream';
 import { fileURLToPath } from 'node:url';
 
 import { CLAIMS_FILE_VARIABLE } from './capability-claims.ts';
 import {
   createScheduler,
+  largestMinimum,
   MEMORY_FLOOR,
   processorBudget,
   priorityLifted,
   PROCESSORS_VARIABLE,
-  runnerEnvironment,
+  scheduleFindings,
   stagePriority,
 } from './gate-resources.ts';
-import type { SkippedStage } from './gate-resources.ts';
+import type { RunnerSettings, SkippedStage } from './gate-resources.ts';
 import {
   aboveLevel,
   descendantsOf,
@@ -33,16 +33,24 @@ import {
   levelInReading,
   liftUp,
   processorsBetween,
+  processorsByGroup,
+  processorsByThreadName,
   readProcesses,
+  readThreads,
   startAtPriority,
 } from './process-tree.ts';
-import type { PriorityLevel, ProcessEntry } from './process-tree.ts';
+import type {
+  PriorityLevel,
+  ProcessEntry,
+  ThreadEntry,
+} from './process-tree.ts';
 import {
   OCCURRENCES_FILE_VARIABLE,
   collectOccurrences,
   ledgerOccurrences,
   verdictOccurrences,
 } from './gate-occurrences.ts';
+import { startCaptured } from './stage-output.ts';
 import { readTrace, traceDrift } from './trace-drift.ts';
 import { holdHeavyJobLock } from './heavy-job-lock.ts';
 import { claimsFile, safeName, steps as everyStep } from './verify-stages.ts';
@@ -558,11 +566,14 @@ const releaseTrees = (paths: readonly string[]): void => {
   git('worktree', 'prune');
 };
 
+// The first process of each stage, so a reading of the tree can say which stage a process ran for.
+const stageRoots = new Map<number, string>();
+
 const runStep = (
   id: string,
   timeoutSeconds: number,
   root: string,
-  processors: number,
+  settings: RunnerSettings,
 ): Promise<{ code: number; output: string }> =>
   new Promise((settle) => {
     // A claiming stage is handed the one file its claims go to, and only a claiming stage is. The
@@ -584,76 +595,83 @@ const runStep = (
       .filter((part) => part !== undefined && part !== '')
       .join(' ');
     const level = stagePriority(stepById.get(id)!, priorityLifted());
-    const child = startAtPriority(level, () =>
-      spawn(pnpmCommand, commandArguments, {
-        cwd: root,
-        stdio: ['ignore', 'pipe', 'pipe'],
-        env: {
-          ...process.env,
-          NODE_OPTIONS: nodeOptions,
-          // Read and removed by the tracer in the first node process it reaches. When that is a
-          // script entry of `pnpm`, its workspace scan is the runner's work, not the stage's, and
-          // attributing it to the stage gave three stages an undeclared read of `source:packages` on
-          // the runs where pnpm happened not to skip that scan.
-          EQUATOR_TRACE_LAUNCHER: '1',
-          // The stage's share of the processor budget, in the settings its runners size themselves by.
-          ...runnerEnvironment(processors),
-          // What a stage starts runs under this run's lock and is not refused by it.
-          ...heavyJob.environment,
-          // The trace goes to the repository, because the tree it describes is about to be removed.
-          EQUATOR_TRACE_FILE: resolve(runDirectory, `${safeName(id)}.jsonl`),
-          // Traced against the tree the stage actually ran in, so a path resolves to the same
-          // artefact name wherever it was touched. That is what makes the drift check mean the same
-          // thing in a private tree as in the shared one.
-          EQUATOR_TRACE_ROOT: root,
-          EQUATOR_NODE_COMPATIBILITY_ROOT: nodeRuntimesRoot,
-          EQUATOR_NPM_CACHE: npmCacheRoot,
-          // Set to undefined rather than left out, so one set in the caller's shell reaches no stage.
-          [CLAIMS_FILE_VARIABLE]: claims ? claimsFile(root, id) : undefined,
-          // In the repository beside the trace, for the same reason.
-          [OCCURRENCES_FILE_VARIABLE]: occurrencesFile(id),
-          // Temporary, and a deliberate trade against an instrument's own cost rather than a lapse.
-          //
-          // The five page-side wrappers behind this switch cover the hot paths (element scrolling,
-          // focus, and the two selection methods) and they were turned off because their cost moved
-          // the failure *rate*, which made them useless for measuring one. This hunt is not measuring
-          // a rate. It is trying to catch one occurrence with the wrappers on, and for that a higher
-          // rate is welcome. So they run on unattended gate runs, where the occurrences happen, and
-          // this line comes out the moment one is caught with them installed.
-          EQUATOR_ASSURANCE_TRACE_CALLS: '1',
-        },
-      }),
+    // Captured rather than streamed. Thirty stages interleaving on one console is not a log, and
+    // the summary below reads the same as it did when they ran one at a time.
+    const stage = startCaptured(
+      (stdio) =>
+        startAtPriority(level, () =>
+          spawn(pnpmCommand, commandArguments, {
+            cwd: root,
+            stdio,
+            env: {
+              ...process.env,
+              NODE_OPTIONS: nodeOptions,
+              // Read and removed by the tracer in the first node process it reaches. When that is a
+              // script entry of `pnpm`, its workspace scan is the runner's work, not the stage's, and
+              // attributing it to the stage gave three stages an undeclared read of `source:packages` on
+              // the runs where pnpm happened not to skip that scan.
+              EQUATOR_TRACE_LAUNCHER: '1',
+              // The stage's share of the processor budget, in the settings its runners size themselves by,
+              // as the scheduler handed and recorded them.
+              ...settings,
+              // What a stage starts runs under this run's lock and is not refused by it.
+              ...heavyJob.environment,
+              // The trace goes to the repository, because the tree it describes is about to be removed.
+              EQUATOR_TRACE_FILE: resolve(
+                runDirectory,
+                `${safeName(id)}.jsonl`,
+              ),
+              // Traced against the tree the stage actually ran in, so a path resolves to the same
+              // artefact name wherever it was touched. That is what makes the drift check mean the same
+              // thing in a private tree as in the shared one.
+              EQUATOR_TRACE_ROOT: root,
+              EQUATOR_NODE_COMPATIBILITY_ROOT: nodeRuntimesRoot,
+              EQUATOR_NPM_CACHE: npmCacheRoot,
+              // Set to undefined rather than left out, so one set in the caller's shell reaches no stage.
+              [CLAIMS_FILE_VARIABLE]: claims ? claimsFile(root, id) : undefined,
+              // In the repository beside the trace, for the same reason.
+              [OCCURRENCES_FILE_VARIABLE]: occurrencesFile(id),
+              // Temporary, and a deliberate trade against an instrument's own cost rather than a lapse.
+              //
+              // The five page-side wrappers behind this switch cover the hot paths (element scrolling,
+              // focus, and the two selection methods) and they were turned off because their cost moved
+              // the failure *rate*, which made them useless for measuring one. This hunt is not measuring
+              // a rate. It is trying to catch one occurrence with the wrappers on, and for that a higher
+              // rate is welcome. So they run on unattended gate runs, where the occurrences happen, and
+              // this line comes out the moment one is caught with them installed.
+              EQUATOR_ASSURANCE_TRACE_CALLS: '1',
+            },
+          }),
+        ),
+      resolve(runDirectory, `${safeName(id)}.output`),
     );
+    const { child } = stage;
 
     checkStarted(id, child.pid, level);
+    if (child.pid !== undefined) stageRoots.set(child.pid, id);
 
-    let output = '';
+    let notice = '';
     let timedOut = false;
     const timer = setTimeout(() => {
       timedOut = true;
-      const notice = `\n=== TIMEOUT ${id} after ${timeoutSeconds}s. Killing it; a stage that does not end is a failure that reports nothing.\n`;
-      output += notice;
+      notice = `\n=== TIMEOUT ${id} after ${timeoutSeconds}s. Killing it; a stage that does not end is a failure that reports nothing.\n`;
       process.stderr.write(notice);
       killTree(child);
+      // A process that inherited the stage's output can outlive the first one, and off Windows it
+      // is then no longer under it, so it is ended by what it holds.
+      for (const pid of stage.holders()) {
+        try {
+          process.kill(pid, 'SIGKILL');
+        } catch {
+          // Ended on its own.
+        }
+      }
     }, timeoutSeconds * 1000);
-    // Captured to a file rather than streamed. Thirty stages interleaving on one console is not a
-    // log, and the summary below reads the same as it did when they ran one at a time.
-    const capture = (source: Readable): void => {
-      source.on('data', (chunk: Buffer) => {
-        output += chunk.toString();
-      });
-    };
-    capture(child.stdout);
-    capture(child.stderr);
 
-    child.once('error', (error) => {
+    void stage.ended.then(({ code, output }) => {
       clearTimeout(timer);
-      output += `${error.message}\n`;
-      settle({ code: 1, output });
-    });
-    child.once('close', (code) => {
-      clearTimeout(timer);
-      settle({ code: timedOut ? 1 : (code ?? 1), output });
+      if (child.pid !== undefined) stageRoots.delete(child.pid);
+      settle({ code: timedOut ? 1 : (code ?? 1), output: output + notice });
     });
   });
 
@@ -663,8 +681,9 @@ const runStep = (
 
 // Sized from what the machine reports rather than from a constant, so a smaller machine narrows the
 // run instead of thrashing it, and to two thirds of it by default (`gate-resources.ts`), because the
-// machine is usually someone's working machine while the gate runs.
-const budget = processorBudget();
+// machine is usually someone's working machine while the gate runs. Never below the share a stage of
+// this run cannot be held within, which it would exceed.
+const budget = processorBudget(process.env, undefined, largestMinimum(steps));
 
 /**
  * One gate run at a time on a machine.
@@ -860,7 +879,7 @@ const scheduler = createScheduler({
       `=== SKIP ${step.id} (requires ${blockedBy.join(', ')})\n`,
     );
   },
-  launch: (step, processors) => {
+  launch: (step, processors, settings) => {
     startedAt.set(step.id, Date.now());
     process.stdout.write(`=== RUN  ${step.id} (${processors} of ${budget})\n`);
     // A stage that cannot be started, or whose log cannot be written, is a failed stage. Left to
@@ -890,7 +909,7 @@ const scheduler = createScheduler({
       step.id,
       step.timeoutSeconds ?? DEFAULT_STEP_TIMEOUT_SECONDS,
       treesInUse.get(treeOf(step))!,
-      processors,
+      settings,
     ).then(
       ({ code, output }) => {
         finish(code, output);
@@ -952,14 +971,18 @@ process.stdout.write(
  * The whole tree, read while the run goes.
  *
  * Every process under the gate found above the running stages' priority is lowered to it
- * (`holdDown`), and
- * every window is checked for more processors in use than the budget. A process that cannot be
- * held down, and a window over budget, are findings that turn the run red, because a run that took
- * more of the machine than it was allowed was not run within its limits, whatever its stages said.
- * The reader's own process is left out of both.
+ * (`holdDown`), and a process that cannot be held down is a finding that turns the run red.
+ *
+ * The processors the tree used in each window are measured too, and a window over the budget is
+ * reported with what used them: by stage, and by thread name where the platform names threads. It
+ * does not decide the verdict. What the budget bounds is what the gate decides, the shares of the
+ * stages running at once and the worker counts their runners are handed, and that is judged from the
+ * scheduler's record (`scheduleFindings`). Each Node process also spends processor time on helper
+ * threads no runner setting can switch off, so a window can exceed the budget with every stage
+ * within its share. The reader's own process is left out of both.
  */
 const SAMPLE_SECONDS = 15;
-const overBudget: string[] = [];
+const processorWindows: string[] = [];
 const lowered = new Set<string>();
 let liftedBefore = false;
 let raisedWhileLifted = 0;
@@ -969,9 +992,18 @@ let samples = 0;
 // sampler's loop as if it ran to completion where it is started.
 let sampling = true as boolean;
 let stopSampling = () => {};
+// The largest shares of a reading, as a line.
+const listed = (used: ReadonlyMap<string, number>): string =>
+  [...used]
+    .filter(([, processors]) => processors >= 0.05)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 8)
+    .map(([name, processors]) => `${name} ${processors.toFixed(1)}`)
+    .join(', ');
 const runningNow = () => [...scheduler.running.keys()].join(', ') || 'no stage';
 const sampler = (async () => {
   let previous: ProcessEntry[] | undefined;
+  let previousThreads: ThreadEntry[] | undefined;
   let previousAt: number | undefined;
   while (sampling) {
     const readAt = Date.now();
@@ -1032,17 +1064,36 @@ const sampler = (async () => {
     )) {
       priorityFindings.push(`${finding}, while ${runningNow()} ran.`);
     }
+    const threads = readThreads(tree.map(({ pid }) => pid));
     if (previous !== undefined) {
       const seconds = (readAt - previousAt!) / 1000;
       const used = processorsBetween(previous, tree, seconds);
       peakMeasured = Math.max(peakMeasured, used);
       if (used > budget) {
-        overBudget.push(
-          `${used.toFixed(1)} processors in use over ${Math.round(seconds)}s against a budget of ${budget}, while ${runningNow()} ran.`,
+        const parentOf = new Map(tree.map(({ pid, ppid }) => [pid, ppid]));
+        const stageOf = (pid: number): string => {
+          for (
+            let at: number | undefined = pid;
+            at !== undefined;
+            at = parentOf.get(at)
+          ) {
+            const stage = stageRoots.get(at);
+            if (stage !== undefined) return stage;
+          }
+          return '(the gate)';
+        };
+        const byThread =
+          threads === undefined || previousThreads === undefined
+            ? ''
+            : `; by thread: ${listed(processorsByThreadName(previousThreads, threads, seconds))}`;
+        processorWindows.push(
+          `${used.toFixed(1)} processors over ${Math.round(seconds)}s against a budget of ${budget}: ` +
+            `${listed(processorsByGroup(previous, tree, seconds, stageOf))}${byThread}.`,
         );
       }
     }
     previous = tree;
+    previousThreads = threads;
     previousAt = readAt;
     await new Promise<void>((resolve_) => {
       stopSampling = resolve_;
@@ -1083,6 +1134,7 @@ sampling = false;
 stopSampling();
 await sampler;
 const wallSeconds = Math.round((Date.now() - runStartedAt) / 1000);
+const overBudget = scheduleFindings(scheduler.record, budget);
 
 if (results.size !== steps.length) {
   // Nothing is running and nothing became runnable. A cycle is caught above, so this is an
@@ -1217,10 +1269,20 @@ if (priorityFindings.length > 0) {
 if (overBudget.length > 0) {
   process.stdout.write(
     `\n=== OVER BUDGET (${overBudget.length})\n` +
-      `The gate may occupy ${budget} logical processors (${PROCESSORS_VARIABLE}) and these windows used more.\n` +
-      "A stage's declared processors, or a runner that ignores the setting it was handed, is wrong.\n",
+      `The gate may schedule ${budget} logical processors (${PROCESSORS_VARIABLE}). Its own record shows it\n` +
+      "scheduled more, or handed a stage's runners more workers than the stage's share. The scheduler is wrong.\n",
   );
   for (const line of overBudget) process.stdout.write(`  ${line}\n`);
+}
+
+if (processorWindows.length > 0) {
+  process.stdout.write(
+    `\n=== PROCESSOR TIME (${processorWindows.length})\n` +
+      `These windows used more than the ${budget} processors scheduled. Every Node process spends time on\n` +
+      'helper threads beside its JavaScript that no runner setting holds, so this does not make the run red.\n' +
+      'A stage, or a thread that is not a helper, far above its share here is a runner ignoring its setting.\n',
+  );
+  for (const line of processorWindows) process.stdout.write(`  ${line}\n`);
 }
 
 if (occurrences.length > 0) {
@@ -1277,6 +1339,7 @@ writeFileSync(
       loweredProcesses: lowered.size,
       occurrences,
       overBudget,
+      processorWindows,
       drift,
       untraced,
       stages: steps.map(({ id }) => ({

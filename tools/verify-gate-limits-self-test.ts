@@ -18,12 +18,20 @@
  * checked against the real declarations too, so a share nobody can be handed fails here rather
  * than in a run. So is the file that lifts a run to normal priority while it goes.
  *
+ * The record the scheduler keeps is read the way the gate reads it for its verdict on the budget
+ * (`scheduleFindings`): the planted run's record keeps the budget, a scheduler that believes it has
+ * one processor more starts a stage too many and its record says so, and the pattern of the windows a
+ * hosted run measured over its budget, two stages of one processor whose Node processes used 2.9,
+ * keeps it. How a stage's output is read (`stage-output.ts`) is driven over real processes: a stage
+ * that ends by throwing a long message, and one whose first process leaves a child holding its
+ * output or a child with output of its own.
+ *
  * The lock every heavy job takes is driven here as well (`heavy-job-lock.ts`): a second job is
  * refused by the first one's name, a job the holder started runs under the holder's lock, and a
  * lock whose holder has exited, or whose process id belongs to a later process, is taken over.
  */
 import assert from 'node:assert/strict';
-import { spawnSync } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import { existsSync, rmSync, writeFileSync } from 'node:fs';
 import { setPriority } from 'node:os';
 import { resolve } from 'node:path';
@@ -36,7 +44,9 @@ import {
   PROCESSORS_VARIABLE,
   stagePriority,
   runnerEnvironment,
+  scheduleFindings,
   stageProcessors,
+  largestMinimum,
 } from './gate-resources.ts';
 import {
   aboveLevel,
@@ -49,6 +59,7 @@ import {
 } from './process-tree.ts';
 import type { PriorityLevel } from './process-tree.ts';
 import { takeHeavyJobLock } from './heavy-job-lock.ts';
+import { startCaptured } from './stage-output.ts';
 import { steps as declaredSteps } from './verify-stages.ts';
 import { workingRoot } from './working-state.ts';
 
@@ -80,11 +91,70 @@ for (const wrong of ['0', '-2', '1.5', 'half']) {
     `A budget of ${wrong} was accepted.`,
   );
 }
+for (let share = 1; share <= 8; share += 1) {
+  const settings = runnerEnvironment(share);
+  assert.deepEqual(
+    scheduleFindings(
+      [{ event: 'start', id: 'stage', processors: share, settings }],
+      share,
+    ),
+    [],
+    `A stage on a share of ${share} was handed worker counts outside it.`,
+  );
+}
+// The Angular build keeps a transform pool for each of a server-rendered application's three bundles
+// and a compilation worker beside them, so each pool is handed a third of the share left after it.
 assert.deepEqual(
-  Object.values(runnerEnvironment(3)),
-  ['3', '3', '3', '3'],
-  'A runner setting was handed something other than the stage share.',
+  [1, 2, 3, 4, 7, 10].map(
+    (share) => runnerEnvironment(share)['NG_BUILD_MAX_WORKERS'],
+  ),
+  ['1', '1', '1', '1', '2', '3'],
+  "The Angular build's transform pools were not handed a third of the share left after its compilation worker.",
 );
+
+// A stage that cannot be held below a share raises the default budget to it, on a machine with room
+// for it, and a budget set below it, or a machine without room, is refused by the stage's name.
+const needsThree = { id: 'verify:planted-build', processors: 3 };
+assert.deepEqual(
+  [
+    processorBudget({}, 4, needsThree),
+    processorBudget({}, 32, needsThree),
+    processorBudget({ [PROCESSORS_VARIABLE]: '3' }, 4, needsThree),
+  ],
+  [3, 21, 3],
+  'The budget was not raised to the share a stage cannot be held below, or was raised past two thirds where two thirds is more.',
+);
+assert.throws(
+  () => processorBudget({ [PROCESSORS_VARIABLE]: '2' }, 32, needsThree),
+  /verify:planted-build cannot be held within fewer than 3 processors/u,
+  'A budget set below the share a stage cannot be held below was accepted.',
+);
+assert.throws(
+  () => processorBudget({}, 2, needsThree),
+  /This machine has 2 logical processors, and verify:planted-build cannot be held within fewer than 3/u,
+  'A machine smaller than the share a stage cannot be held below was given a budget.',
+);
+assert.deepEqual(
+  [
+    stageProcessors({ id: 'a', minimumProcessors: 3 }, 8),
+    stageProcessors({ id: 'b', processors: 2, minimumProcessors: 3 }, 8),
+    stageProcessors({ id: 'c', processors: 6, minimumProcessors: 3 }, 4),
+  ],
+  [3, 3, 4],
+  'A stage was handed less than the share it cannot be held below, or more than the budget.',
+);
+const declaredNeed = largestMinimum(declaredSteps);
+assert.ok(
+  declaredNeed.processors >= 3,
+  `No declared stage builds with Angular 22.0, which cannot be held within fewer than three processors (largest: ${declaredNeed.id}, ${declaredNeed.processors}).`,
+);
+for (const step of declaredSteps) {
+  assert.ok(
+    stageProcessors(step, declaredNeed.processors) >=
+      (step.minimumProcessors ?? 1),
+    `${step.id} was handed less than the share it cannot be held below at the smallest budget a run accepts.`,
+  );
+}
 for (const step of declaredSteps) {
   if (step.processors === undefined) continue;
   assert.ok(
@@ -201,6 +271,103 @@ assert.equal(
 assert.ok(
   scheduler.peakProcessors === BUDGET,
   `The planted run never filled the budget (peak ${scheduler.peakProcessors} of ${BUDGET}), so it proved nothing about the edge.`,
+);
+
+// The verdict on the budget is read from the scheduler's own record. The run above kept it, so its
+// record has nothing to say; the same graph under a scheduler that believes it may take one more
+// processor than the budget starts a stage too many, and its record says so.
+assert.deepEqual(
+  scheduleFindings(scheduler.record, BUDGET),
+  [],
+  'The record of a run that kept the budget reads as one that did not.',
+);
+const overScheduled = new Map<string, { readonly status: string }>();
+const overRunning = new Set<string>();
+const overScheduler = createScheduler({
+  steps: planted.map((step) => ({ ...step, exclusive: false })),
+  dependencies: new Map(planted.map(({ id }) => [id, []])),
+  results: overScheduled,
+  budget: BUDGET + 1,
+  readMemory: () => ({ free: 90, total: 100 }),
+  launch: (step) => overRunning.add(step.id),
+});
+overScheduler.advance();
+while (overRunning.size > 0) {
+  const [id] = overRunning;
+  overRunning.delete(id!);
+  overScheduled.set(id!, { status: 'pass' });
+  overScheduler.finished(id!);
+}
+assert.match(
+  scheduleFindings(overScheduler.record, BUDGET).join('\n'),
+  new RegExp(`processors were scheduled against a budget of ${BUDGET}\\.`, 'u'),
+  'A scheduler that started a stage too many left a record that reads as within the budget.',
+);
+assert.match(
+  scheduleFindings(
+    [
+      {
+        event: 'start',
+        id: 'verify:angular-22.0.4',
+        processors: 2,
+        settings: { ...runnerEnvironment(2), NG_BUILD_MAX_WORKERS: '3' },
+      },
+    ],
+    2,
+  ).join('\n'),
+  /verify:angular-22\.0\.4 was handed NG_BUILD_MAX_WORKERS=3 on a share of 2\./u,
+  "A stage's runners handed more workers than its share went unreported.",
+);
+
+// The pattern of the windows a hosted run reported over its budget of two: two stages of one
+// processor each running together, read as 2.9 processors over 15 s, most of it the helper threads of
+// their two Node processes. The scheduler kept the budget, so the run is not red for it.
+const hostedResults = new Map<string, { readonly status: string }>();
+const hosted = createScheduler({
+  steps: [
+    { id: 'format:check', processors: undefined },
+    { id: 'lint:self-test', processors: undefined },
+    { id: 'verify:angular-22.0.4', processors: 4 },
+  ],
+  dependencies: new Map([
+    ['format:check', []],
+    ['lint:self-test', []],
+    ['verify:angular-22.0.4', ['format:check', 'lint:self-test']],
+  ]),
+  results: hostedResults,
+  budget: 2,
+  readMemory: () => ({ free: 90, total: 100 }),
+  launch: () => {},
+});
+hosted.advance();
+for (const id of ['format:check', 'lint:self-test']) {
+  hostedResults.set(id, { status: 'pass' });
+  hosted.finished(id);
+}
+assert.deepEqual(
+  [...hosted.running],
+  [['verify:angular-22.0.4', 2]],
+  'The planted hosted run did not go on to the Angular stage on its share.',
+);
+const hostedWindow = processorsBetween(
+  [
+    { pid: 21, ppid: 20, priority: 6, cpuSeconds: 100 },
+    { pid: 22, ppid: 20, priority: 6, cpuSeconds: 200 },
+  ],
+  [
+    { pid: 21, ppid: 20, priority: 6, cpuSeconds: 121.75 },
+    { pid: 22, ppid: 20, priority: 6, cpuSeconds: 221.75 },
+  ],
+  15,
+);
+assert.ok(
+  hostedWindow > 2,
+  'The planted hosted window is not over the budget.',
+);
+assert.deepEqual(
+  scheduleFindings(hosted.record, 2),
+  [],
+  `A run whose scheduler kept the budget was judged over it for a window of ${hostedWindow.toFixed(1)} processors.`,
 );
 
 // The readings the gate takes of its own tree while it runs, planted: the gate is 10 at base
@@ -510,6 +677,59 @@ assert.match(
 );
 afterReuse.release();
 assert.ok(!existsSync(lockPath), 'The last planted job left its lock behind.');
+
+// A stage's output, read as the gate reads it (`stage-output.ts`). A stage that ends by throwing a
+// long message is read to the end of it, where its name for what failed is. A stage whose first
+// process leaves a child holding its output has not ended until that child has, and its output is
+// read with the child's; a child started with output of its own is not waited for.
+const outputPath = resolve(workingRoot, 'stage-output-self-test.out');
+const runCaptured = async (
+  code: string,
+  environment: Record<string, string> = {},
+) => {
+  const startedAt = Date.now();
+  const { ended } = startCaptured(
+    (stdio) =>
+      spawn(process.execPath, ['-e', code], {
+        stdio,
+        env: { ...process.env, ...environment },
+      }),
+    outputPath,
+  );
+  const { code: exitCode, output } = await ended;
+  return { exitCode, output, milliseconds: Date.now() - startedAt };
+};
+const marker = 'the planted stage named what failed';
+const thrown = await runCaptured(
+  "process.stderr.write('Building\\n'); throw new Error('x'.repeat(99).concat('\\n').repeat(3000) + process.env.EQUATOR_SELF_TEST_MARKER);",
+  { EQUATOR_SELF_TEST_MARKER: marker },
+);
+assert.equal(thrown.exitCode, 1, 'A stage that threw did not exit 1.');
+assert.ok(
+  thrown.output.includes(marker),
+  `A stage that ended by throwing was read without the end of its message (${thrown.output.length} characters read).`,
+);
+// Detached, because on Windows a child that is not ends with its parent (`child_process`,
+// `options.detached`), and only a child that outlives the first process can hold its output.
+const grandchild = (stdio: string) =>
+  runCaptured(
+    "const child = require('node:child_process').spawn(process.execPath, ['-e', \"setTimeout(() => console.log('the child ended'), 1500)\"], { stdio: process.env.EQUATOR_SELF_TEST_STDIO, detached: true }); child.unref(); console.log('the first process ended');",
+    { EQUATOR_SELF_TEST_STDIO: stdio },
+  );
+const inherited = await grandchild('inherit');
+assert.ok(
+  inherited.milliseconds >= 1400 &&
+    inherited.output.includes('the first process ended') &&
+    inherited.output.includes('the child ended'),
+  `A stage whose child held its output was read as ended after ${inherited.milliseconds} ms, with: ${JSON.stringify(inherited.output)}.`,
+);
+const separate = await grandchild('ignore');
+assert.ok(
+  separate.milliseconds < 1400 &&
+    separate.output.includes('the first process ended'),
+  `A stage whose child had output of its own was waited on for ${separate.milliseconds} ms, with: ${JSON.stringify(separate.output)}.`,
+);
+assert.ok(!existsSync(outputPath), 'A stage left its output file behind.');
 
 process.stdout.write(
   `verify:gate-limits:self-test GREEN: ${planted.length} planted stages ran within ${BUDGET} processors, alone where exclusive, held ${heldForMemory} times for memory, peak ${scheduler.peakProcessors}.\n`,

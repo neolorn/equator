@@ -39,6 +39,14 @@ import { nodeConsumerProfiles } from './package-consumer-profiles.ts';
  * (`gate-resources.ts`). The heavy stages are handed four, which is the Angular build's own
  * default ceiling on its workers.
  *
+ * `minimumProcessors` is the smallest share a stage can be held within by the settings its runners
+ * read, where that is more than one. The scheduler never hands it less, and a budget smaller than it
+ * is refused before anything starts. An Angular application build runs its transform workers beside
+ * its main thread and esbuild's, so a stage that builds one cannot be held within one processor.
+ * Angular 22.0 also keeps a transform pool of at least one worker for each bundle it builds
+ * (`createCompilerPlugin` in `@angular/build`), and a server-rendered application has three, so a
+ * stage that builds one with it cannot be held within fewer than three.
+ *
  * `claims: true` marks a stage whose checks record the capabilities they assert, and gives it the
  * artefact its claims go to. `readsClaims: true` marks the stage that reads all of them. Both are
  * expanded below rather than written out, so a stage that starts recording claims is one line
@@ -76,6 +84,7 @@ export interface StageDeclaration {
   readonly writes?: readonly string[];
   readonly needs?: readonly StageNeed[];
   readonly processors?: number;
+  readonly minimumProcessors?: number;
   readonly exclusive?: boolean;
   readonly claims?: boolean;
   readonly readsClaims?: boolean;
@@ -548,6 +557,7 @@ const declared: readonly StageDeclaration[] = Object.freeze([
   {
     id: 'verify:consumer',
     processors: 4,
+    minimumProcessors: 2,
     reads: ['dist:runtime', 'dist:toolkit', 'source:packages', 'source:tools'],
     writes: ['consumer:package'],
     claims: true,
@@ -555,12 +565,14 @@ const declared: readonly StageDeclaration[] = Object.freeze([
   {
     id: 'verify:focused-consumers',
     processors: 4,
+    minimumProcessors: 2,
     reads: ['dist:runtime', 'dist:toolkit'],
     writes: ['consumer:focused'],
   },
   {
     id: 'verify:angular-22.0.4',
     processors: 4,
+    minimumProcessors: 3,
     reads: ['dist:runtime', 'dist:toolkit', 'source:packages', 'source:tools'],
     writes: ['consumer:angular-22.0.4'],
     claims: true,
@@ -568,6 +580,7 @@ const declared: readonly StageDeclaration[] = Object.freeze([
   {
     id: 'verify:lower-bounds',
     processors: 4,
+    minimumProcessors: 3,
     reads: ['dist:runtime', 'dist:toolkit', 'source:packages', 'source:tools'],
     writes: ['consumer:lower-bounds'],
     claims: true,
@@ -578,6 +591,7 @@ const declared: readonly StageDeclaration[] = Object.freeze([
   {
     id: 'verify:strict-consumer',
     processors: 4,
+    minimumProcessors: 2,
     reads: ['dist:runtime', 'dist:toolkit', 'source:packages', 'source:tools'],
     writes: ['consumer:strict'],
     claims: true,
@@ -588,6 +602,7 @@ const declared: readonly StageDeclaration[] = Object.freeze([
   {
     id: 'verify:default-locale-prefix-consumer',
     processors: 4,
+    minimumProcessors: 2,
     reads: ['dist:runtime', 'dist:toolkit', 'source:packages', 'source:tools'],
     writes: ['consumer:default-locale-prefix'],
     claims: true,
@@ -595,6 +610,7 @@ const declared: readonly StageDeclaration[] = Object.freeze([
   {
     id: 'verify:locale-neutral-consumer',
     processors: 4,
+    minimumProcessors: 2,
     reads: ['dist:runtime', 'dist:toolkit', 'source:packages', 'source:tools'],
     writes: ['consumer:locale-neutral'],
     claims: true,
@@ -602,6 +618,7 @@ const declared: readonly StageDeclaration[] = Object.freeze([
   {
     id: 'verify:locale-host-consumer',
     processors: 4,
+    minimumProcessors: 2,
     reads: ['dist:runtime', 'dist:toolkit', 'source:packages', 'source:tools'],
     writes: ['consumer:locale-host'],
     claims: true,
@@ -611,6 +628,7 @@ const declared: readonly StageDeclaration[] = Object.freeze([
   ...[...nodeConsumerProfiles.keys()].map((name) => ({
     id: `verify:${name}`,
     processors: 4,
+    minimumProcessors: 2,
     reads: ['dist:runtime', 'dist:toolkit', 'source:packages', 'source:tools'],
     writes: [`consumer:${name.replace(/-consumer$/u, '')}`],
     claims: true,
@@ -878,6 +896,7 @@ const declared: readonly StageDeclaration[] = Object.freeze([
   {
     id: 'verify:assurance:runtime',
     processors: 4,
+    minimumProcessors: 2,
     privateTree: true,
     reads: ['cache:build'],
     writes: [

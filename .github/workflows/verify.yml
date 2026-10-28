@@ -117,8 +117,10 @@ jobs:
 
       - run: pnpm run stage:npm-cache
 
+      # The default budget leaves a third of the machine to the person working at it. A hosted runner
+      # has nobody working at it, so the gate is given every processor the runner reports.
       - name: Gate
-        run: node tools/verify.ts
+        run: EQUATOR_VERIFY_PROCESSORS="$(nproc)" node tools/verify.ts
 
       # The archives a green gate kept, by hash. The build is reproducible across operating systems,
       # so these are the hashes of the archives a release publishes, and RELEASING publishes only

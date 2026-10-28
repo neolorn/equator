@@ -6,14 +6,15 @@
  * without a priority class of its own (`CreateProcess`, `dwCreationFlags`), and which Linux does
  * for a nice value across `fork` and `execve` (`setpriority(2)`). A child can still set its own,
  * so the gate reads the whole tree while it runs rather than trusting the rule: a process above its
- * stage's priority is a finding, and so is a stretch of time in which the tree used more processors
- * than its budget.
+ * stage's priority is a finding. The processors the tree used are read the same way, and reported
+ * where they exceed the budget.
  *
  * One reading is a list; the rate comes from two. A process that starts and ends between two
  * readings is not seen at all, so the processors a window reports are a floor, never an
  * overestimate.
  */
-import { execFile } from 'node:child_process';
+import { execFile, execFileSync } from 'node:child_process';
+import { readdirSync, readFileSync } from 'node:fs';
 import { constants, setPriority } from 'node:os';
 
 /** One process in a reading. */
@@ -173,6 +174,104 @@ export function processorsBetween(
     used += Math.max(0, entry.cpuSeconds - (before.get(entry.pid) ?? 0));
   }
   return used / seconds;
+}
+
+/**
+ * The processors each group of a tree used between two readings, where `groupOf` names the group a
+ * process belongs to, counted as `processorsBetween` counts the whole tree.
+ */
+export function processorsByGroup(
+  earlier: readonly ProcessEntry[],
+  later: readonly ProcessEntry[],
+  seconds: number,
+  groupOf: (pid: number) => string,
+): Map<string, number> {
+  const before = new Map(earlier.map((entry) => [entry.pid, entry.cpuSeconds]));
+  const used = new Map<string, number>();
+  for (const entry of later) {
+    const group = groupOf(entry.pid);
+    const spent = Math.max(0, entry.cpuSeconds - (before.get(entry.pid) ?? 0));
+    used.set(group, (used.get(group) ?? 0) + spent / seconds);
+  }
+  return used;
+}
+
+/** One thread in a reading, with the name its process gave it. */
+export interface ThreadEntry {
+  readonly pid: number;
+  readonly tid: number;
+  readonly name: string;
+  readonly cpuSeconds: number;
+}
+
+let ticksPerSecond: number | undefined;
+
+/**
+ * The threads of `pids` with their names and CPU time, where the platform names threads; undefined
+ * elsewhere.
+ *
+ * Linux keeps a name and a CPU time for every thread under `/proc/<pid>/task/<tid>`, in `comm` and in
+ * fields 14 and 15 of `stat`, counted in clock ticks of `sysconf(_SC_CLK_TCK)` (`proc_pid_stat(5)`).
+ * Windows names no threads in a reading available to the gate, so a reading there is by process only.
+ * A process or thread that ends while it is read is left out.
+ */
+export function readThreads(pids: Iterable<number>): ThreadEntry[] | undefined {
+  if (process.platform !== 'linux') return undefined;
+  ticksPerSecond ??= Number(
+    execFileSync('getconf', ['CLK_TCK'], { encoding: 'utf8' }).trim(),
+  );
+  const threads: ThreadEntry[] = [];
+  for (const pid of pids) {
+    let tids: string[];
+    try {
+      tids = readdirSync(`/proc/${pid}/task`);
+    } catch {
+      continue;
+    }
+    for (const tid of tids) {
+      let stat: string;
+      try {
+        stat = readFileSync(`/proc/${pid}/task/${tid}/stat`, 'utf8');
+      } catch {
+        continue;
+      }
+      // The name sits in parentheses and may itself hold spaces or parentheses, so the fields are
+      // counted from the last closing one.
+      const close = stat.lastIndexOf(')');
+      const fields = stat.slice(close + 2).split(' ');
+      threads.push({
+        pid,
+        tid: Number(tid),
+        name: stat.slice(stat.indexOf('(') + 1, close),
+        cpuSeconds: (Number(fields[11]) + Number(fields[12])) / ticksPerSecond,
+      });
+    }
+  }
+  return threads;
+}
+
+/**
+ * The processors each thread name used between two readings. A process's first thread runs its
+ * program and is counted as `main thread`, whatever its name; every other thread under its own.
+ */
+export function processorsByThreadName(
+  earlier: readonly ThreadEntry[],
+  later: readonly ThreadEntry[],
+  seconds: number,
+): Map<string, number> {
+  const before = new Map(
+    earlier.map((entry) => [`${entry.pid}/${entry.tid}`, entry.cpuSeconds]),
+  );
+  const used = new Map<string, number>();
+  for (const entry of later) {
+    const name = entry.tid === entry.pid ? 'main thread' : entry.name;
+    const spent = Math.max(
+      0,
+      entry.cpuSeconds - (before.get(`${entry.pid}/${entry.tid}`) ?? 0),
+    );
+    used.set(name, (used.get(name) ?? 0) + spent / seconds);
+  }
+  return used;
 }
 
 /**
