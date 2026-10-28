@@ -7,7 +7,7 @@ import {
   resolveTypography,
 } from '@neolorn/equator';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 describe('pinned locale-direction profile', () => {
   it('binds runtime direction metadata to CLDR and Unicode script semantics', () => {

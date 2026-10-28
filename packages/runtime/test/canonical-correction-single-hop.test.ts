@@ -7,7 +7,7 @@ import {
   type RouteRuntimeProjection,
 } from '@neolorn/equator/core';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * A canonical correction lands on the address it names in one hop.

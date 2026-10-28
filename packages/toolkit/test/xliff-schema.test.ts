@@ -12,7 +12,7 @@ import {
   type CatalogParseOptions,
 } from '../src/index.js';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 import { writtenCatalog } from './fixtures.js';
 
 /**

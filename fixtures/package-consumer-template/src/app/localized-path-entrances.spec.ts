@@ -36,7 +36,7 @@ import { runtimeExtensions } from './runtime-extensions';
 import { routes as appRoutes } from './app.routes';
 import { appRouteProjection } from './localization.routes';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 /**
  * A localized path, at both entrances, under the two policies with no locale in the path.

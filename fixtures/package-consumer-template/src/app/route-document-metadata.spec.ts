@@ -26,7 +26,7 @@ import { runtimeExtensions } from './runtime-extensions';
 import { routePolicy, appRouteProjection } from './localization.routes';
 import { localeOrigin, switchInDocument } from './addresses';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 /**
  * Does a route's document metadata come from the catalog for the locale that is active?

@@ -9,7 +9,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { analyzeApplication } from '../src/static-analysis.js';
 import type { RouteProjection, ToolkitDiagnostic } from '../src/index.js';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * How far the build reads a route's declarations, and what it says where it stops.

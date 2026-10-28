@@ -13,7 +13,7 @@ import {
 } from '../src/formatting.js';
 import { type FormattingContext } from '@neolorn/equator/core';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * The formatting path, checked against the platform's own idea of each locale.

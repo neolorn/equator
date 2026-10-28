@@ -7,7 +7,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { diagnosticsBlock } from '../src/diagnostics.js';
 import { checkProject, generateProject } from '../src/index.js';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * An application states its locales twice, and the two statements have to agree.

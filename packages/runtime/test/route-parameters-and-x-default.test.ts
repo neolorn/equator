@@ -13,7 +13,7 @@ import {
   type RouteParameterContext,
 } from '@neolorn/equator/core';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * The route parameter codecs, the x-default rule, and the values a server route is prerendered with.

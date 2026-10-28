@@ -1,4 +1,4 @@
-/** Generated from the IANA Time Zone Database 2026e by tools/generate-locale-profile.mjs. */
+/** Generated from the IANA Time Zone Database 2026e by tools/generate-locale-profile.ts. */
 export const TIME_ZONE_IDENTITIES_VERSION =
   'tzdata-2026e/equator-time-zone-1' as const;
 

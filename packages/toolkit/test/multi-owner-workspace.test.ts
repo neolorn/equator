@@ -14,7 +14,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { generateProject } from '../src/index.js';
 import { initializeProject } from '../src/project-host.js';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * A multi-application workspace: four `projectType: application` entries and two libraries in one

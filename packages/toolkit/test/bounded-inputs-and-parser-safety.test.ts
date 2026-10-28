@@ -15,7 +15,7 @@ import { parseExtensionRegistry } from '../src/extensions.js';
 import { RESOURCE_LIMITS } from '../src/resource-limits.js';
 import { toolkitDiagnostic, toolkitFailure } from '../src/diagnostics.js';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 const sourceOptions: CatalogParseOptions = {
   role: 'source',

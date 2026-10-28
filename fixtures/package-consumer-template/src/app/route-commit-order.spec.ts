@@ -43,7 +43,7 @@ import {
   switchInDocument,
 } from './addresses';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 /**
  * When the locale commit happens relative to the view that shows it.

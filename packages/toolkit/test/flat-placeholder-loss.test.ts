@@ -8,7 +8,7 @@ import {
   type CatalogParseOptions,
 } from '../src/index.js';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * A translation that stopped rendering a value the source renders.

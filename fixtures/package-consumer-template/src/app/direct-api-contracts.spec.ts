@@ -63,7 +63,7 @@ import {
   pageUrl,
 } from './addresses';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 const english: FormattingContext = Object.freeze({
   locale: 'en-US',

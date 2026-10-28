@@ -1,6 +1,6 @@
 import { mergeConfig } from 'vitest/config';
 
-import { capabilityClaimsReporters } from './tools/capability-evidence.mjs';
+import { capabilityClaimsReporters } from './tools/capability-evidence.ts';
 import shared from './vitest.config.ts';
 
 /** Also the base of `WAIT_BOUND_MS` in `packages/toolkit/test/fixtures.ts`. */

@@ -8,7 +8,7 @@ import {
 } from '@neolorn/equator';
 import { describe, expect, it } from 'vitest';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 /**
  * Person-name formatting, through the built package and the generated artifact.

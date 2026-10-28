@@ -52,7 +52,7 @@ export default defineConfig({
     /**
      * `tmp/` is never a source of tests, and after a red gate it holds four copies of them.
      *
-     * `verify.mjs` keeps its worktrees under `tmp/verify-trees` when a run fails, so a resume
+     * `verify.ts` keeps its worktrees under `tmp/verify-trees` when a run fails, so a resume
      * can reuse them, and vitest's positional filter is a substring match on the file path, so
      * `packages/toolkit/test` then matches the copy inside every kept tree as well as the real one.
      * A local `test:toolkit` went from 38 files to 190 without saying anything had changed.
@@ -77,7 +77,7 @@ export default defineConfig({
      * to be high enough that reaching it means the test is never going to finish, and low enough to
      * sit inside the stage bound so a failure names the test rather than the stage: the same
      * inner-bound-inside-outer-guard shape as the `page.evaluate` bound in
-     * `tools/verify-package-consumer-hydration.mjs`.
+     * `tools/verify-package-consumer-hydration.ts`.
      */
     testTimeout: 30_000,
   },

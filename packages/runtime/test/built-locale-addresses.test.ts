@@ -35,7 +35,7 @@ import {
   type RouteRuntimeProjection,
 } from '@neolorn/equator/core';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * The policy declares intent; the build decides what exists.

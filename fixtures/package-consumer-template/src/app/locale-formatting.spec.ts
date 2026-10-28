@@ -15,7 +15,7 @@ import { messages } from '#i18n/shell';
 
 import { runtimeExtensions } from './runtime-extensions';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 /**
  * Is a locale written the way that locale declares?

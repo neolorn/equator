@@ -13,7 +13,7 @@ import { LANGUAGE_SCRIPTS } from '../src/language-scripts.generated.js';
 import { PARENT_LOCALES } from '../src/parent-locales.generated.js';
 import { testProjectConfiguration } from './fixtures.js';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * A locale falls back to its parent before it falls back to the source.

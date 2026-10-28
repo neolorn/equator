@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { contentPresentation, languagePresentation } from '@neolorn/equator';
 import { LocalizationError } from '@neolorn/equator/core';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 /**
  * Consumer content whose language may not be known.

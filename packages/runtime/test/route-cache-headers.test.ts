@@ -12,7 +12,7 @@ import {
   type RouteRuntimeProjection,
 } from '@neolorn/equator/core';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * Two questions live in a response's cache headers and only one of them is the consumer's.

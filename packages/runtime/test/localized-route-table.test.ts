@@ -9,7 +9,7 @@ import {
   type RouteRuntimeProjection,
 } from '@neolorn/equator/core';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * No Angular here, and that is the point of the suite rather than a convenience.

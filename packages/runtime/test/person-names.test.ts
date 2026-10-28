@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { type PersonNameProfileSet } from '@neolorn/equator/core';
 import { formatPersonName, personName } from '../src/formatting.js';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * The pattern machinery, against profiles written here rather than generated ones.

@@ -25,7 +25,7 @@ import { routePolicy, appRouteProjection } from './localization.routes';
 import { claimRunningPolicy, switchInDocument } from './addresses';
 import { runtimeExtensions } from './runtime-extensions';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 /**
  * A locale that is an origin, and the switch that cannot happen in place.

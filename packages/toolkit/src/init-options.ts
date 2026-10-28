@@ -8,7 +8,7 @@
  * different machinery from its success path has only been tested on the path that succeeds.
  *
  * The flags themselves are generated. `cli-options.generated.ts` is written from
- * `CONFIGURATION_SCHEMA` by `tools/generate-cli-options.mjs`, so what this file knows is the
+ * `CONFIGURATION_SCHEMA` by `tools/generate-cli-options.ts`, so what this file knows is the
  * four *shapes* a value can have, and never which keys exist.
  */
 

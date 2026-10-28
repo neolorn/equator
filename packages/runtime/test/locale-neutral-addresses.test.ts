@@ -15,7 +15,7 @@ import {
   type RouteParameterContext,
 } from '@neolorn/equator/core';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * Under a locale-neutral policy an address states a locale exactly when one locale alone spells it.

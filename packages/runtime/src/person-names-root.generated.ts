@@ -1,4 +1,4 @@
-/** Generated from cldr-person-names-full 48.2.0 by tools/generate-person-names.mjs. */
+/** Generated from cldr-person-names-full 48.2.0 by tools/generate-person-names.ts. */
 
 /**
  * Cube axes, in the order the flat cell index walks them.

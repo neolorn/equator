@@ -19,7 +19,7 @@ import {
 } from './localization.routes';
 import { pageAddress } from './addresses';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 /**
  * Contracts that are proven by compiling, not by running.

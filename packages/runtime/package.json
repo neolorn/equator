@@ -61,7 +61,7 @@
     "tslib": "^2.8.1"
   },
   "scripts": {
-    "build": "ng-packagr -p ng-package.json -c tsconfig.lib.prod.json && node ../../tools/stage-package-license.mjs dist/runtime",
+    "build": "ng-packagr -p ng-package.json -c tsconfig.lib.prod.json && node ../../tools/stage-package-license.ts dist/runtime",
     "build:watch": "ng-packagr -p ng-package.json -c tsconfig.lib.prod.json --watch"
   }
 }

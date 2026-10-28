@@ -21,7 +21,7 @@ import {
   type ToolkitObservabilitySink,
 } from '../src/index.js';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 const temporaryRoots: string[] = [];
 

@@ -17,7 +17,7 @@ import { generateContracts } from '../src/generated-contracts.js';
 import { parseMessageSemanticModel } from '../src/message-format.js';
 import { analyzeCatalogSet } from '../src/semantic-model.js';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 function configuration(): ProjectConfiguration {
   const parsed = parseConfiguration(

@@ -1,8 +1,8 @@
 # The gate, on Linux.
 #
-# `node tools/verify.mjs` is the whole of it. The stage graph, the ordering, the concurrency and the
+# `node tools/verify.ts` is the whole of it. The stage graph, the ordering, the concurrency and the
 # verdict are the ones in the repository; nothing about the run is described twice, and a stage
-# added to `tools/verify.mjs` is in this job the moment it lands, with no edit here.
+# added to `tools/verify.ts` is in this job the moment it lands, with no edit here.
 #
 # What this job does that the local gate does not is run on a different operating system. Equator
 # has only ever been verified on Windows, and the tooling carries twenty-eight `process.platform`
@@ -38,16 +38,14 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    # Measured on this repository's own runs rather than estimated, and on two of them because one
-    # number cannot show its own spread: 1,509 and 1,735 seconds of gate wall over 3,936 and 3,939
-    # seconds of stage time, both at `peak 4 of 4 concurrent`, in jobs of 27 and 31 minutes. The
-    # stage time is the work and it is steady to three seconds; the wall is what four shared cores
-    # did with it that hour. Setup is 81 seconds with every cache cold, so a warm run saves almost
-    # nothing and the job is the gate. The same gate is 876 seconds locally over 1,865 at a peak of
-    # 18 of 32: not slower per unit of work, four cores where that machine has thirty-two, so the
-    # serial part arrives whole. The limit is high because a slow green is a result and a killed
-    # run is not.
-    timeout-minutes: 180
+    # Measured on this repository's own run rather than estimated. The runner took the graph two
+    # stages at a time and finished 82 of its 83 stages in 84 minutes; the 83rd,
+    # `verify:assurance:runtime`, then ran alone for 95 minutes and was still running when a limit
+    # of 180 ended the job, its trace by then about 97% of the way through. The job therefore needs
+    # a little over three hours. Setup before the gate is under two minutes, so the job is the gate.
+    # The limit is the six hours GitHub allows a job on a hosted runner, because a slow green is a
+    # result and a killed run is not.
+    timeout-minutes: 360
 
     steps:
       - uses: actions/checkout@v7
@@ -94,7 +92,7 @@ jobs:
         uses: actions/cache@v6
         with:
           path: .runtimes/node
-          key: node-runtimes-${{ runner.os }}-${{ hashFiles('tools/stage-node-runtimes.mjs') }}
+          key: node-runtimes-${{ runner.os }}-${{ hashFiles('tools/stage-node-runtimes.ts') }}
 
       - run: pnpm run stage:node-runtimes
 
@@ -119,8 +117,10 @@ jobs:
 
       - run: pnpm run stage:npm-cache
 
+      # The default budget leaves a third of the machine to the person working at it. A hosted runner
+      # has nobody working at it, so the gate is given every processor the runner reports.
       - name: Gate
-        run: node tools/verify.mjs
+        run: EQUATOR_VERIFY_PROCESSORS="$(nproc)" node tools/verify.ts
 
       # The archives a green gate kept, by hash. The build is reproducible across operating systems,
       # so these are the hashes of the archives a release publishes, and RELEASING publishes only

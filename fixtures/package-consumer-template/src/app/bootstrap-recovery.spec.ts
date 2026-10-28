@@ -44,7 +44,7 @@ import { routes as appRoutes } from './app.routes';
 import { appRouteProjection, routePolicy } from './localization.routes';
 import { localeOrigin, pagePath } from './addresses';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 /**
  * When a catalog failed to load at startup, the user saw nothing at all.

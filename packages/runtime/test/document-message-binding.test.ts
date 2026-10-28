@@ -23,7 +23,7 @@ import {
   type PlainMessageHandle,
 } from '@neolorn/equator/core';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /** A generated handle, as a catalog compilation produces one. */
 const handle = (

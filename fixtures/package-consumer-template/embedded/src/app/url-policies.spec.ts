@@ -24,7 +24,7 @@ import { configuration, localizationSetup } from '#i18n';
 import { routeProjection } from '#i18n/routes';
 import { messages } from '#i18n/shell';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * The fallback chain under each URL policy.

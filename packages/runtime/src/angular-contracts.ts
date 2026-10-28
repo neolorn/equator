@@ -32,7 +32,7 @@ import type {
  * of Angular and loaded in plain Node: the runtime check passed. The generated `.d.ts` kept the
  * import, which means an Angular-less consumer could run the core and could not typecheck against
  * it. The runtime evidence was real and answered a narrower question than the one being asked. This
- * is why `verify-package-structure.mjs` reads the declarations as well as the JavaScript.
+ * is why `verify-package-structure.ts` reads the declarations as well as the JavaScript.
  */
 
 /**

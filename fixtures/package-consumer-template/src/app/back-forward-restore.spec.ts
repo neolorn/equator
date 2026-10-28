@@ -28,7 +28,7 @@ import { runtimeExtensions } from './runtime-extensions';
 import { routePolicy, appRouteProjection } from './localization.routes';
 import { localeInPath, pagePath } from './addresses';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 /**
  * A page the browser restores from its back-forward cache, after the visitor chose another language.

@@ -25,7 +25,7 @@ import {
   type LocalizationLocaleSource,
 } from '../src/locale-resolution.js';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 const PROJECTION: RouteRuntimeProjection = {
   generated: {

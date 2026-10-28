@@ -20,7 +20,7 @@ import { memoryStore, profileStore } from '../src/persistence.js';
 import type { LocalizationPersistenceStore } from '../src/persistence.js';
 import type { LocalizationSnapshot } from '@neolorn/equator/core';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 const resolutionOver = (stores: readonly LocalizationPersistenceStore[]) =>
   new LocaleResolution({

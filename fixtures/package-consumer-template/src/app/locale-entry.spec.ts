@@ -5,7 +5,7 @@ import { resolveLocalizedRoute, routeHttpDescriptor } from '@neolorn/equator';
 import { routePolicy, appRouteProjection } from './localization.routes';
 import { entryRedirects } from './addresses';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 /**
  * The one place a path-prefix policy has to decide a locale for itself.

@@ -23,7 +23,7 @@ import { routeProjection } from '#i18n/routes';
 import { appRouteProjection } from './localization.routes';
 import { runtimeExtensions } from './runtime-extensions';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 /**
  * A switcher option a keyboard can reach whether or not it has somewhere to go.

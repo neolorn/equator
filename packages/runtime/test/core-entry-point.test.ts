@@ -16,7 +16,7 @@ import {
  * core has to be on the core's public surface: that is the cost of the split, and it is three
  * symbols.
  *
- * `verify-export-surface.mjs` refuses an export named by no consumer, gate or test, which is the
+ * `verify-export-surface.ts` refuses an export named by no consumer, gate or test, which is the
  * correct answer: a published export nothing reaches is one nothing has checked. Adding them to the
  * accepted baseline would silence the gate without answering it. All three are reasonable API on
  * their own terms (a locale's writing direction, its profile, and validation of a generated
@@ -176,7 +176,7 @@ describe('validating a generated route projection', () => {
 /**
  * And the property the whole split exists for, asserted where a unit test can see it: the error the
  * core throws is the error the rest of Equator tests against. Two copies of `contracts.ts` would
- * make this pass in isolation and fail in a consumer, so `verify-package-structure.mjs` checks the
+ * make this pass in isolation and fail in a consumer, so `verify-package-structure.ts` checks the
  * built bundles too: this is the cheap half of that pair, not a replacement for it.
  */
 describe('the identity of the error the core throws', () => {

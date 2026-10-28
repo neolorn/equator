@@ -11,7 +11,7 @@ import { localeCookie } from './locale-cookie';
 import { appRouteProjection, routePolicy } from './localization.routes';
 import { responseCaching } from './response-caching';
 
-import { claimCapability } from '../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../tools/capability-claims-in-tests.ts';
 
 /**
  * The floor this deployment declares for every page, answered by a handler given what `server.ts`

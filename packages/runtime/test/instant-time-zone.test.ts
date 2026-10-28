@@ -7,7 +7,7 @@ import {
 } from '../src/formatting.js';
 import { type FormattingContext } from '@neolorn/equator/core';
 
-import { claimCapability } from '../../../tools/capability-claims-in-tests.mjs';
+import { claimCapability } from '../../../tools/capability-claims-in-tests.ts';
 
 /**
  * An application whose catalogs never format in the context's zone can start without naming one,
